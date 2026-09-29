@@ -1,0 +1,9 @@
+gspread>=6.1
+google-auth>=2.30
+playwright>=1.47
+anthropic>=0.40
+pydantic>=2.8
+rich>=13.7
+typer>=0.12
+python-dotenv>=1.0
+pytest>=8.3
