@@ -135,7 +135,7 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
     runs = [r for r in previous.get("runs", []) if r["date"] != today.isoformat()]
     runs.append({"date": today.isoformat(), "counts": counts})
     return {
-        "generated_at": datetime.now().replace(microsecond=0).isoformat(),
+        "generated_at": _now_copenhagen().isoformat(),
         "run_date": today.isoformat(),
         "threshold_days": threshold,
         "summary": summarize(shipments),
@@ -204,6 +204,16 @@ def summarize(shipments: list[dict]) -> str:
     return " ".join(parts)
 
 
+def _now_copenhagen() -> datetime:
+    """Local Danish time without offset, as the dashboard shows it ("Opdateret kl. HH:MM")."""
+    try:
+        from zoneinfo import ZoneInfo
+
+        return datetime.now(ZoneInfo("Europe/Copenhagen")).replace(microsecond=0, tzinfo=None)
+    except Exception:
+        return datetime.now().replace(microsecond=0)
+
+
 def _load_items(path: Path) -> dict[str, dict]:
     data = json.loads(path.read_text(encoding="utf-8"))
     items = data["items"] if isinstance(data, dict) and "items" in data else data
@@ -219,7 +229,7 @@ def main(raw_files: list[Path], baseline_csv: Path, previous: Path | None, out: 
         baseline = [r for r in csv.DictReader(f) if r.get("BL", "").strip()]
     prev = json.loads(previous.read_text(encoding="utf-8")) if previous and previous.exists() else None
     news_doc = json.loads(news.read_text(encoding="utf-8")) if news and news.exists() else None
-    doc = build(items, baseline, prev, today or date.today(), news=news_doc)
+    doc = build(items, baseline, prev, today or _now_copenhagen().date(), news=news_doc)
     if summary:
         doc["summary"] = summary
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")

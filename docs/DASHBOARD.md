@@ -13,6 +13,9 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
   destinationer). "Omskriv med Claude" skriver den om live i valgt tone. Beskeden kopieres; den sendes ikke fra siden.
 - **Det skal I holde øje med:** nyheder om havne og ruter (fra `news.json`), koblet til de forsendelser, der endnu skal forbi
   havnen. Klik fremhæver dem på kortet; trekanter på kortet markerer havnene.
+- **Eksportér til Excel:** .xlsx med fanerne Oversigt, Forsendelser (farvet status, rigtige datoer, filtre), Havnenyheder
+  (med links) og Kundebeskeder (danske skabeloner). Bygges i browseren med `xlsx-js-style` (hentes først ved klik) og gemmes
+  via `downloads`-kapabiliteten, så seeren bekræfter filen.
 - **Gennemgå kundebeskeder:** bladr gennem alle forsinkede, tidligere og udaterede forsendelser én ad gangen.
 - Siden erklærer `mcp` (Apify) og `sample`. Knapperne vises kun, når seeren har adgang til dem.
 

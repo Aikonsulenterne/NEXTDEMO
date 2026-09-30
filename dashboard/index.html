@@ -178,6 +178,7 @@ tr.row.flash td { animation: flash 2.4s ease-out 1; }
     <div class="brand">ETA<span>-</span>tavlen</div>
     <div class="head-actions">
       <span class="runstatus" id="runStatus" role="status" aria-live="polite"></span>
+      <button class="btn" id="exportBtn" hidden>Eksportér til Excel</button>
       <button class="btn primary" id="runBtn" hidden>Kør nu</button>
       <div class="stamp" id="stamp">Henter dagens data …</div>
     </div>
@@ -846,5 +847,127 @@ async function runNow() {
 if (window.claude?.use) {
   window.claude.use("mcp").then(m => { MCP = m; if (m) { $("runBtn").hidden = false; $("runBtn").onclick = runNow; } }).catch(() => { });
   window.claude.use("sample").then(sm => { SAMPLE = sm; if (sm) { $("aiBtn").hidden = false; $("toneSeg").hidden = false; $("toneWrap").hidden = false; } }).catch(() => { });
+}
+</script>
+
+<script>
+/* ---------- Export to Excel (.xlsx) ---------- */
+let DOWNLOADS = null;
+const XLSX_SRC = "https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js";
+function loadXlsx() {
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((res, rej) => { const el = document.createElement("script"); el.src = XLSX_SRC; el.onload = res; el.onerror = () => rej(new Error("xlsx")); document.head.appendChild(el); });
+}
+const XL_STATUS = {
+  "Forsinket": ["F4C7C3", "C0392B"], "Tidligere": ["D9EAD3", "1E7A55"], "Tjek manuelt": ["FFF2CC", "A86A00"],
+  "Uændret": ["E3E8EC", "3F4E5A"], "Ikke fundet": ["EFEFEF", "5B6B78"], "Ikke understøttet": ["EFEFEF", "5B6B78"],
+};
+const XL_SEV = { "høj": ["F4C7C3", "C0392B"], "middel": ["FFF2CC", "A86A00"], "lav": ["E3E8EC", "3F4E5A"], "info": ["DCE9F3", "1F5F8B"] };
+const serial = iso => iso ? dayNum(iso) + 25569 : null;   // Excel day number for a YYYY-MM-DD date
+const dateCell = iso => iso ? { t: "n", v: serial(iso), z: "dd-mm-yyyy" } : { t: "s", v: "" };
+const HEAD = { font: { bold: true, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "0F2233" } }, alignment: { vertical: "center", wrapText: true } };
+const WRAP = { alignment: { wrapText: true, vertical: "top" } };
+
+function sheetFrom(rows, widths, headerRow = 0) {
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"] = widths.map(w => ({ wch: w }));
+  const range = XLSX.utils.decode_range(ws["!ref"]);
+  for (let c = range.s.c; c <= range.e.c; c++) {
+    const a = XLSX.utils.encode_cell({ r: headerRow, c }); if (ws[a]) ws[a].s = HEAD;
+    for (let r = headerRow + 1; r <= range.e.r; r++) { const b = XLSX.utils.encode_cell({ r, c }); if (ws[b] && !ws[b].s) ws[b].s = WRAP; }
+  }
+  ws["!autofilter"] = { ref: XLSX.utils.encode_range({ s: { r: headerRow, c: range.s.c }, e: { r: range.e.r, c: range.e.c } }) };
+  return ws;
+}
+const paint = (ws, r, c, [bg, fg]) => { const a = XLSX.utils.encode_cell({ r, c }); ws[a].s = { fill: { fgColor: { rgb: bg } }, font: { bold: true, color: { rgb: fg } }, alignment: { vertical: "top" } }; };
+
+function buildWorkbook() {
+  const wb = XLSX.utils.book_new();
+  const day = new Date(DATA.run_date + "T12:00:00").toLocaleDateString("da-DK", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const lateDays = DATA.shipments.filter(s => s.status === "Forsinket").reduce((a, s) => a + (s.diff_days || 0), 0);
+
+  // Oversigt
+  const counts = Object.keys(STATUS).filter(k => DATA.counts[k]).map(k => [k, DATA.counts[k]]);
+  const ov = XLSX.utils.aoa_to_sheet([
+    ["ETA-tavlen"], ["Dato", day], ["Opdateret", DATA.generated_at ? `${fmt(DATA.generated_at.slice(0, 10))} kl. ${DATA.generated_at.slice(11, 16)}` : ""], [],
+    ["Morgenrapport"], [DATA.summary], [], ["Status", "Antal"], ...counts, ["Forsinkelsesdage i alt", lateDays], [],
+    ["Kilde: CMA CGM's og MSC's tracking-data via Apify. \"Jeres ETA\" er fra listen Active BL List. ETA er ankomst til losningshavnen (POD)."],
+  ]);
+  ov["!cols"] = [{ wch: 24 }, { wch: 60 }];
+  ov["!merges"] = [{ s: { r: 5, c: 0 }, e: { r: 5, c: 1 } }];
+  ov["A1"].s = { font: { bold: true, sz: 18, color: { rgb: "0F2233" } } };
+  ov["A5"].s = { font: { bold: true } };
+  ov["A6"].s = { alignment: { wrapText: true, vertical: "top" } };
+  ov["!rows"] = [, , , , , { hpt: 110 }];
+  ov["A8"].s = HEAD; ov["B8"].s = HEAD;
+  counts.forEach(([k], i) => paint(ov, 8 + i, 0, XL_STATUS[k] || XL_STATUS["Uændret"]));
+  XLSX.utils.book_append_sheet(wb, ov, "Oversigt");
+
+  // Forsendelser
+  const ships = [...DATA.shipments].sort((a, b) => st(a.status).order - st(b.status).order || (b.diff_days || 0) - (a.diff_days || 0));
+  const rows = [["Rederi", "BL", "Destination", "Jeres ETA", "Ny ETA", "Forskel (dage)", "Status", "Skib", "Rute", "Sidst set", "Sidst set dato", "Risici på ruten", "Note"]];
+  ships.forEach(s => rows.push([
+    s.carrier, s.bl, s.pod || "", dateCell(s.current_eta), dateCell(s.new_eta),
+    s.diff_days == null ? "" : s.diff_days, s.status, s.vessel || "", s.route.map(p => placeName(p.name)).join(" → "),
+    s.arrived ? "Ankommet" : (s.position ? placeName(s.position.name) : ""), dateCell(s.position?.date),
+    (s.risks || []).map(k => `${k.severity}: ${k.title}`).join("\n"), s.note || "",
+  ]));
+  const fs = sheetFrom(rows, [9, 14, 16, 11, 11, 9, 13, 20, 34, 16, 12, 44, 46]);
+  ships.forEach((s, i) => {
+    paint(fs, i + 1, 6, XL_STATUS[s.status] || XL_STATUS["Uændret"]);
+    if ((s.diff_days || 0) > 0) paint(fs, i + 1, 5, ["FFFFFF", "C0392B"]);
+  });
+  XLSX.utils.book_append_sheet(wb, fs, "Forsendelser");
+
+  // Havnenyheder
+  const news = DATA.news?.items || [];
+  if (news.length) {
+    const nr = [["Risiko", "Emne", "Hvad sker der", "Berørte forsendelser", "Periode", "Kilde", "Link"]];
+    news.forEach(n => nr.push([n.severity, n.title, n.summary, (n.affected || []).map(a => `${a.bl} (${a.role})`).join(", "), n.as_of || "", n.source?.name || "", n.source?.url || ""]));
+    const ns = sheetFrom(nr, [9, 36, 60, 36, 22, 26, 40]);
+    news.forEach((n, i) => {
+      paint(ns, i + 1, 0, XL_SEV[n.severity] || XL_SEV.info);
+      const a = XLSX.utils.encode_cell({ r: i + 1, c: 6 });
+      if (n.source?.url) { ns[a].l = { Target: n.source.url }; ns[a].s = { font: { color: { rgb: "1F5F8B" }, underline: true } }; }
+    });
+    XLSX.utils.book_append_sheet(wb, ns, "Havnenyheder");
+  }
+
+  // Kundebeskeder (Danish templates, ready to adapt)
+  const list = notifyList();
+  if (list.length) {
+    const mr = [["BL", "Status", "Destination", "Emne", "Besked"]];
+    list.forEach(s => {
+      const [subj, , ...body] = templateMessage(s, "da").split("\n");
+      mr.push([s.bl, s.status, placeName(s.pod), subj.replace(/^Emne:\s*/, ""), body.join("\n")]);
+    });
+    const ms = sheetFrom(mr, [14, 13, 14, 44, 90]);
+    list.forEach((s, i) => paint(ms, i + 1, 1, XL_STATUS[s.status] || XL_STATUS["Uændret"]));
+    XLSX.utils.book_append_sheet(wb, ms, "Kundebeskeder");
+  }
+  return wb;
+}
+
+async function exportExcel() {
+  const btn = $("exportBtn"); btn.disabled = true; setRun("Laver Excel-fil …");
+  try {
+    await loadXlsx();
+    const wb = buildWorkbook();
+    const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    await DOWNLOADS.save({ filename: `ETA-tavlen ${DATA.run_date}.xlsx`, data: new Blob([buf]) });
+    setRun("Excel-filen er gemt.");
+  } catch (e) {
+    const code = e?.code;
+    if (code === "declined") setRun("Eksporten blev annulleret.");
+    else if (code === "rate_limited") setRun("Der er allerede en gem-dialog åben. Prøv igen om lidt.");
+    else if (["rejected_extension", "extension_not_enabled"].includes(code)) setRun("Excel-filer kan ikke gemmes i denne visning.", true);
+    else if (["unavailable", "not_granted", "capability_disabled", "capability_removed"].includes(code)) { btn.hidden = true; setRun("Eksport er ikke tilgængelig her.", true); }
+    else if (e?.message === "xlsx") setRun("Excel-værktøjet kunne ikke hentes. Tjek forbindelsen og prøv igen.", true);
+    else setRun("Eksporten fejlede. Prøv igen.", true);
+  } finally { btn.disabled = false; }
+}
+
+if (window.claude?.use) {
+  window.claude.use("downloads").then(d => { DOWNLOADS = d; if (d) { $("exportBtn").hidden = false; $("exportBtn").onclick = exportExcel; } }).catch(() => { });
 }
 </script>
