@@ -4,6 +4,16 @@ Dashboardet er en Claude-artifact: https://claude.ai/artifact/WjBCMzQyJNXzusiVUY
 Siden (`dashboard/index.html`) læser `data.json`, der ligger ved siden af den. Kortet er `dashboard/land-110m.json`.
 Hver hverdag udskifter morgenjobbet kun `data.json`.
 
+## Funktioner på siden
+
+- **Kør nu:** henter friske data via seerens egen Apify-connector (`call-actor`, `get-actor-run`, `get-dataset-items`),
+  læser dem med de samme regler som `carriers.py` (portet til JavaScript, tjekket mod Python på alle 25) og opdaterer siden.
+  Resultatet gemmes ikke for andre seere; det gør morgenjobbet.
+- **Informér kunden:** færdig besked pr. forsendelse på dansk, engelsk eller fransk (fransk foreslås for fransktalende
+  destinationer). "Omskriv med Claude" skriver den om live i valgt tone. Beskeden kopieres; den sendes ikke fra siden.
+- **Gennemgå kundebeskeder:** bladr gennem alle forsinkede, tidligere og udaterede forsendelser én ad gangen.
+- Siden erklærer `mcp` (Apify) og `sample`. Knapperne vises kun, når seeren har adgang til dem.
+
 ## Morgenjobbets trin (følges af den planlagte Claude-session)
 
 1. Hent repoet `Aikonsulenterne/nextdemo` og opret venv: `python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt`.

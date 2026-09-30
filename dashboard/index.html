@@ -36,6 +36,7 @@
   --check: #f2b544; --check-bg: #3d2e10; --same: #93a6b5; --same-bg: #1c2d3b; color-scheme: dark }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
 .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; padding-block: 20px 48px; display: grid; gap: 20px; }
 .mono, td.num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
@@ -118,13 +119,52 @@ tr.detail td { background: color-mix(in srgb, var(--accent) 5%, var(--panel)); p
 
 footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 4px; }
 .empty { padding: 40px 0; text-align: center; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { .pulse { animation: none; opacity: 0; } .route { animation: none !important; } }
+.head-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+.btn { font: 600 14px/1 var(--body); border-radius: 4px; padding: 10px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+.btn:hover { border-color: var(--accent); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:disabled { opacity: .55; cursor: progress; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.btn.small { padding: 6px 10px; font-size: 13px; }
+.runstatus { font: 500 13px/1.4 var(--mono); color: var(--muted); }
+.runstatus.err { color: var(--late); }
+.card { padding: 0; overflow: hidden; }
+.card-main { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 4px; padding: 12px 14px 8px; width: 100%; }
+.card-main:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.card .inform { margin: 0 14px 12px; justify-self: start; }
+.notify { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 4px; }
+.notify p { margin: 0; }
+.detail-actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+@keyframes flash { from { background: color-mix(in srgb, var(--check) 35%, transparent); } to { background: transparent; } }
+tr.row.flash td { animation: flash 2.4s ease-out 1; }
+.drawer { position: fixed; inset: 0; z-index: 20; display: flex; justify-content: flex-end; background: color-mix(in srgb, var(--ink) 35%, transparent); }
+.drawer-panel { width: min(560px, 100%); height: 100%; overflow-y: auto; background: var(--panel); color: var(--ink); padding: calc(18px + env(safe-area-inset-top, 0px)) 20px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; align-content: start; box-shadow: -8px 0 30px color-mix(in srgb, var(--ink) 20%, transparent); }
+.drawer-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.drawer-head h3 { font: 800 24px/1.05 var(--display); text-transform: uppercase; margin: 0; }
+.facts { font-size: 13px; color: var(--muted); display: grid; gap: 2px; }
+.facts b { color: var(--ink); font-weight: 600; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.seg button { all: unset; cursor: pointer; padding: 7px 12px; font-size: 13px; border-right: 1px solid var(--line); }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel); font-weight: 600; }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.seg .hint { font-size: 10px; opacity: .8; margin-left: 4px; }
+.opts { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; font-size: 12px; color: var(--muted); }
+#msg { width: 100%; min-height: 330px; resize: vertical; font: 14px/1.55 var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 12px; }
+#msg:focus-visible { outline: 2px solid var(--accent); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.drawer-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; font: 500 13px var(--mono); color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .pulse { animation: none; opacity: 0; } .route { animation: none !important; } tr.row.flash td { animation: none; } }
 </style>
 
 <div class="wrap">
   <header class="top">
     <div class="brand">ETA<span>-</span>tavlen</div>
-    <div class="stamp" id="stamp">Henter dagens data …</div>
+    <div class="head-actions">
+      <span class="runstatus" id="runStatus" role="status" aria-live="polite"></span>
+      <button class="btn primary" id="runBtn" hidden>Kør nu</button>
+      <div class="stamp" id="stamp">Henter dagens data …</div>
+    </div>
   </header>
 
   <section class="hero">
@@ -144,6 +184,10 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
   <section>
     <h2>Ring først om disse</h2>
     <div class="callfirst" id="callfirst"></div>
+    <div class="notify" id="notify" hidden>
+      <p id="notifyText"></p>
+      <button class="btn" id="bulkInform">Gennemgå kundebeskeder</button>
+    </div>
   </section>
 
   <section class="panel mapbox">
@@ -176,6 +220,38 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
     </div>
   </section>
 
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+      <div class="drawer-head">
+        <div><p class="eyebrow" style="margin:0 0 6px">Besked til kunden</p><h3 id="dTitle"></h3></div>
+        <button class="btn small" id="dClose" aria-label="Luk">Luk</button>
+      </div>
+      <div class="facts" id="dFacts"></div>
+      <div class="opts">
+        <span>Sprog</span>
+        <div class="seg" id="langSeg">
+          <button data-lang="da">Dansk</button><button data-lang="en">English</button><button data-lang="fr">Français</button>
+        </div>
+        <span id="toneWrap" hidden>Tone</span>
+        <div class="seg" id="toneSeg" hidden>
+          <button data-tone="venlig">Venlig</button><button data-tone="kort">Kort</button><button data-tone="formel">Formel</button>
+        </div>
+      </div>
+      <label for="msg" class="small">Du kan rette teksten, før du kopierer den.</label>
+      <textarea id="msg" spellcheck="true"></textarea>
+      <div class="actions">
+        <button class="btn primary" id="aiBtn" hidden>Omskriv med Claude</button>
+        <button class="btn" id="stopBtn" hidden>Stop</button>
+        <button class="btn" id="copyBtn">Kopiér besked</button>
+        <span class="small" id="dStatus" role="status" aria-live="polite"></span>
+      </div>
+      <p class="small" style="margin:0">Beskeden sendes ikke herfra. Kopiér den ind i jeres mail. I en fuld løsning sendes den automatisk fra jeres mailsystem, når ETA flytter sig.</p>
+      <div class="drawer-nav" id="dNav" hidden>
+        <button class="btn small" id="dPrev">← Forrige</button><span id="dPos"></span><button class="btn small" id="dNext">Næste →</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <span id="source">Kilde: CMA CGM's og MSC's tracking-data, hentet via Apify. "Jeres ETA" er fra listen Active BL List.</span>
     <span>ETA er rederiets forventede ankomst til losningshavnen (POD), i havnens lokale dato.</span>
@@ -200,6 +276,7 @@ const fmt = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("da-DK",
 const fmtShort = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("da-DK", { day: "numeric", month: "short" }) : "–";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+const FLASH = new Set();
 let DATA = null, filter = null, selected = null, sortKey = "status", sortDir = 1;
 const mapState = {};
 
@@ -247,13 +324,22 @@ function renderCallFirst() {
   const late = DATA.shipments.filter(s => s.status === "Forsinket").sort((a, b) => b.diff_days - a.diff_days).slice(0, 3);
   const box = document.getElementById("callfirst");
   box.innerHTML = late.length ? late.map(s => `
-    <button class="card" data-bl="${esc(s.bl)}">
-      <span class="days">+${s.diff_days} dage</span>
-      <span class="bl">${esc(s.bl)} · ${esc(s.carrier)}</span>
-      <span class="meta">Til ${esc(s.pod)} · nu ${fmtShort(s.new_eta)}, jeres liste siger ${fmtShort(s.current_eta)}</span>
-      <span class="meta">${esc(s.vessel || "")}</span>
-    </button>`).join("") : '<p class="small">Ingen forsinkede forsendelser i dag.</p>';
-  box.querySelectorAll(".card").forEach(b => b.onclick = () => select(b.dataset.bl, true));
+    <div class="card">
+      <button class="card-main" data-bl="${esc(s.bl)}">
+        <span class="days">+${s.diff_days} dage</span>
+        <span class="bl">${esc(s.bl)} · ${esc(s.carrier)}</span>
+        <span class="meta">Til ${esc(s.pod)} · nu ${fmtShort(s.new_eta)}, jeres liste siger ${fmtShort(s.current_eta)}</span>
+        <span class="meta">${esc(s.vessel || "")}</span>
+      </button>
+      <button class="btn small inform" data-inform="${esc(s.bl)}">Informér kunden</button>
+    </div>`).join("") : '<p class="small">Ingen forsinkede forsendelser i dag.</p>';
+  box.querySelectorAll(".card-main").forEach(b => b.onclick = () => select(b.dataset.bl, true));
+  box.querySelectorAll("[data-inform]").forEach(b => b.onclick = () => openDrawer([b.dataset.inform], 0));
+  const needs = notifyList();
+  const nb = document.getElementById("notify");
+  nb.hidden = needs.length === 0;
+  document.getElementById("notifyText").innerHTML = `<b>${needs.length} kunder</b> bør have besked i dag om en ændret eller manglende ankomstdato.`;
+  document.getElementById("bulkInform").onclick = () => openDrawer(needs.map(s => s.bl), 0);
 }
 
 function renderMap(land) {
@@ -342,7 +428,7 @@ function renderTable() {
     const d = s.diff_days;
     const diff = d == null ? "–" : `<span class="diff ${d > 0 ? "late" : d < 0 ? "early" : ""}">${d > 0 ? "+" : ""}${d}</span>`;
     const pos = s.arrived ? "Ankommet" : s.position ? `${esc(s.position.name)} <span class="small">${fmtShort(s.position.date)}</span>` : "–";
-    let html = `<tr class="row ${selected === s.bl ? "sel" : ""}" data-bl="${esc(s.bl)}" tabindex="0">
+    let html = `<tr class="row ${selected === s.bl ? "sel" : ""} ${FLASH.has(s.bl) ? "flash" : ""}" data-bl="${esc(s.bl)}" tabindex="0">
       <td>${esc(s.carrier)}</td><td class="mono">${esc(s.bl)}</td><td>${esc(s.pod || "–")}</td>
       <td class="num">${fmt(s.current_eta)}</td><td class="num">${fmt(s.new_eta)}</td><td class="num">${diff}</td>
       <td><span class="pill ${cls}">${esc(s.status)}</span></td><td>${pos}</td></tr>`;
@@ -353,10 +439,12 @@ function renderTable() {
       html += `<tr class="detail"><td colspan="8">
         <div class="legs">${legs || "Ingen rute i data"}</div>
         <p class="note">${esc(s.note)}${s.vessel ? ` · Skib: ${esc(s.vessel)}` : ""}${s.position ? ` · Seneste hændelse: ${esc(s.position.event)} i ${esc(s.position.name)} ${fmt(s.position.date)}` : ""}</p>
-        <p class="note small">${hist}</p></td></tr>`;
+        <p class="note small">${hist}</p>
+        <div class="detail-actions"><button class="btn small" data-inform="${esc(s.bl)}">Informér kunden</button></div></td></tr>`;
     }
     return html;
   }).join("") || '<tr><td colspan="8" class="empty">Ingen forsendelser med denne status.</td></tr>';
+  document.querySelectorAll("#rows [data-inform]").forEach(b => b.onclick = e => { e.stopPropagation(); openDrawer([b.dataset.inform], 0); });
   document.querySelectorAll("tr.row").forEach(tr => {
     tr.onclick = () => select(tr.dataset.bl, false);
     tr.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(tr.dataset.bl, false); } };
@@ -371,4 +459,325 @@ const repaint = () => { if (DATA) { renderTally(); renderCallFirst(); renderMap(
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", repaint);
 new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 load();
+</script>
+
+<script>
+/* ---------- Customer messages ---------- */
+const LOCALE = { da: "da-DK", en: "en-GB", fr: "fr-FR" };
+const FRANCOPHONE = new Set(["SN", "CI", "TG", "BJ", "CM", "CG", "GA", "GN", "ML", "BF", "NE", "MG", "CD", "DZ", "TN", "MA"]);
+const longDate = (iso, lang) => iso ? new Date(iso + "T12:00:00").toLocaleDateString(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" }) : "";
+const placeName = n => String(n || "").split(",")[0].toLowerCase().replace(/(^|[\s\-(])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
+const podCode = s => (s.route.find(p => p.kind === "POD") || s.route[s.route.length - 1] || {}).code || "";
+const suggestLang = s => FRANCOPHONE.has(podCode(s).slice(0, 2)) ? "fr" : null;
+const notifyList = () => DATA.shipments.filter(s => ["Forsinket", "Tjek manuelt", "Tidligere"].includes(s.status))
+  .sort((a, b) => st(a.status).order - st(b.status).order || (b.diff_days || 0) - (a.diff_days || 0));
+
+function kind(s) {
+  if (s.status === "Tjek manuelt" || !s.new_eta) return "check";
+  if ((s.diff_days || 0) > 0) return "late";
+  if ((s.diff_days || 0) < 0) return "early";
+  return "same";
+}
+
+function templateMessage(s, lang) {
+  const k = kind(s), n = Math.abs(s.diff_days || 0);
+  const pod = placeName(s.pod) || "destinationen";
+  const old = longDate(s.current_eta, lang), neu = longDate(s.new_eta, lang);
+  const pos = s.position && !s.arrived ? { place: placeName(s.position.name), date: longDate(s.position.date, lang) } : null;
+  const T = {
+    da: {
+      subj: { late: `Emne: Ny ankomstdato for jeres forsendelse ${s.bl}`, early: `Emne: Jeres forsendelse ${s.bl} ankommer tidligere`, same: `Emne: Status på jeres forsendelse ${s.bl}`, check: `Emne: Ankomstdatoen for ${s.bl} er endnu ikke fastlagt` },
+      hi: "Hej,",
+      body: {
+        late: `Vi følger jeres forsendelse ${s.bl} med ${s.carrier}. Rederiet har flyttet den forventede ankomst til ${pod} fra ${old} til ${neu}. Det er ${n} ${n === 1 ? "dag" : "dage"} senere end planlagt.`,
+        early: `Vi følger jeres forsendelse ${s.bl} med ${s.carrier}. Rederiet har rykket den forventede ankomst til ${pod} frem fra ${old} til ${neu}, altså ${n} ${n === 1 ? "dag" : "dage"} tidligere end planlagt. I kan med fordel gøre klar til at modtage varerne lidt før.`,
+        same: `Vi følger jeres forsendelse ${s.bl} med ${s.carrier}. Den forventes stadig at ankomme til ${pod} ${neu}, som planlagt.`,
+        check: `Vi følger jeres forsendelse ${s.bl} med ${s.carrier}. Rederiet har endnu ikke planlagt det sidste skib til ${pod}, så der er ingen ny ankomstdato endnu. Ankomsten bliver sandsynligvis senere end ${old}.`,
+      },
+      vessel: v => `Varerne sejler med ${v}.`, pos: p => `Seneste registrering: ${p.place}, ${p.date}.`,
+      close: k === "check" ? "Vi vender tilbage, så snart rederiet har en ny dato." : "Vi holder øje med forsendelsen hver dag og giver besked, hvis datoen flytter sig igen.",
+      bye: "Venlig hilsen\n[Dit navn]",
+    },
+    en: {
+      subj: { late: `Subject: New arrival date for your shipment ${s.bl}`, early: `Subject: Your shipment ${s.bl} is arriving early`, same: `Subject: Status of your shipment ${s.bl}`, check: `Subject: Arrival date for ${s.bl} not yet confirmed` },
+      hi: "Hello,",
+      body: {
+        late: `We are following your shipment ${s.bl} with ${s.carrier}. The carrier has moved the expected arrival in ${pod} from ${old} to ${neu}, which is ${n} ${n === 1 ? "day" : "days"} later than planned.`,
+        early: `We are following your shipment ${s.bl} with ${s.carrier}. The carrier has moved the expected arrival in ${pod} forward from ${old} to ${neu}, ${n} ${n === 1 ? "day" : "days"} earlier than planned. You may want to be ready to receive the goods a little sooner.`,
+        same: `We are following your shipment ${s.bl} with ${s.carrier}. It is still expected to arrive in ${pod} on ${neu}, as planned.`,
+        check: `We are following your shipment ${s.bl} with ${s.carrier}. The carrier has not yet scheduled the final vessel to ${pod}, so there is no new arrival date yet. Arrival will most likely be later than ${old}.`,
+      },
+      vessel: v => `The goods are on board ${v}.`, pos: p => `Last recorded: ${p.place}, ${p.date}.`,
+      close: k === "check" ? "We will get back to you as soon as the carrier confirms a new date." : "We check the shipment every day and will let you know if the date changes again.",
+      bye: "Kind regards\n[Your name]",
+    },
+    fr: {
+      subj: { late: `Objet : Nouvelle date d'arrivée pour votre expédition ${s.bl}`, early: `Objet : Votre expédition ${s.bl} arrive plus tôt`, same: `Objet : Point sur votre expédition ${s.bl}`, check: `Objet : Date d'arrivée de ${s.bl} pas encore confirmée` },
+      hi: "Bonjour,",
+      body: {
+        late: `Nous suivons votre expédition ${s.bl} avec ${s.carrier}. La compagnie maritime a décalé l'arrivée prévue à ${pod} du ${old} au ${neu}, soit ${n} ${n === 1 ? "jour" : "jours"} de retard.`,
+        early: `Nous suivons votre expédition ${s.bl} avec ${s.carrier}. La compagnie maritime a avancé l'arrivée prévue à ${pod} du ${old} au ${neu}, soit ${n} ${n === 1 ? "jour" : "jours"} plus tôt que prévu. Nous vous conseillons de prévoir la réception en conséquence.`,
+        same: `Nous suivons votre expédition ${s.bl} avec ${s.carrier}. L'arrivée à ${pod} est toujours prévue le ${neu}, comme annoncé.`,
+        check: `Nous suivons votre expédition ${s.bl} avec ${s.carrier}. La compagnie maritime n'a pas encore programmé le dernier navire vers ${pod} ; il n'y a donc pas encore de nouvelle date d'arrivée. L'arrivée sera probablement postérieure au ${old}.`,
+      },
+      vessel: v => `La marchandise voyage à bord du ${v}.`, pos: p => `Dernier enregistrement : ${p.place}, le ${p.date}.`,
+      close: k === "check" ? "Nous reviendrons vers vous dès qu'une nouvelle date sera confirmée." : "Nous suivons l'expédition chaque jour et vous informerons si la date change à nouveau.",
+      bye: "Cordialement,\n[Votre nom]",
+    },
+  }[lang];
+  const extra = [s.vessel && k !== "check" ? T.vessel(s.vessel) : "", pos ? T.pos(pos) : ""].filter(Boolean).join(" ");
+  return `${T.subj[k]}\n\n${T.hi}\n\n${T.body[k]}${extra ? "\n\n" + extra : ""}\n\n${T.close}\n\n${T.bye}`;
+}
+
+const D = { list: [], i: 0, lang: "da", tone: "venlig", ctl: null };
+const $ = id => document.getElementById(id);
+let SAMPLE = null, lastFocus = null;
+
+function openDrawer(bls, i) {
+  D.list = bls; D.i = i; lastFocus = document.activeElement;
+  $("drawer").hidden = false;
+  showDrawerItem();
+  $("dClose").focus();
+}
+function closeDrawer() {
+  D.ctl?.abort();
+  $("drawer").hidden = true;
+  lastFocus?.focus?.();
+}
+function current() { return DATA.shipments.find(s => s.bl === D.list[D.i]); }
+function showDrawerItem() {
+  const s = current(); if (!s) return;
+  D.ctl?.abort();
+  $("dTitle").textContent = `${s.bl} · ${placeName(s.pod)}`;
+  const d = s.diff_days;
+  $("dFacts").innerHTML = `<span><span class="pill ${st(s.status).cls}">${esc(s.status)}</span>${d ? ` <b>${d > 0 ? "+" : ""}${d} dage</b>` : ""}</span>
+    <span>Jeres ETA <b>${fmt(s.current_eta)}</b> · rederiets ETA nu <b>${fmt(s.new_eta)}</b></span>
+    <span>${esc(s.route.map(p => placeName(p.name)).join(" → "))}${s.vessel ? ` · ${esc(s.vessel)}` : ""}</span>`;
+  const sug = suggestLang(s);
+  $("langSeg").querySelectorAll("button").forEach(b => {
+    b.setAttribute("aria-pressed", String(b.dataset.lang === D.lang));
+    b.innerHTML = { da: "Dansk", en: "English", fr: "Français" }[b.dataset.lang] + (b.dataset.lang === sug ? '<span class="hint">foreslået</span>' : "");
+  });
+  $("toneSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tone === D.tone)));
+  $("msg").value = templateMessage(s, D.lang);
+  $("dStatus").textContent = "";
+  $("dNav").hidden = D.list.length < 2;
+  $("dPos").textContent = `${D.i + 1} af ${D.list.length}`;
+  $("dPrev").disabled = D.i === 0; $("dNext").disabled = D.i === D.list.length - 1;
+}
+$("langSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; D.lang = b.dataset.lang; showDrawerItem(); };
+$("toneSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; D.tone = b.dataset.tone; $("toneSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); };
+$("dPrev").onclick = () => { if (D.i > 0) { D.i--; showDrawerItem(); } };
+$("dNext").onclick = () => { if (D.i < D.list.length - 1) { D.i++; showDrawerItem(); } };
+$("dClose").onclick = closeDrawer;
+$("drawer").addEventListener("click", e => { if (e.target.id === "drawer") closeDrawer(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("drawer").hidden) closeDrawer(); });
+$("copyBtn").onclick = async () => {
+  try { await navigator.clipboard.writeText($("msg").value); $("dStatus").textContent = "Kopieret. Sæt den ind i din mail."; }
+  catch { $("msg").select(); $("dStatus").textContent = "Teksten er markeret. Tryk Ctrl+C eller Cmd+C for at kopiere."; }
+};
+
+const TONES = { venlig: "venlig og personlig, men professionel", kort: "meget kort, højst 3 sætninger i brødteksten", formel: "formel og saglig" };
+const LANG_NAMES = { da: "dansk", en: "engelsk", fr: "fransk" };
+const SUBJ = { da: "Emne:", en: "Subject:", fr: "Objet :" };
+$("aiBtn").onclick = async () => {
+  const s = current(); if (!s || !SAMPLE) return;
+  const facts = { bl: s.bl, rederi: s.carrier, destination: placeName(s.pod), jeres_eta: s.current_eta, rederiets_eta_nu: s.new_eta,
+    forskel_dage: s.diff_days, status: s.status, skib: s.vessel, rute: s.route.map(p => placeName(p.name)), seneste_registrering: s.position && { sted: placeName(s.position.name), dato: s.position.date }, note: s.note };
+  const prompt = `Du skriver en e-mail fra en virksomhed til deres kunde, der venter på en containerforsendelse.
+Sprog: ${LANG_NAMES[D.lang]}. Tone: ${TONES[D.tone]}.
+Brug KUN disse fakta. Opfind ikke årsager til forsinkelsen, nye datoer eller løfter:
+${JSON.stringify(facts)}
+
+Udkast, som du må forbedre:
+${$("msg").value}
+
+Svar kun med e-mailen: første linje er emnelinjen, der starter med "${SUBJ[D.lang]}", derefter en tom linje og brødteksten. Skriv datoer fuldt ud på ${LANG_NAMES[D.lang]}. Afslut med en hilsen og pladsholderen fra udkastet til afsenderens navn. Højst 120 ord.`;
+  D.ctl = new AbortController();
+  $("aiBtn").disabled = true; $("stopBtn").hidden = false; $("dStatus").textContent = "Claude skriver …";
+  const before = $("msg").value;
+  try {
+    const { text } = await SAMPLE(prompt, { signal: D.ctl.signal, modelTier: "quick", cache: false, onText: ({ text }) => { $("msg").value = text; } });
+    $("msg").value = text; $("dStatus").textContent = "Omskrevet af Claude. Læs den igennem, før du sender.";
+  } catch (e) {
+    if (e?.code === "cancelled") { $("msg").value = e.text || before; $("dStatus").textContent = "Stoppet."; }
+    else if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e?.code)) { $("msg").value = before; $("aiBtn").hidden = true; $("toneSeg").hidden = true; $("toneWrap").hidden = true; $("dStatus").textContent = "Claude er ikke slået til for denne side. Skabelonen virker stadig."; }
+    else if (e?.code === "rate_limited") { $("msg").value = e.text || before; $("dStatus").textContent = "For mange forespørgsler lige nu. Prøv igen om lidt."; }
+    else if (e?.code === "refused") { $("msg").value = before; $("dStatus").textContent = "Claude ville ikke omskrive denne besked. Skabelonen er bevaret."; }
+    else { $("msg").value = e?.text || before; $("dStatus").textContent = "Omskrivningen blev afbrudt. Prøv igen."; }
+  } finally { $("aiBtn").disabled = false; $("stopBtn").hidden = true; }
+};
+$("stopBtn").onclick = () => D.ctl?.abort();
+
+/* ---------- "Kør nu": fetch fresh data through the viewer's Apify connector ---------- */
+const PORTS = {"BJCOO": ["COTONOU", 6.35, 2.43], "CMDLA": ["DOUALA", 4.05, 9.7], "CMKBI": ["KRIBI", 2.95, 9.92], "CNMWN": ["MAWAN", 22.47, 113.87], "CNNGB": ["NINGBO", 29.87, 121.55], "CNSHA": ["SHANGHAI", 31.23, 121.47], "CNSHK": ["SHEKOU", 22.46, 113.88], "CIABJ": ["ABIDJAN", 5.28, -4.01], "GHTEM": ["TEMA", 5.61, -0.02], "INNSA": ["NHAVA SHEVA", 18.89, 73.06], "KEMBA": ["MOMBASA", -4.05, 39.67], "KRPUS": ["BUSAN", 35.1, 129.04], "MYPKG": ["PORT KLANG", 2.95, 101.31], "MZMPM": ["MAPUTO", -25.97, 32.57], "SGSIN": ["SINGAPORE", 1.27, 103.79], "SNDKR": ["DAKAR", 14.71, -17.46], "TGLFW": ["LOME", 6.13, 1.28], "ZAPLZ": ["PORT ELIZABETH", -33.96, 25.62], "ZAZBA": ["COEGA", -33.8, 25.68], "LKCMB": ["COLOMBO", 6.94, 79.84], "NLRTM": ["ROTTERDAM", 51.94, 4.04], "LRMLW": ["MONROVIA", 6.31, -10.8], "MAPTM": ["TANGER MED", 35.89, -5.49], "INMUN": ["MUNDRA", 22.75, 69.57], "ZACPT": ["CAPE TOWN", -33.81, 18.54], "IDJKT": ["JAKARTA", -6.13, 106.82], "HKHKG": ["HONG KONG", 22.37, 113.94], "ESALG": ["ALGECIRAS", 36.1, -5.45], "MTMAR": ["MALTA", 35.82, 14.53], "CGPNR": ["POINTE NOIRE", -4.79, 11.85], "CNNSA": ["NANSHA", 22.64, 113.69], "THLCH": ["LAEM CHABANG", 13.12, 100.97], "MZBEW": ["BEIRA", -19.82, 34.84], "MMRGN": ["YANGON", 16.66, 96.26], "CNXAM": ["XIAMEN", 24.46, 118.01], "NAWVB": ["WALVIS BAY", -22.95, 14.49]};
+const PORT_BY_NAME = Object.fromEntries(Object.entries(PORTS).map(([c, v]) => [v[0], c]));
+const ACTORS = { CMA: "muhammetakkurtt/cma-cgm-cargo-tracking-scraper", MSC: "muhammetakkurtt/msc-cargo-tracking-scraper" };
+const OMIT = { CMA: "events.documentReferences,events.references,events.transportCall.location.address,events.carrierSpecificData.customsReferences", MSC: "" };
+let MCP = null;
+
+function isoDate(v) {
+  if (!v) return null;
+  const t = String(v).trim();
+  let m = t.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = t.match(/^(\d{2})[\/.-](\d{2})[\/.-](\d{4})/); if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+  return null;
+}
+const dayNum = iso => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5;
+const cleanName = n => String(n || "").split(",")[0].split("(")[0].trim().toUpperCase();
+function port(code, name, lat, lon) {
+  if (!code && !name) return null;
+  code = code || PORT_BY_NAME[cleanName(name)];
+  if ((lat == null || lon == null) && PORTS[code]) [, lat, lon] = PORTS[code];
+  lat = parseFloat(lat); lon = parseFloat(lon);
+  return { code: code || null, name: cleanName(name) || (PORTS[code] || [""])[0], lat: isNaN(lat) ? null : lat, lon: isNaN(lon) ? null : lon };
+}
+
+function parseMsc(item) {
+  const bl = (item.bill_of_ladings || [])[0];
+  if (!bl) return { page_state: "not_found", eta: null, note: "MSC har ingen data for BL'et" };
+  const info = bl.GeneralTrackingInfo || {}, cs = bl.ContainersInfo || [];
+  const ce = [...new Set(cs.map(c => isoDate(c.PodEtaDate)).filter(Boolean))].sort();
+  let eta = isoDate(info.FinalPodEtaDate);
+  if (ce.length) eta = [eta, ce[ce.length - 1]].filter(Boolean).sort().pop();
+  if (!eta) return null;
+  let vessel = null;
+  for (const c of cs) { const e = (c.Events || []).find(e => /estimated time of arrival/i.test(e.Description || "") && e.Detail?.length); if (e) { vessel = e.Detail[0]; break; } }
+  const pod = info.PortOfDischarge || null, arrived = !!bl.Delivered;
+  const notes = [arrived ? "Ankommet" : null, pod ? `ETA ved ${pod}` : "ETA ved POD", (info.Transshipments || []).length ? "via " + info.Transshipments.join(", ") : null].filter(Boolean);
+  const stops = [info.PortOfLoad && ["POL", info.PortOfLoad], ...(info.Transshipments || []).map(t => ["PTS", t]), pod && ["POD", pod]].filter(Boolean);
+  const codes = {}; cs.forEach(c => (c.Events || []).forEach(e => { if (e.Location) codes[e.Location.toUpperCase()] = e.UnLocationCode; }));
+  const route = stops.map(([k, n]) => { const p = port(codes[n.toUpperCase()], n); return p && { ...p, kind: k }; }).filter(Boolean);
+  let position = null;
+  const evs = (cs[0]?.Events || []).filter(e => !/estimated|intended/i.test(e.Description || ""));
+  if (evs.length) { const l = evs.reduce((a, b) => (b.Order || 0) > (a.Order || 0) ? b : a); const p = port(l.UnLocationCode, l.Location); if (p) position = { ...p, event: l.Description || "", date: isoDate(l.Date) }; }
+  return { page_state: "ok", eta, arrived, vessel, pod, confidence: "high", note: notes.join(", "), route, position };
+}
+
+function parseCma(item) {
+  const events = item.events || [];
+  if (!events.length) return { page_state: "not_found", eta: null, note: "CMA CGM har ingen data for BL'et" };
+  const arr = events.filter(e => e.eventType === "TRANSPORT" && e.transportEventTypeCode === "ARRI");
+  const podAll = arr.filter(e => e.carrierSpecificData?.shipmentLocationType === "POD");
+  const podDated = podAll.filter(e => e.eventDateTime);
+  const loc = e => e.transportCall?.location || {};
+  // route + position
+  const stops = {}; let position = null, lastAct = "";
+  for (const e of events) {
+    const c = e.transportCall || {}, l = c.location || {}, code = l.UNLocationCode || c.UNLocationCode, k = e.carrierSpecificData?.shipmentLocationType;
+    const p = port(code, l.locationName, l.latitude, l.longitude);
+    if (["POL", "PTS", "POD"].includes(k) && p && !stops[code]) stops[code] = { ...p, kind: k, o: [{ POL: 0, PTS: 1, POD: 2 }[k], e.eventDateTime || "9999"] };
+    if (e.eventClassifierCode === "ACT" && p && (e.eventDateTime || "") > lastAct) { lastAct = e.eventDateTime; position = { ...p, event: e.carrierSpecificData?.internalEventLabel || "", date: lastAct.slice(0, 10) }; }
+  }
+  const route = Object.values(stops).sort((a, b) => a.o[0] - b.o[0] || (a.o[1] < b.o[1] ? -1 : 1)).map(({ o, ...p }) => p);
+  const pts = [...new Set(events.filter(e => e.carrierSpecificData?.shipmentLocationType === "PTS").map(e => loc(e).locationName).filter(Boolean))].sort();
+  if (!podDated.length) {
+    if (!podAll.length) return null;
+    const pod = loc(podAll[0]).locationName || null;
+    const dated = arr.filter(e => e.eventDateTime && e.carrierSpecificData?.shipmentLocationType === "PTS");
+    let note = `CMA CGM har endnu ingen dato for ankomst til ${pod || "POD"} (videre skib ikke planlagt)`;
+    if (dated.length) { const l = dated.reduce((a, b) => b.eventDateTime > a.eventDateTime ? b : a); note += `. Når først omladning i ${loc(l).locationName} ${fmt(l.eventDateTime.slice(0, 10))}`; }
+    return { page_state: "ok", eta: null, arrived: false, vessel: null, pod, confidence: "low", note, route, position };
+  }
+  const act = podDated.filter(e => e.eventClassifierCode === "ACT");
+  const chosen = act.length ? act.reduce((a, b) => b.eventDateTime > a.eventDateTime ? b : a)
+    : podDated.reduce((a, b) => ((b.eventCreatedDateTime || "") + b.eventDateTime) > ((a.eventCreatedDateTime || "") + a.eventDateTime) ? b : a);
+  const pod = loc(chosen).locationName || null;
+  const notes = [act.length ? "Ankommet" : pod ? `ETA ved ${pod}` : "ETA ved POD", pts.length ? "via " + pts.join(", ") : null].filter(Boolean);
+  return { page_state: "ok", eta: chosen.eventDateTime.slice(0, 10), arrived: !!act.length, vessel: chosen.transportCall?.vessel?.vesselName || null,
+    pod, confidence: "high", note: notes.join(", "), route, position };
+}
+
+function compareJs(ex, cur, T) {
+  if (!ex || ex.page_state !== "ok") return [null, "Ikke fundet"];
+  const diff = ex.eta && cur ? dayNum(ex.eta) - dayNum(cur) : null;
+  if (!ex.eta || ex.confidence === "low" || !cur) return [diff, "Tjek manuelt"];
+  if (diff >= T) return [diff, "Forsinket"];
+  if (diff <= -T) return [diff, "Tidligere"];
+  return [diff, "Uændret"];
+}
+
+function summarizeJs(ships) {
+  const late = ships.filter(s => s.status === "Forsinket").sort((a, b) => b.diff_days - a.diff_days);
+  const parts = [`${late.length} af ${ships.length} forsendelser er forsinket i forhold til jeres liste.`];
+  if (late.length) parts.push("Størst: " + late.slice(0, 3).map(s => `${s.bl} (+${s.diff_days} dage til ${s.pod})`).join(", ") + ".");
+  const chk = ships.filter(s => s.status === "Tjek manuelt").length; if (chk) parts.push(`${chk} har endnu ingen ankomstdato og bør tjekkes.`);
+  const early = ships.filter(s => s.status === "Tidligere").length; if (early) parts.push(`${early} kommer tidligere end ventet.`);
+  const ch = ships.filter(s => s.changed_since_last).length;
+  parts.push(ch ? `${ch} har fået ny ETA siden sidste kørsel.` : "Ingen ETA'er har flyttet sig siden sidste kørsel.");
+  return parts.join(" ");
+}
+
+const MCP_COPY = {
+  server_not_connected: "Apify er ikke forbundet. Tilføj den i claude.ai under Indstillinger → Connectors.",
+  needs_reauth: "Apify-forbindelsen er udløbet. Forbind den igen i claude.ai under Indstillinger → Connectors.",
+  selection_required: "Vælg hvilken Apify-forbindelse siden skal bruge, og prøv igen.",
+  not_in_manifest: "Apify er ikke tilladt for denne side. Tillad den, når du bliver spurgt, og prøv igen.",
+  blocked_by_policy: "Jeres organisation tillader ikke Apify her.",
+  approval_required: "Apify kræver godkendelse pr. kald, som ikke understøttes her.",
+  server_unavailable: "Apify svarer ikke lige nu. Prøv igen om lidt.",
+};
+const setRun = (t, err) => { $("runStatus").textContent = t; $("runStatus").classList.toggle("err", !!err); };
+const payload = r => { let p = r?.payload; if (typeof p === "string") { try { p = JSON.parse(p); } catch { } } return p || {}; };
+
+async function fetchCarrier(key, bls) {
+  let run = payload(await MCP.callTool("apify", "call-actor", { actor: ACTORS[key], input: { trackingNumbers: bls }, callOptions: { maxTotalChargeUsd: 0.5, timeout: 300 }, waitSecs: 45 }, { cache: false }));
+  for (let i = 0; i < 4 && run.status && run.status !== "SUCCEEDED"; i++) {
+    if (["FAILED", "ABORTED", "TIMED-OUT"].includes(run.status)) throw { code: "tool_error", message: `Apify-kørslen endte som ${run.status}` };
+    run = payload(await MCP.callTool("apify", "get-actor-run", { runId: run.runId || run.id, waitSecs: 30 }, { cache: false }));
+  }
+  const ds = run.storages?.datasets?.default?.id || run.defaultDatasetId;
+  if (!ds) throw { code: "tool_error", message: "Apify returnerede ingen data" };
+  const args = { datasetId: ds, limit: 100 }; if (OMIT[key]) args.omit = OMIT[key];
+  return payload(await MCP.callTool("apify", "get-dataset-items", args, { cache: false })).items || [];
+}
+
+async function runNow() {
+  const btn = $("runBtn"); btn.disabled = true; FLASH.clear();
+  const groups = { CMA: [], MSC: [] };
+  DATA.shipments.forEach(s => { const k = s.carrier === "MSC" ? "MSC" : /^CMA/.test(s.carrier) ? "CMA" : null; if (k) groups[k].push(s.bl); });
+  setRun(`Henter ${groups.CMA.length + groups.MSC.length} BL fra CMA CGM og MSC …`);
+  const t0 = performance.now();
+  const results = await Promise.allSettled(Object.entries(groups).filter(([, b]) => b.length).map(async ([k, b]) => [k, await fetchCarrier(k, b)]));
+  const items = {}, failed = [];
+  results.forEach(r => { if (r.status === "fulfilled") r.value[1].forEach(it => { items[String(it.tracking_number || "").trim().toUpperCase()] = it; }); else failed.push(r.reason); });
+  if (failed.length === results.length) {
+    const e = failed[0] || {};
+    setRun(MCP_COPY[e.code] || (e.code === "tool_error" ? `Apify fejlede: ${e.message || ""}` : "Kunne ikke hente data. Prøv igen om lidt."), true);
+    btn.disabled = false; return;
+  }
+  setRun("Læser rederiernes data …");
+  const today = new Date().toLocaleDateString("sv-SE"), T = DATA.threshold_days || 1;
+  DATA.shipments = DATA.shipments.map(s => {
+    const key = s.carrier === "MSC" ? "MSC" : /^CMA/.test(s.carrier) ? "CMA" : null;
+    const item = items[s.bl.toUpperCase()];
+    if (!key || !item) return s;                       // keep last known data for anything we could not refresh
+    const ex = key === "MSC" ? parseMsc(item) : parseCma(item);
+    if (!ex) return s;
+    const [diff, status] = compareJs(ex, s.current_eta, T);
+    const eta = ex.page_state === "ok" ? ex.eta : null;
+    const changed = !!(s.new_eta && eta && s.new_eta !== eta) || status !== s.status;
+    if (changed) FLASH.add(s.bl);
+    const history = [...(s.history || [])];
+    if (eta && (!history.length || history[history.length - 1].eta !== eta)) history.push({ date: today, eta });
+    return { ...s, new_eta: eta, diff_days: diff, status, changed_since_last: !!(s.new_eta && eta && s.new_eta !== eta),
+      vessel: ex.vessel ?? null, pod: ex.pod ?? s.pod, arrived: !!ex.arrived, note: ex.note,
+      route: ex.route?.length ? ex.route : s.route, position: ex.position || s.position, history };
+  });
+  DATA.counts = DATA.shipments.reduce((c, s) => (c[s.status] = (c[s.status] || 0) + 1, c), {});
+  DATA.summary = summarizeJs(DATA.shipments);
+  DATA.generated_at = new Date().toLocaleString("sv-SE").replace(" ", "T");
+  DATA.run_date = today;
+  for (const fn of [renderHeader, renderTally, renderCallFirst, () => renderMap(window.__land), renderTable]) { try { fn(); } catch (e) { console.error(e); } }
+  highlight(selected);
+  const secs = Math.round((performance.now() - t0) / 1000);
+  const partial = failed.length ? " Et rederi svarede ikke; dets rækker viser seneste kendte data." : "";
+  setRun(`Hentet live på ${secs} sek. ${FLASH.size ? FLASH.size + " forsendelser har ændret sig." : "Ingen ændringer siden sidst."}${partial}`, !!failed.length);
+  btn.disabled = false;
+}
+
+if (window.claude?.use) {
+  window.claude.use("mcp").then(m => { MCP = m; if (m) { $("runBtn").hidden = false; $("runBtn").onclick = runNow; } }).catch(() => { });
+  window.claude.use("sample").then(sm => { SAMPLE = sm; if (sm) { $("aiBtn").hidden = false; $("toneSeg").hidden = false; $("toneWrap").hidden = false; } }).catch(() => { });
+}
 </script>
