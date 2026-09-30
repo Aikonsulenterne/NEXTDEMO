@@ -50,7 +50,12 @@ Den skal ikke være smuk kode eller klar til produktion.
 - [ ] Parserne er testet på rigtige Apify-svar for både CMA og MSC
 - [ ] Generalprøve: en fuld live-kørsel af alle 25 er timet og passer i demo-slottet
 
+## Dashboard
+
+`dashboard/` er ETA-tavlen: en statisk side + `data.json`, publiceret som Claude-artifact og opdateret hver hverdag
+af en planlagt Claude-session. Se `docs/DASHBOARD.md`. `eta_tracker/snapshot.py` bygger `data.json`.
+
 ## Ikke i scope
 
-Webapp/UI, database, brugere, planlagte kørsler, e-mail-notifikationer, flere rederier end CMA og MSC.
+Database, brugere/login, e-mail-notifikationer, flere rederier end CMA og MSC.
 Det står i `docs/ROADMAP.md` som næste skridt. Byg det ikke nu.

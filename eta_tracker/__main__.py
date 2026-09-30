@@ -60,5 +60,23 @@ def reset_sheet() -> None:
     console.print("[green]Kolonne D–J er tømt.[/]")
 
 
+@app.command("snapshot")
+def snapshot_cmd(
+    raw: list[str] = typer.Argument(..., help="Rå Apify-resultater (JSON), fx cma.json msc.json."),
+    out: str = typer.Option("dashboard/data.json", "--out", help="Hvor data.json skrives."),
+    previous: Optional[str] = typer.Option(None, "--previous", help="Gårsdagens data.json (til historik)."),
+    baseline: str = typer.Option("data/seed_bl_list.csv", "--baseline", help="Listen med Current ETA."),
+    summary: Optional[str] = typer.Option(None, "--summary", help="Erstat standard-opsummeringen."),
+) -> None:
+    """Byg dashboardets data.json ud fra rå Apify-data."""
+    from pathlib import Path
+
+    from .snapshot import main as build_snapshot
+
+    doc = build_snapshot([Path(r) for r in raw], Path(baseline), Path(previous) if previous else None,
+                         Path(out), summary)
+    console.print(f"[green]{out}[/] skrevet: {doc['counts']}")
+
+
 if __name__ == "__main__":
     app()

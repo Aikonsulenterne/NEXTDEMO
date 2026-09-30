@@ -1,0 +1,1244 @@
+{
+ "generated_at": "2026-09-30T10:45:37",
+ "run_date": "2026-09-30",
+ "threshold_days": 1,
+ "summary": "Godmorgen. 17 af jeres 25 forsendelser ankommer senere end jeres liste siger, flere af dem 1-2 uger. Listen er sandsynligvis ikke opdateret for nylig. Ring først om COP0307899 til Dakar og COP0308196 til Jakarta (+15 dage hver) og COP0305645 til Monrovia (+13). To CMA-forsendelser har endnu ingen ankomstdato, fordi sidste skib ikke er planlagt: COP0306236 når tidligst omladningen i Colombo 19. oktober, efter jeres ETA til Mombasa. MEDUAEO13818 til Lomé og MEDUKC808954 til Cotonou kommer 1-2 dage før.",
+ "counts": {
+  "Forsinket": 17,
+  "Tidligere": 2,
+  "Uændret": 4,
+  "Tjek manuelt": 2
+ },
+ "runs": [
+  {
+   "date": "2026-09-30",
+   "counts": {
+    "Forsinket": 17,
+    "Tidligere": 2,
+    "Uændret": 4,
+    "Tjek manuelt": 2
+   }
+  }
+ ],
+ "shipments": [
+  {
+   "carrier": "MSC",
+   "bl": "MEDUKC776011",
+   "current_eta": "2026-10-01",
+   "new_eta": "2026-10-03",
+   "diff_days": 2,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "MSC SANDY III",
+   "pod": "MAPUTO, MZ",
+   "arrived": false,
+   "note": "ETA ved MAPUTO, MZ, via COEGA, ZA",
+   "route": [
+    {
+     "code": "KRPUS",
+     "name": "BUSAN",
+     "lat": 35.1,
+     "lon": 129.04,
+     "kind": "POL"
+    },
+    {
+     "code": "ZAZBA",
+     "name": "COEGA",
+     "lat": -33.8,
+     "lon": 25.68,
+     "kind": "PTS"
+    },
+    {
+     "code": "MZMPM",
+     "name": "MAPUTO",
+     "lat": -25.97,
+     "lon": 32.57,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "ZAZBA",
+    "name": "COEGA",
+    "lat": -33.8,
+    "lon": 25.68,
+    "event": "Full Transshipment Positioned In",
+    "date": "2026-09-24"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-03"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUYJ453487",
+   "current_eta": "2026-09-29",
+   "new_eta": "2026-09-30",
+   "diff_days": 1,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": null,
+   "pod": "DAKAR, SN",
+   "arrived": false,
+   "note": "ETA ved DAKAR, SN, via SINGAPORE, SG, ABIDJAN, CI",
+   "route": [
+    {
+     "code": "MYPKG",
+     "name": "PORT KLANG",
+     "lat": 2.95,
+     "lon": 101.31,
+     "kind": "POL"
+    },
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "lat": 1.27,
+     "lon": 103.79,
+     "kind": "PTS"
+    },
+    {
+     "code": "CIABJ",
+     "name": "ABIDJAN",
+     "lat": 5.28,
+     "lon": -4.01,
+     "kind": "PTS"
+    },
+    {
+     "code": "SNDKR",
+     "name": "DAKAR",
+     "lat": 14.71,
+     "lon": -17.46,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "CMKBI",
+    "name": "KRIBI",
+    "lat": 2.95,
+    "lon": 9.92,
+    "event": "Full Transshipment Discharged",
+    "date": "2026-09-13"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-09-30"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUAEO13818",
+   "current_eta": "2026-10-02",
+   "new_eta": "2026-09-30",
+   "diff_days": -2,
+   "status": "Tidligere",
+   "changed_since_last": false,
+   "vessel": "MSC MARIANNA",
+   "pod": "LOME, TG",
+   "arrived": false,
+   "note": "ETA ved LOME, TG",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.89,
+     "lon": 73.06,
+     "kind": "POL"
+    },
+    {
+     "code": "TGLFW",
+     "name": "LOME",
+     "lat": 6.13,
+     "lon": 1.28,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.89,
+    "lon": 73.06,
+    "event": "Export Loaded on Vessel",
+    "date": "2026-08-13"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-09-30"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0305302",
+   "current_eta": "2026-10-03",
+   "new_eta": "2026-10-03",
+   "diff_days": 0,
+   "status": "Uændret",
+   "changed_since_last": false,
+   "vessel": "HYUNDAI BUSAN",
+   "pod": "MOMBASA",
+   "arrived": false,
+   "note": "ETA ved MOMBASA, via COLOMBO",
+   "route": [
+    {
+     "code": "NLRTM",
+     "name": "ROTTERDAM",
+     "lat": 51.981528,
+     "lon": 4.042778,
+     "kind": "POL"
+    },
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "lat": 6.93804,
+     "lon": 79.84372,
+     "kind": "PTS"
+    },
+    {
+     "code": "KEMBA",
+     "name": "MOMBASA",
+     "lat": -2.2719,
+     "lon": 40.902,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "LKCMB",
+    "name": "COLOMBO",
+    "lat": 6.93804,
+    "lon": 79.84372,
+    "event": "Vessel Departure",
+    "date": "2026-09-24"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-03"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0308433",
+   "current_eta": "2026-10-21",
+   "new_eta": "2026-10-23",
+   "diff_days": 2,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "CMA CGM FORT ST GEORGES",
+   "pod": "MOMBASA",
+   "arrived": false,
+   "note": "ETA ved MOMBASA",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.9453,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "KEMBA",
+     "name": "MOMBASA",
+     "lat": -2.2719,
+     "lon": 40.902,
+     "kind": "POD"
+    }
+   ],
+   "position": null,
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-23"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUKC808954",
+   "current_eta": "2026-10-26",
+   "new_eta": "2026-10-25",
+   "diff_days": -1,
+   "status": "Tidligere",
+   "changed_since_last": false,
+   "vessel": "MSC UNITE VI",
+   "pod": "COTONOU, BJ",
+   "arrived": false,
+   "note": "ETA ved COTONOU, BJ, via NINGBO, CN",
+   "route": [
+    {
+     "code": "KRPUS",
+     "name": "BUSAN",
+     "lat": 35.1,
+     "lon": 129.04,
+     "kind": "POL"
+    },
+    {
+     "code": "CNNGB",
+     "name": "NINGBO",
+     "lat": 29.87,
+     "lon": 121.55,
+     "kind": "PTS"
+    },
+    {
+     "code": "BJCOO",
+     "name": "COTONOU",
+     "lat": 6.35,
+     "lon": 2.43,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "CNNGB",
+    "name": "NINGBO",
+    "lat": 29.87,
+    "lon": 121.55,
+    "event": "Full Transshipment Loaded",
+    "date": "2026-09-19"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-25"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0305863",
+   "current_eta": "2026-10-17",
+   "new_eta": "2026-10-17",
+   "diff_days": 0,
+   "status": "Uændret",
+   "changed_since_last": false,
+   "vessel": "CMA CGM SAVANNAH",
+   "pod": "ABIDJAN",
+   "arrived": false,
+   "note": "ETA ved ABIDJAN, via TANGER MED",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.9453,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "lat": 35.89398819,
+     "lon": -5.489715936,
+     "kind": "PTS"
+    },
+    {
+     "code": "CIABJ",
+     "name": "ABIDJAN",
+     "lat": 5.28499,
+     "lon": -4.00837,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "MAPTM",
+    "name": "TANGER MED",
+    "lat": 35.89398819,
+    "lon": -5.489715936,
+    "event": "Discharged in transhipment",
+    "date": "2026-09-26"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUAFO34490",
+   "current_eta": "2026-10-22",
+   "new_eta": "2026-11-01",
+   "diff_days": 10,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "MSC BAHRAIN II",
+   "pod": "DOUALA, CM",
+   "arrived": false,
+   "note": "ETA ved DOUALA, CM, via KRIBI, CM",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.89,
+     "lon": 73.06,
+     "kind": "POL"
+    },
+    {
+     "code": "CMKBI",
+     "name": "KRIBI",
+     "lat": 2.95,
+     "lon": 9.92,
+     "kind": "PTS"
+    },
+    {
+     "code": "CMDLA",
+     "name": "DOUALA",
+     "lat": 4.05,
+     "lon": 9.7,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.89,
+    "lon": 73.06,
+    "event": "Export Loaded on Vessel",
+    "date": "2026-09-09"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-01"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0307369",
+   "current_eta": "2026-10-30",
+   "new_eta": "2026-11-07",
+   "diff_days": 8,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "ANL WYONG",
+   "pod": "DAKAR",
+   "arrived": false,
+   "note": "ETA ved DAKAR, via MALTA(FREEPORT), TANGER MED",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.9453,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "MTMAR",
+     "name": "MALTA",
+     "lat": 35.8177857478,
+     "lon": 14.5309605423,
+     "kind": "PTS"
+    },
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "lat": 35.89398819,
+     "lon": -5.489715936,
+     "kind": "PTS"
+    },
+    {
+     "code": "SNDKR",
+     "name": "DAKAR",
+     "lat": 14.7138,
+     "lon": -17.45685,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.9453,
+    "lon": 72.94,
+    "event": "Vessel Departure",
+    "date": "2026-09-07"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-07"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0307899",
+   "current_eta": "2026-10-22",
+   "new_eta": "2026-11-06",
+   "diff_days": 15,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "LION",
+   "pod": "DAKAR",
+   "arrived": false,
+   "note": "ETA ved DAKAR, via TANGER MED",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.9453,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "lat": 35.89398819,
+     "lon": -5.489715936,
+     "kind": "PTS"
+    },
+    {
+     "code": "SNDKR",
+     "name": "DAKAR",
+     "lat": 14.7138,
+     "lon": -17.45685,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.9453,
+    "lon": 72.94,
+    "event": "Vessel Departure",
+    "date": "2026-09-23"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-06"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0305645",
+   "current_eta": "2026-10-19",
+   "new_eta": "2026-11-01",
+   "diff_days": 13,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "CMA CGM MALTA",
+   "pod": "MONROVIA",
+   "arrived": false,
+   "note": "ETA ved MONROVIA, via ALGECIRAS, SINGAPORE",
+   "route": [
+    {
+     "code": "CNSHK",
+     "name": "SHEKOU",
+     "lat": 22.4625,
+     "lon": 113.879166667,
+     "kind": "POL"
+    },
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "lat": 1.27408,
+     "lon": 103.79237,
+     "kind": "PTS"
+    },
+    {
+     "code": "ESALG",
+     "name": "ALGECIRAS",
+     "lat": 36.10401,
+     "lon": -5.44588,
+     "kind": "PTS"
+    },
+    {
+     "code": "LRMLW",
+     "name": "MONROVIA",
+     "lat": 6.31,
+     "lon": -10.8,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "SGSIN",
+    "name": "SINGAPORE",
+    "lat": 1.27408,
+    "lon": 103.79237,
+    "event": "Vessel Departure",
+    "date": "2026-09-07"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-01"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUAAM80238",
+   "current_eta": "2026-10-10",
+   "new_eta": "2026-10-10",
+   "diff_days": 0,
+   "status": "Uændret",
+   "changed_since_last": false,
+   "vessel": "MSC BEATRICE",
+   "pod": "TEMA, GH",
+   "arrived": false,
+   "note": "ETA ved TEMA, GH",
+   "route": [
+    {
+     "code": "CNSHK",
+     "name": "SHEKOU",
+     "lat": 22.46,
+     "lon": 113.88,
+     "kind": "POL"
+    },
+    {
+     "code": "GHTEM",
+     "name": "TEMA",
+     "lat": 5.61,
+     "lon": -0.02,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "CNSHK",
+    "name": "SHEKOU",
+    "lat": 22.46,
+    "lon": 113.88,
+    "event": "Export Loaded on Vessel",
+    "date": "2026-09-08"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-10"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "CGK0409397",
+   "current_eta": "2026-09-28",
+   "new_eta": "2026-09-28",
+   "diff_days": 0,
+   "status": "Uændret",
+   "changed_since_last": false,
+   "vessel": "ZHONG GU GUI YANG",
+   "pod": "JAKARTA",
+   "arrived": true,
+   "note": "Ankommet",
+   "route": [
+    {
+     "code": "HKHKG",
+     "name": "HONG KONG",
+     "lat": 22.338,
+     "lon": 114.128,
+     "kind": "POL"
+    },
+    {
+     "code": "IDJKT",
+     "name": "JAKARTA",
+     "lat": -6.13067,
+     "lon": 106.82083,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "IDJKT",
+    "name": "JAKARTA",
+    "lat": -6.113321,
+    "lon": 106.945059,
+    "event": "Container Empty Returned",
+    "date": "2026-09-29"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-09-28"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0306944",
+   "current_eta": "2026-10-29",
+   "new_eta": "2026-11-07",
+   "diff_days": 9,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "CMA CGM AMBER",
+   "pod": "ABIDJAN",
+   "arrived": false,
+   "note": "ETA ved ABIDJAN, via MALTA(FREEPORT), TANGER MED",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.9453,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "MTMAR",
+     "name": "MALTA",
+     "lat": 35.8177857478,
+     "lon": 14.5309605423,
+     "kind": "PTS"
+    },
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "lat": 35.89398819,
+     "lon": -5.489715936,
+     "kind": "PTS"
+    },
+    {
+     "code": "CIABJ",
+     "name": "ABIDJAN",
+     "lat": 5.28499,
+     "lon": -4.00837,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.9453,
+    "lon": 72.94,
+    "event": "Vessel Departure",
+    "date": "2026-08-22"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-07"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0308382",
+   "current_eta": "2026-11-27",
+   "new_eta": "2026-12-05",
+   "diff_days": 8,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "HYUNDAI BUSAN",
+   "pod": "MOMBASA",
+   "arrived": false,
+   "note": "ETA ved MOMBASA, via COLOMBO",
+   "route": [
+    {
+     "code": "NLRTM",
+     "name": "ROTTERDAM",
+     "lat": 51.981528,
+     "lon": 4.042778,
+     "kind": "POL"
+    },
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "lat": 6.93804,
+     "lon": 79.84372,
+     "kind": "PTS"
+    },
+    {
+     "code": "KEMBA",
+     "name": "MOMBASA",
+     "lat": -2.2719,
+     "lon": 40.902,
+     "kind": "POD"
+    }
+   ],
+   "position": null,
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-12-05"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0307065",
+   "current_eta": "2026-11-12",
+   "new_eta": "2026-11-19",
+   "diff_days": 7,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "CMA CGM FORT ST PIERRE",
+   "pod": "MONROVIA",
+   "arrived": false,
+   "note": "ETA ved MONROVIA, via MUNDRA, TANGER MED",
+   "route": [
+    {
+     "code": "ZACPT",
+     "name": "CAPE TOWN",
+     "lat": -33.92,
+     "lon": 18.42,
+     "kind": "POL"
+    },
+    {
+     "code": "INMUN",
+     "name": "MUNDRA",
+     "lat": 22.748083,
+     "lon": 69.565444,
+     "kind": "PTS"
+    },
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "lat": 35.89398819,
+     "lon": -5.489715936,
+     "kind": "PTS"
+    },
+    {
+     "code": "LRMLW",
+     "name": "MONROVIA",
+     "lat": 6.31,
+     "lon": -10.8,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INMUN",
+    "name": "MUNDRA",
+    "lat": 22.748083,
+    "lon": 69.565444,
+    "event": "Vessel Departure",
+    "date": "2026-09-26"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-19"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0305959",
+   "current_eta": "2026-10-04",
+   "new_eta": "2026-10-05",
+   "diff_days": 1,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "HANOVER EXPRESS",
+   "pod": "WALVIS BAY",
+   "arrived": false,
+   "note": "ETA ved WALVIS BAY, via POINTE NOIRE",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.945278,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "CGPNR",
+     "name": "POINTE NOIRE",
+     "lat": -4.79,
+     "lon": 11.85,
+     "kind": "PTS"
+    },
+    {
+     "code": "NAWVB",
+     "name": "WALVIS BAY",
+     "lat": -22.95,
+     "lon": 14.4855,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "CGPNR",
+    "name": "POINTE NOIRE",
+    "lat": -4.79,
+    "lon": 11.85,
+    "event": "Vessel Departure",
+    "date": "2026-09-18"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-05"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0306236",
+   "current_eta": "2026-10-14",
+   "new_eta": null,
+   "diff_days": null,
+   "status": "Tjek manuelt",
+   "changed_since_last": false,
+   "vessel": null,
+   "pod": "MOMBASA",
+   "arrived": false,
+   "note": "CMA CGM har endnu ingen dato for ankomst til MOMBASA (videre skib ikke planlagt). Når først omladning i COLOMBO 19-10-2026",
+   "route": [
+    {
+     "code": "NLRTM",
+     "name": "ROTTERDAM",
+     "lat": 51.981528,
+     "lon": 4.042778,
+     "kind": "POL"
+    },
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "lat": 6.93804,
+     "lon": 79.84372,
+     "kind": "PTS"
+    },
+    {
+     "code": "KEMBA",
+     "name": "MOMBASA",
+     "lat": -4.05,
+     "lon": 39.6666667,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "NLRTM",
+    "name": "ROTTERDAM",
+    "lat": 51.981528,
+    "lon": 4.042778,
+    "event": "Vessel Departure",
+    "date": "2026-09-09"
+   },
+   "history": []
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0308369",
+   "current_eta": "2026-10-28",
+   "new_eta": "2026-11-04",
+   "diff_days": 7,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "MAERSK HONG KONG",
+   "pod": "TEMA",
+   "arrived": false,
+   "note": "ETA ved TEMA, via NANSHA",
+   "route": [
+    {
+     "code": "THLCH",
+     "name": "LAEM CHABANG",
+     "lat": 13.056231,
+     "lon": 100.891261,
+     "kind": "POL"
+    },
+    {
+     "code": "CNNSA",
+     "name": "NANSHA",
+     "lat": 22.6362221,
+     "lon": 113.6910782,
+     "kind": "PTS"
+    },
+    {
+     "code": "GHTEM",
+     "name": "TEMA",
+     "lat": 5.6137138889,
+     "lon": -0.0176222222,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "THLCH",
+    "name": "LAEM CHABANG",
+    "lat": 13.056231,
+    "lon": 100.891261,
+    "event": "Gate in at Port terminal",
+    "date": "2026-09-29"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-11-04"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUABK49475",
+   "current_eta": "2026-10-09",
+   "new_eta": "2026-10-12",
+   "diff_days": 3,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "MSC GENERAL IV",
+   "pod": "MOMBASA, KE",
+   "arrived": false,
+   "note": "ETA ved MOMBASA, KE, via SINGAPORE, SG",
+   "route": [
+    {
+     "code": "CNSHA",
+     "name": "SHANGHAI",
+     "lat": 31.23,
+     "lon": 121.47,
+     "kind": "POL"
+    },
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "lat": 1.27,
+     "lon": 103.79,
+     "kind": "PTS"
+    },
+    {
+     "code": "KEMBA",
+     "name": "MOMBASA",
+     "lat": -4.05,
+     "lon": 39.67,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "SGSIN",
+    "name": "SINGAPORE",
+    "lat": 1.27,
+    "lon": 103.79,
+    "event": "Full Transshipment Loaded",
+    "date": "2026-09-27"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-12"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0307708",
+   "current_eta": "2026-10-21",
+   "new_eta": "2026-10-22",
+   "diff_days": 1,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "CMA CGM LONGONI",
+   "pod": "BEIRA",
+   "arrived": false,
+   "note": "ETA ved BEIRA, via COLOMBO",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.9453,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "lat": 6.93804,
+     "lon": 79.84372,
+     "kind": "PTS"
+    },
+    {
+     "code": "MZBEW",
+     "name": "BEIRA",
+     "lat": -19.8221,
+     "lon": 34.8355,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "LKCMB",
+    "name": "COLOMBO",
+    "lat": 6.93804,
+    "lon": 79.84372,
+    "event": "Vessel Departure",
+    "date": "2026-09-28"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-22"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0308196",
+   "current_eta": "2026-10-09",
+   "new_eta": "2026-10-24",
+   "diff_days": 15,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "ZHONG GU GUI YANG",
+   "pod": "JAKARTA",
+   "arrived": false,
+   "note": "ETA ved JAKARTA",
+   "route": [
+    {
+     "code": "CNSHK",
+     "name": "SHEKOU",
+     "lat": 22.460277778,
+     "lon": 113.877777778,
+     "kind": "POL"
+    },
+    {
+     "code": "IDJKT",
+     "name": "JAKARTA",
+     "lat": -6.13067,
+     "lon": 106.82083,
+     "kind": "POD"
+    }
+   ],
+   "position": null,
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-24"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0308525",
+   "current_eta": "2026-10-26",
+   "new_eta": "2026-10-27",
+   "diff_days": 1,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "ISEACO FORTUNE",
+   "pod": "YANGON",
+   "arrived": false,
+   "note": "ETA ved YANGON, via PORT KLANG",
+   "route": [
+    {
+     "code": "CNXAM",
+     "name": "XIAMEN",
+     "lat": 24.52,
+     "lon": 118.08,
+     "kind": "POL"
+    },
+    {
+     "code": "MYPKG",
+     "name": "PORT KLANG",
+     "lat": 2.94802,
+     "lon": 101.30792,
+     "kind": "PTS"
+    },
+    {
+     "code": "MMRGN",
+     "name": "YANGON",
+     "lat": 16.661,
+     "lon": 96.257,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "CNXAM",
+    "name": "XIAMEN",
+    "lat": 24.52,
+    "lon": 118.08,
+    "event": "Gate in at Port terminal",
+    "date": "2026-09-29"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-27"
+    }
+   ]
+  },
+  {
+   "carrier": "MSC",
+   "bl": "MEDUAAO53495",
+   "current_eta": "2026-10-12",
+   "new_eta": "2026-10-22",
+   "diff_days": 10,
+   "status": "Forsinket",
+   "changed_since_last": false,
+   "vessel": "MSC KATYAYNI VI",
+   "pod": "COTONOU, BJ",
+   "arrived": false,
+   "note": "ETA ved COTONOU, BJ, via SINGAPORE, SG",
+   "route": [
+    {
+     "code": "CNSHK",
+     "name": "SHEKOU",
+     "lat": 22.46,
+     "lon": 113.88,
+     "kind": "POL"
+    },
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "lat": 1.27,
+     "lon": 103.79,
+     "kind": "PTS"
+    },
+    {
+     "code": "BJCOO",
+     "name": "COTONOU",
+     "lat": 6.35,
+     "lon": 2.43,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "SGSIN",
+    "name": "SINGAPORE",
+    "lat": 1.27,
+    "lon": 103.79,
+    "event": "Full Transshipment Loaded",
+    "date": "2026-09-11"
+   },
+   "history": [
+    {
+     "date": "2026-09-30",
+     "eta": "2026-10-22"
+    }
+   ]
+  },
+  {
+   "carrier": "CMA CGM",
+   "bl": "COP0306231",
+   "current_eta": "2026-11-10",
+   "new_eta": null,
+   "diff_days": null,
+   "status": "Tjek manuelt",
+   "changed_since_last": false,
+   "vessel": null,
+   "pod": "KRIBI",
+   "arrived": false,
+   "note": "CMA CGM har endnu ingen dato for ankomst til KRIBI (videre skib ikke planlagt). Når først omladning i POINTE NOIRE 26-10-2026",
+   "route": [
+    {
+     "code": "INNSA",
+     "name": "NHAVA SHEVA",
+     "lat": 18.945278,
+     "lon": 72.94,
+     "kind": "POL"
+    },
+    {
+     "code": "CGPNR",
+     "name": "POINTE NOIRE",
+     "lat": -4.79,
+     "lon": 11.85,
+     "kind": "PTS"
+    },
+    {
+     "code": "CMKBI",
+     "name": "KRIBI",
+     "lat": 2.95,
+     "lon": 9.9166667,
+     "kind": "POD"
+    }
+   ],
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.945278,
+    "lon": 72.94,
+    "event": "Received for export transfer",
+    "date": "2026-09-16"
+   },
+   "history": []
+  }
+ ]
+}

@@ -1,0 +1,374 @@
+<title>ETA-tavlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a harbour-master's board. Briefing + counts on top, the sea (map) in the middle, the manifest (table) below. */
+:root {
+  --bg: #eef2f4;          /* chart paper */
+  --panel: #ffffff;
+  --ink: #0f2233;         /* navy ink */
+  --muted: #5b6b78;
+  --line: #d5dde3;
+  --land: #d9e1e6;
+  --sea: #eef2f4;
+  --accent: #1f5f8b;      /* harbour blue */
+  --late: #c0392b;        /* signal red */
+  --late-bg: #f6dcd8;
+  --early: #1e7a55;
+  --early-bg: #d8efe4;
+  --check: #a86a00;
+  --check-bg: #f7e8c8;
+  --same: #5b6b78;
+  --same-bg: #e3e8ec;
+  --display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1824; --panel: #10212f; --ink: #e6eef4; --muted: #93a6b5; --line: #203547;
+  --land: #1b3042; --sea: #0b1824; --accent: #6fb3e0;
+  --late: #ff7a68; --late-bg: #4a1f1b; --early: #5fd39c; --early-bg: #143a2b;
+  --check: #f2b544; --check-bg: #3d2e10; --same: #93a6b5; --same-bg: #1c2d3b; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0b1824; --panel: #10212f; --ink: #e6eef4; --muted: #93a6b5; --line: #203547;
+  --land: #1b3042; --sea: #0b1824; --accent: #6fb3e0;
+  --late: #ff7a68; --late-bg: #4a1f1b; --early: #5fd39c; --early-bg: #143a2b;
+  --check: #f2b544; --check-bg: #3d2e10; --same: #93a6b5; --same-bg: #1c2d3b; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; padding-block: 20px 48px; display: grid; gap: 20px; }
+.mono, td.num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; }
+.brand { font: 800 34px/1 var(--display); letter-spacing: .02em; text-transform: uppercase; }
+.brand span { color: var(--accent); }
+.stamp { font: 500 13px/1.4 var(--mono); color: var(--muted); text-align: right; }
+.stamp b { color: var(--ink); font-weight: 500; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; min-width: 0; }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.brief { font-size: 19px; line-height: 1.5; margin: 0; text-wrap: pretty; max-width: 62ch; }
+.how { margin: 14px 0 0; color: var(--muted); font-size: 13px; max-width: 62ch; }
+
+.tally { display: grid; gap: 14px; }
+.bigrow { display: flex; align-items: baseline; gap: 12px; }
+.big { font: 800 64px/0.9 var(--display); color: var(--late); font-variant-numeric: tabular-nums; }
+.big-label { font-size: 15px; color: var(--muted); }
+.big-label b { color: var(--ink); font-weight: 600; }
+.bar { display: flex; height: 14px; border-radius: 3px; overflow: hidden; background: var(--same-bg); }
+.bar > div { height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.legend button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 2px 0; border-bottom: 2px solid transparent; }
+.legend button[aria-pressed="true"] { border-bottom-color: var(--ink); font-weight: 600; }
+.legend button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+h2 { font: 800 22px/1 var(--display); text-transform: uppercase; letter-spacing: .03em; margin: 0 0 12px; text-wrap: balance; }
+.callfirst { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .callfirst { grid-template-columns: 1fr; } }
+.card { border: 1px solid var(--line); border-left: 6px solid var(--late); border-radius: 4px; padding: 12px 14px; background: var(--panel); display: grid; gap: 4px; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.card:hover, .card:focus-visible { border-color: var(--late); outline: none; }
+.card .days { font: 800 36px/1 var(--display); color: var(--late); }
+.card .bl { font: 500 14px var(--mono); }
+.card .meta { font-size: 13px; color: var(--muted); }
+
+.mapbox { position: relative; }
+#map { width: 100%; height: auto; display: block; background: var(--sea); border-radius: 4px; }
+.maplegend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.maplegend svg { vertical-align: middle; margin-right: 4px; }
+.land { fill: var(--land); }
+.route { fill: none; stroke-width: 1.6; stroke-linecap: round; opacity: .75; transition: opacity .2s, stroke-width .2s; }
+.route.todo { stroke-dasharray: 3 4; opacity: .55; }
+.dim .route, .dim .ship, .dim .pod { opacity: .08; }
+.dim .hl { opacity: 1 !important; stroke-width: 3; }
+.ship { stroke: var(--panel); stroke-width: 1.5; }
+.pod { fill: none; stroke-width: 1.5; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 12px; padding: 6px 8px; border-radius: 4px; max-width: 260px; }
+@keyframes pulse { 0% { r: 4; opacity: .9 } 100% { r: 13; opacity: 0 } }
+.pulse { fill: none; stroke-width: 1.5; animation: pulse 2.2s ease-out infinite; }
+@keyframes draw { from { stroke-dashoffset: var(--len) } to { stroke-dashoffset: 0 } }
+
+.tablehead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font: 600 11px/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-bottom: 2px solid var(--ink); white-space: nowrap; cursor: pointer; user-select: none; }
+th[aria-sort="ascending"]::after { content: " ▲"; } th[aria-sort="descending"]::after { content: " ▼"; }
+td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tbody tr.row { cursor: pointer; }
+tbody tr.row:hover, tbody tr.row.sel { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+tbody tr.row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+td.num { text-align: right; white-space: nowrap; }
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pill::before { font-family: var(--mono); }
+.s-late { background: var(--late-bg); color: var(--late); } .s-late::before { content: "▲"; }
+.s-early { background: var(--early-bg); color: var(--early); } .s-early::before { content: "▼"; }
+.s-same { background: var(--same-bg); color: var(--same); } .s-same::before { content: "="; }
+.s-check { background: var(--check-bg); color: var(--check); } .s-check::before { content: "?"; }
+.diff.late { color: var(--late); font-weight: 600; } .diff.early { color: var(--early); font-weight: 600; }
+.small { font-size: 12px; color: var(--muted); }
+tr.detail td { background: color-mix(in srgb, var(--accent) 5%, var(--panel)); padding: 14px 16px; }
+.legs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font: 500 13px var(--mono); }
+.legs .stop { padding: 3px 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); }
+.legs .stop.here { border-color: var(--accent); color: var(--accent); }
+.legs .arrow { color: var(--muted); }
+.note { margin: 10px 0 0; font-size: 13px; }
+
+footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 4px; }
+.empty { padding: 40px 0; text-align: center; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .pulse { animation: none; opacity: 0; } .route { animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">ETA<span>-</span>tavlen</div>
+    <div class="stamp" id="stamp">Henter dagens data …</div>
+  </header>
+
+  <section class="hero">
+    <div class="panel">
+      <p class="eyebrow">Morgenrapport</p>
+      <p class="brief" id="brief">Dagens opsummering vises her, når data er hentet.</p>
+      <p class="how">Hver hverdag morgen henter vi CMA CGM's og MSC's egne tracking-data for alle forsendelser, finder ETA ved losningshavnen og sammenligner med jeres liste.</p>
+    </div>
+    <div class="panel tally">
+      <p class="eyebrow" style="margin:0">Status</p>
+      <div class="bigrow"><div class="big num" id="lateCount">–</div><div class="big-label" id="lateLabel">forsinket</div></div>
+      <div class="bar" id="bar" role="img" aria-label="Fordeling af status"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ring først om disse</h2>
+    <div class="callfirst" id="callfirst"></div>
+  </section>
+
+  <section class="panel mapbox">
+    <p class="eyebrow">Hvor er varerne nu</p>
+    <svg id="map" viewBox="0 0 1000 470" role="img" aria-label="Kort over ruter og skibenes seneste position"></svg>
+    <div class="tip" id="tip" hidden></div>
+    <div class="maplegend">
+      <span><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="currentColor" stroke-width="2"/></svg>sejlet</span>
+      <span><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="currentColor" stroke-width="2" stroke-dasharray="3 4"/></svg>mangler</span>
+      <span><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="currentColor"/></svg>seneste position</span>
+      <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>losningshavn</span>
+      <span>Farve = status. Klik en rute eller række for at fremhæve den.</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="tablehead">
+      <h2>Alle forsendelser</h2>
+      <span class="small" id="shown"></span>
+    </div>
+    <div class="tablewrap">
+      <table id="tbl">
+        <thead><tr>
+          <th data-k="carrier">Rederi</th><th data-k="bl">BL</th><th data-k="pod">Destination</th>
+          <th data-k="current_eta">Jeres ETA</th><th data-k="new_eta">Ny ETA</th>
+          <th data-k="diff_days" style="text-align:right">Forskel</th><th data-k="status">Status</th><th data-k="position">Sidst set</th>
+        </tr></thead>
+        <tbody id="rows"><tr><td colspan="8" class="empty">Henter dagens data …</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span id="source">Kilde: CMA CGM's og MSC's tracking-data, hentet via Apify. "Jeres ETA" er fra listen Active BL List.</span>
+    <span>ETA er rederiets forventede ankomst til losningshavnen (POD), i havnens lokale dato.</span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const STATUS = {
+  "Forsinket":        { cls: "s-late",  color: "--late",  order: 0 },
+  "Tjek manuelt":     { cls: "s-check", color: "--check", order: 1 },
+  "Tidligere":        { cls: "s-early", color: "--early", order: 2 },
+  "Uændret":          { cls: "s-same",  color: "--same",  order: 3 },
+  "Ikke fundet":      { cls: "s-same",  color: "--same",  order: 4 },
+  "Ikke understøttet":{ cls: "s-same",  color: "--same",  order: 5 },
+};
+const st = s => STATUS[s] || STATUS["Uændret"];
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const col = s => css(st(s).color);
+const fmt = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("da-DK", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\./g, "-") : "–";
+const fmtShort = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("da-DK", { day: "numeric", month: "short" }) : "–";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+let DATA = null, filter = null, selected = null, sortKey = "status", sortDir = 1;
+const mapState = {};
+
+async function load() {
+  try {
+    const [data, land] = await Promise.all([
+      fetch("data.json", { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch("land-110m.json").then(r => r.json()).catch(() => null),
+    ]);
+    DATA = data; window.__land = land;
+  } catch (e) {
+    document.getElementById("stamp").textContent = "Kunne ikke hente data";
+    document.getElementById("rows").innerHTML = '<tr><td colspan="8" class="empty">Dagens data kunne ikke hentes. Prøv at genindlæse siden.</td></tr>';
+    return;
+  }
+  // Each section renders on its own, so one failing part never blanks the page.
+  for (const fn of [renderHeader, renderTally, renderCallFirst, () => renderMap(window.__land), renderTable]) {
+    try { fn(); } catch (e) { console.error(e); }
+  }
+}
+
+function renderHeader() {
+  const d = new Date(DATA.run_date + "T12:00:00");
+  const day = d.toLocaleDateString("da-DK", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const t = DATA.generated_at ? DATA.generated_at.slice(11, 16) : "";
+  document.getElementById("stamp").innerHTML = `<b>${esc(day)}</b><br>Opdateret kl. ${esc(t)} · næste opdatering næste hverdag`;
+  document.getElementById("brief").textContent = DATA.summary;
+}
+
+function renderTally() {
+  const c = DATA.counts, total = DATA.shipments.length;
+  document.getElementById("lateCount").textContent = c["Forsinket"] || 0;
+  const days = DATA.shipments.filter(s => s.status === "Forsinket").reduce((a, s) => a + (s.diff_days || 0), 0);
+  document.getElementById("lateLabel").innerHTML = `af <b>${total}</b> forsendelser forsinket<br><b>${days}</b> forsinkelsesdage i alt`;
+  const order = Object.keys(STATUS).filter(k => c[k]);
+  document.getElementById("bar").innerHTML = order.map(k =>
+    `<div style="width:${100 * c[k] / total}%;background:${col(k)}" title="${esc(k)}: ${c[k]}"></div>`).join("");
+  const legend = document.getElementById("legend");
+  legend.innerHTML = `<button aria-pressed="${filter === null}" data-f="">Alle ${total}</button>` + order.map(k =>
+    `<button aria-pressed="${filter === k}" data-f="${esc(k)}"><span class="sw" style="background:${col(k)}"></span>${esc(k)} <span class="num">${c[k]}</span></button>`).join("");
+  legend.querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.f || null; renderTally(); renderTable(); highlight(selected); });
+}
+
+function renderCallFirst() {
+  const late = DATA.shipments.filter(s => s.status === "Forsinket").sort((a, b) => b.diff_days - a.diff_days).slice(0, 3);
+  const box = document.getElementById("callfirst");
+  box.innerHTML = late.length ? late.map(s => `
+    <button class="card" data-bl="${esc(s.bl)}">
+      <span class="days">+${s.diff_days} dage</span>
+      <span class="bl">${esc(s.bl)} · ${esc(s.carrier)}</span>
+      <span class="meta">Til ${esc(s.pod)} · nu ${fmtShort(s.new_eta)}, jeres liste siger ${fmtShort(s.current_eta)}</span>
+      <span class="meta">${esc(s.vessel || "")}</span>
+    </button>`).join("") : '<p class="small">Ingen forsinkede forsendelser i dag.</p>';
+  box.querySelectorAll(".card").forEach(b => b.onclick = () => select(b.dataset.bl, true));
+}
+
+function renderMap(land) {
+  if (!window.d3) return;
+  const svg = d3.select("#map"), W = 1000, H = 470;
+  const pts = DATA.shipments.flatMap(s => [...s.route, s.position].filter(p => p && p.lat != null).map(p => [p.lon, p.lat]));
+  const proj = d3.geoNaturalEarth1().fitExtent([[30, 20], [W - 30, H - 20]], { type: "MultiPoint", coordinates: pts });
+  const path = d3.geoPath(proj);
+  svg.selectAll("*").remove();
+  if (land && window.topojson) {
+    svg.append("path").attr("class", "land").attr("d", path(topojson.feature(land, land.objects.land)));
+  }
+  const g = svg.append("g").attr("id", "routes");
+  mapState.g = g;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ordered = [...DATA.shipments].sort((a, b) => st(b.status).order - st(a.status).order);
+  ordered.forEach((s, i) => {
+    const stops = s.route.filter(p => p.lat != null);
+    if (stops.length < 2) return;
+    const color = col(s.status);
+    const at = s.position ? stops.findIndex(p => p.code && p.code === s.position.code) : -1;
+    const segs = at > 0 ? [[stops.slice(0, at + 1), "done"], [stops.slice(at), "todo"]] : [[stops, "todo"]];
+    segs.forEach(([pts, kind]) => {
+      if (pts.length < 2) return;
+      const p = g.append("path").datum(s).attr("class", `route ${kind === "todo" ? "todo" : ""}`)
+        .attr("data-bl", s.bl).attr("stroke", color)
+        .attr("d", path({ type: "LineString", coordinates: pts.map(q => [q.lon, q.lat]) }));
+      if (!reduce && kind === "done") {
+        const len = p.node().getTotalLength();
+        p.attr("stroke-dasharray", len).style("--len", len).style("animation", `draw 1.4s ${0.03 * i}s ease-out both`);
+      }
+    });
+    const pod = stops[stops.length - 1];
+    const [px, py] = proj([pod.lon, pod.lat]);
+    g.append("circle").datum(s).attr("class", "pod").attr("data-bl", s.bl).attr("cx", px).attr("cy", py).attr("r", 5).attr("stroke", color);
+  });
+  ordered.forEach(s => {
+    const p = s.position; if (!p || p.lat == null) return;
+    const [x, y] = proj([p.lon, p.lat]); const color = col(s.status);
+    if (s.status === "Forsinket") g.append("circle").attr("class", "pulse").attr("data-bl", s.bl).attr("cx", x).attr("cy", y).attr("r", 4).attr("stroke", color);
+    g.append("circle").datum(s).attr("class", "ship").attr("data-bl", s.bl).attr("cx", x).attr("cy", y).attr("r", 4.5).attr("fill", color);
+  });
+  const tip = document.getElementById("tip"), box = document.querySelector(".mapbox");
+  g.selectAll(".route, .ship, .pod")
+    .on("mousemove", (ev, s) => {
+      const r = box.getBoundingClientRect();
+      tip.hidden = false;
+      tip.innerHTML = `<b>${esc(s.bl)}</b> · ${esc(s.status)}${s.diff_days ? ` (${s.diff_days > 0 ? "+" : ""}${s.diff_days} dage)` : ""}<br>${esc(s.route.map(p => p.name).join(" → "))}` +
+        (s.position ? `<br>Sidst set: ${esc(s.position.name)} ${fmtShort(s.position.date)}` : "");
+      tip.style.left = Math.min(ev.clientX - r.left + 12, r.width - 270) + "px";
+      tip.style.top = (ev.clientY - r.top + 12) + "px";
+    })
+    .on("mouseleave", () => tip.hidden = true)
+    .on("click", (ev, s) => select(s.bl, true));
+}
+
+function highlight(bl) {
+  const g = document.getElementById("routes"); if (!g) return;
+  g.querySelectorAll(".hl").forEach(n => n.classList.remove("hl"));
+  const dim = bl || filter;
+  g.classList.toggle("dim", !!dim);
+  if (bl) g.querySelectorAll(`[data-bl="${CSS.escape(bl)}"]`).forEach(n => n.classList.add("hl"));
+  else if (filter) DATA.shipments.filter(s => s.status === filter).forEach(s => g.querySelectorAll(`[data-bl="${CSS.escape(s.bl)}"]`).forEach(n => n.classList.add("hl")));
+}
+
+function select(bl, scroll) {
+  selected = selected === bl ? null : bl;
+  if (selected && filter && DATA.shipments.find(s => s.bl === selected)?.status !== filter) filter = null;
+  renderTally(); renderTable(); highlight(selected);
+  if (selected && scroll) document.querySelector(`tr.row[data-bl="${CSS.escape(selected)}"]`)?.scrollIntoView({ block: "center", behavior: "smooth" });
+}
+
+function value(s, k) {
+  if (k === "status") return st(s.status).order * 1000 - (s.diff_days || 0);
+  if (k === "position") return s.position?.name || "";
+  return s[k] ?? "";
+}
+
+function renderTable() {
+  const rows = DATA.shipments.filter(s => !filter || s.status === filter)
+    .sort((a, b) => { const x = value(a, sortKey), y = value(b, sortKey); return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+  document.getElementById("shown").textContent = filter ? `${rows.length} af ${DATA.shipments.length} vist · ${filter}` : `${rows.length} forsendelser`;
+  document.querySelectorAll("#tbl th").forEach(th => th.setAttribute("aria-sort", th.dataset.k === sortKey ? (sortDir > 0 ? "ascending" : "descending") : "none"));
+  document.getElementById("rows").innerHTML = rows.map(s => {
+    const cls = st(s.status).cls;
+    const d = s.diff_days;
+    const diff = d == null ? "–" : `<span class="diff ${d > 0 ? "late" : d < 0 ? "early" : ""}">${d > 0 ? "+" : ""}${d}</span>`;
+    const pos = s.arrived ? "Ankommet" : s.position ? `${esc(s.position.name)} <span class="small">${fmtShort(s.position.date)}</span>` : "–";
+    let html = `<tr class="row ${selected === s.bl ? "sel" : ""}" data-bl="${esc(s.bl)}" tabindex="0">
+      <td>${esc(s.carrier)}</td><td class="mono">${esc(s.bl)}</td><td>${esc(s.pod || "–")}</td>
+      <td class="num">${fmt(s.current_eta)}</td><td class="num">${fmt(s.new_eta)}</td><td class="num">${diff}</td>
+      <td><span class="pill ${cls}">${esc(s.status)}</span></td><td>${pos}</td></tr>`;
+    if (selected === s.bl) {
+      const here = s.position?.code;
+      const legs = s.route.map(p => `<span class="stop ${p.code && p.code === here ? "here" : ""}">${esc(p.name)}${p.kind === "PTS" ? " (omladning)" : ""}</span>`).join('<span class="arrow">→</span>');
+      const hist = s.history.length > 1 ? `ETA-historik: ${s.history.map(h => `${fmtShort(h.date)}: ${fmtShort(h.eta)}`).join(" · ")}` : "ETA-historik bygges op fra i dag, én måling pr. hverdag.";
+      html += `<tr class="detail"><td colspan="8">
+        <div class="legs">${legs || "Ingen rute i data"}</div>
+        <p class="note">${esc(s.note)}${s.vessel ? ` · Skib: ${esc(s.vessel)}` : ""}${s.position ? ` · Seneste hændelse: ${esc(s.position.event)} i ${esc(s.position.name)} ${fmt(s.position.date)}` : ""}</p>
+        <p class="note small">${hist}</p></td></tr>`;
+    }
+    return html;
+  }).join("") || '<tr><td colspan="8" class="empty">Ingen forsendelser med denne status.</td></tr>';
+  document.querySelectorAll("tr.row").forEach(tr => {
+    tr.onclick = () => select(tr.dataset.bl, false);
+    tr.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(tr.dataset.bl, false); } };
+  });
+}
+
+document.querySelectorAll("#tbl th").forEach(th => th.onclick = () => {
+  if (sortKey === th.dataset.k) sortDir = -sortDir; else { sortKey = th.dataset.k; sortDir = th.dataset.k === "diff_days" ? -1 : 1; }
+  if (DATA) renderTable();
+});
+const repaint = () => { if (DATA) { renderTally(); renderCallFirst(); renderMap(window.__land); renderTable(); highlight(selected); } };
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", repaint);
+new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+load();
+</script>
