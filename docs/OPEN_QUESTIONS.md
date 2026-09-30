@@ -12,7 +12,7 @@ Afklares med kusinen før fase 1. Default-svaret bruges, hvis vi ikke hører and
 | 6 | Andre rederier i brug end CMA og MSC? | Kun CMA + MSC i POC |
 | 7 | Skal demoen køre fra din laptop eller fra kundens egne skærme? | Din laptop |
 | 8 | Hvornår er oplægget? | Ukendt, sæt dato på |
-| 9 | Er det ok, at tekst og screenshots fra tracking-siderne (kan indeholde afsender/modtager) sendes til Anthropic (Claude) og gemmes lokalt i `runs/`? | Ja til POC; `runs/` slettes efter demoen |
+| 9 | Er det ok, at BL-numrene sendes til Apify (tredjepart), og at tracking-data evt. sendes til Anthropic (Claude) og gemmes lokalt i `runs/`? | Ja til POC; `runs/` slettes efter demoen |
 | 10 | Står BL-numrene `MEDUAEO13818`, `MEDUAFO34490` og `MEDUAAO53495` med bogstavet **O** i kundens system, eller er det et **0**? | Tjekkes i spiken hos MSC |
 | 11 | Hvis ét BL dækker flere containere med forskellige ETA'er: skal vi vise den seneste? | Ja, den seneste; de andre i `Note` |
 

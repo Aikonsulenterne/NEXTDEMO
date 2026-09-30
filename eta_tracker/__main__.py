@@ -40,14 +40,13 @@ def run_cmd(
     limit: Optional[int] = typer.Option(None, "--limit", help="Kun de første N rækker."),
     bl: Optional[str] = typer.Option(None, "--bl", help="Kun disse BL, kommasepareret, i denne rækkefølge."),
     skip_checked: bool = typer.Option(False, "--skip-checked", help="Spring rækker med 'Sidst tjekket' over."),
-    manual: bool = typer.Option(False, "--manual", help="Ved captcha: vent på at du løser den og trykker Enter."),
     replay: bool = typer.Option(False, "--replay", help="Afspil seneste gode resultat pr. BL fra runs/."),
 ) -> None:
     """Slå BL op hos rederierne og skriv resultatet i arket."""
     from .run import run
 
     bls = [b for b in (bl or "").split(",") if b.strip()] or None
-    run(load_settings(), limit=limit, bls=bls, skip_checked=skip_checked, manual=manual, replay=replay)
+    run(load_settings(), limit=limit, bls=bls, skip_checked=skip_checked, replay=replay)
 
 
 @app.command("reset-sheet")

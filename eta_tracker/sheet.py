@@ -17,7 +17,7 @@ SHIPMENT_HEADERS = [
 ]
 LOG_HEADERS = [
     "Kørsel", "Carrier", "BL", "Current ETA", "Ny ETA", "Forskel (dage)",
-    "Status", "Confidence", "Screenshot",
+    "Status", "Confidence", "Rådata",
 ]
 CONFIG_TAB = "Config"
 MAX_ROWS = 1000

@@ -1,10 +1,11 @@
-"""Orchestrator: sheet -> carrier page -> Claude -> compare -> sheet + runs/ (docs/ARCHITECTURE.md)."""
+"""Orchestrator: sheet -> Apify (carrier data) -> parse/Claude -> compare -> sheet + runs/ (docs/ARCHITECTURE.md)."""
 
+import json
 import random
 import time
 from datetime import datetime
-from pathlib import Path
 
+from .apify import Apify, ApifyError
 from .carriers import get_carrier
 from .compare import IKKE_FUNDET, TJEK_MANUELT, compare, parse_date
 from .config import Settings
@@ -85,7 +86,7 @@ class _SheetWriter:
 
 
 def run(
-    settings: Settings, *, limit: int | None, bls: list[str] | None, skip_checked: bool, manual: bool, replay: bool
+    settings: Settings, *, limit: int | None, bls: list[str] | None, skip_checked: bool, replay: bool
 ) -> None:
     sheet = _open_sheet(settings)
     try:
@@ -105,7 +106,7 @@ def run(
     if replay:
         _replay(settings, selected, writer)
     else:
-        _live(settings, selected, writer, manual)
+        _live(settings, selected, writer)
 
 
 def _replay(settings: Settings, selected: list[Shipment], writer: _SheetWriter) -> None:
@@ -126,9 +127,7 @@ def _replay(settings: Settings, selected: list[Shipment], writer: _SheetWriter) 
     summary(records)
 
 
-def _live(settings: Settings, selected: list[Shipment], writer: _SheetWriter, manual: bool) -> None:
-    from .browser import Browser  # Playwright only needed for live runs
-
+def _live(settings: Settings, selected: list[Shipment], writer: _SheetWriter) -> None:
     threshold = settings.delay_threshold_days
     if writer.sheet:
         try:
@@ -139,21 +138,21 @@ def _live(settings: Settings, selected: list[Shipment], writer: _SheetWriter, ma
     run_started = datetime.now().replace(microsecond=0)
     run_ts = run_started.isoformat()
     run_dir = settings.runs_dir / run_started.strftime("%Y%m%d-%H%M%S")
-    extractor = Extractor(settings.anthropic_api_key, settings.claude_model)
+    run_dir.mkdir(parents=True, exist_ok=True)
+    extractor = Extractor(settings.anthropic_api_key, settings.claude_model) if settings.anthropic_api_key else None
     records: list[dict] = []
     log_rows: list[list] = []
 
     title = f"ETA-tjek · {len(selected)} BL · forsinket ved ≥ {threshold} dag(e)"
     try:
-        with Browser(settings.browser_profile_dir, settings.headless, settings.page_timeout_seconds) as browser, \
-                RunView(title, selected) as view:
-            for i, shipment in enumerate(selected):
-                view.working(shipment.bl)
+        with RunView(title, selected) as view:
+            data, errors = _fetch_all(settings, selected, view)
+            for shipment in selected:
+                view.working(shipment.bl, "Sammenligner …")
                 try:
-                    record = _lookup_one(shipment, browser, extractor, run_dir, threshold, manual, view)
+                    record = _evaluate(shipment, data, errors, extractor, run_dir, settings.runs_dir, threshold)
                 except Exception as exc:  # never crash on one BL
                     record = _record(shipment, status=IKKE_FUNDET, note=f"Uventet fejl: {type(exc).__name__}")
-                record["screenshot"] = _relative(record.get("screenshot"), settings.runs_dir)
 
                 records.append(record)
                 save_results(run_dir, run_ts, records)
@@ -161,26 +160,46 @@ def _live(settings: Settings, selected: list[Shipment], writer: _SheetWriter, ma
                 log_rows.append([
                     run_ts.replace("T", " "), record["carrier"], record["bl"], record["current_eta"] or "",
                     record["new_eta"] or "", record["diff_days"] if record["diff_days"] is not None else "",
-                    record["status"], record.get("confidence") or "", record.get("screenshot") or "",
+                    record["status"], record.get("confidence") or "", record.get("evidence") or "",
                 ])
                 view.done(record)
-
-                if i < len(selected) - 1:
-                    time.sleep(random.uniform(settings.min_delay_seconds, settings.max_delay_seconds))
+                time.sleep(settings.reveal_delay_seconds)  # rows appear one by one, for the audience
     except KeyboardInterrupt:
         console.print("[yellow]Afbrudt. Gemmer det, der nåede at blive slået op.[/]")
-    except Exception as exc:  # e.g. the browser would not start; per-BL errors are handled above
-        console.print(f"[bold red]Kørslen stoppede: {type(exc).__name__}: {str(exc).splitlines()[0] if str(exc) else ''}[/]")
-        console.print("[yellow]Tjek at Chrome eller Playwrights Chromium er installeret (playwright install chromium). "
-                      "Plan B: python -m eta_tracker run --replay[/]")
     finally:
         writer.log(log_rows)
     summary(records)
     if records:
-        console.print(f"Bevis gemt i [bold]{run_dir.relative_to(settings.runs_dir.parent)}[/]")
+        console.print(f"Rådata gemt i [bold]{run_dir.relative_to(settings.runs_dir.parent)}[/]")
 
 
-def _lookup_one(shipment, browser, extractor, run_dir, threshold, manual, view) -> dict:
+def _fetch_all(settings: Settings, selected: list[Shipment], view) -> tuple[dict[str, dict], dict[str, str]]:
+    """One Apify run per carrier. Returns ({BL: raw item}, {carrier code: Danish error})."""
+    by_carrier: dict[str, list[Shipment]] = {}
+    for shipment in selected:
+        carrier = get_carrier(shipment.carrier)
+        if carrier:
+            by_carrier.setdefault(carrier.code, []).append(shipment)
+
+    data: dict[str, dict] = {}
+    errors: dict[str, str] = {}
+    try:
+        apify = Apify(settings.apify_token, settings.apify_timeout_seconds)
+    except ApifyError as exc:
+        return data, {code: str(exc) for code in by_carrier}
+
+    for code, shipments in by_carrier.items():
+        carrier = get_carrier(code)
+        for s in shipments:
+            view.working(s.bl, f"Henter fra {carrier.name} …")
+        try:
+            data.update(apify.track(getattr(settings, carrier.actor_setting), [s.bl for s in shipments]))
+        except ApifyError as exc:
+            errors[code] = str(exc)
+    return data, errors
+
+
+def _evaluate(shipment, data, errors, extractor, run_dir, runs_dir, threshold) -> dict:
     carrier = get_carrier(shipment.carrier)
     current_eta = parse_date(shipment.current_eta_raw)
     if carrier is None:
@@ -188,23 +207,29 @@ def _lookup_one(shipment, browser, extractor, run_dir, threshold, manual, view) 
                          note=f"Rederi '{shipment.carrier}' understøttes ikke (kun CMA og MSC)")
         return {**record, **_status(False, False, None, None, None, current_eta, threshold)}
 
-    capture = carrier.lookup(browser, shipment.bl, run_dir)
-    if capture.error == "Timeout":
-        view.working(shipment.bl, "Prøver igen …")
-        capture = carrier.lookup(browser, shipment.bl, run_dir)
-    if capture.blocked and manual:
-        view.ask(f"[bold yellow]{carrier.name} blokerer. Løs captcha i browseren og tryk Enter …[/]")
-        capture = carrier.lookup(browser, shipment.bl, run_dir)
+    base = _record(shipment, current_eta=current_eta)
+    if carrier.code in errors:
+        return {**base, **_status(True, True, None, None, None, current_eta, threshold), "note": errors[carrier.code]}
 
-    base = _record(shipment, current_eta=current_eta, screenshot=capture.screenshot_path)
-    if capture.error:
-        return {**base, **_status(True, True, None, None, None, current_eta, threshold), "note": capture.error}
+    item = data.get(shipment.bl.strip().upper())
+    if item is None:
+        return {**base, **_status(True, True, None, None, None, current_eta, threshold),
+                "note": f"{carrier.name} returnerede intet for BL'et"}
 
-    view.working(shipment.bl, "AI læser siden …")
-    try:
-        ex = extractor.extract(bl=shipment.bl, carrier=carrier.name, text=capture.text)
-    except ExtractionError as exc:
-        return {**base, "status": TJEK_MANUELT, "diff_days": None, "note": str(exc)}
+    evidence = run_dir / f"{shipment.bl}.json"
+    evidence.write_text(json.dumps(item, ensure_ascii=False, indent=2), encoding="utf-8")
+    base["evidence"] = str(evidence.relative_to(runs_dir))
+
+    ex = carrier.parse(item)
+    if ex is None:
+        # Data did not have the expected shape: let Claude read it, like a colleague would.
+        if extractor is None:
+            return {**base, "status": TJEK_MANUELT, "diff_days": None,
+                    "note": "Kunne ikke læse rederiets data (ingen ANTHROPIC_API_KEY)"}
+        try:
+            ex = extractor.extract(bl=shipment.bl, carrier=carrier.name, text=json.dumps(item, ensure_ascii=False))
+        except ExtractionError as exc:
+            return {**base, "status": TJEK_MANUELT, "diff_days": None, "note": str(exc)}
 
     new_eta = ex.eta_date if ex.page_state == "ok" else None
     note = ex.note
@@ -225,7 +250,7 @@ def _status(supported, failed, page_state, new_eta, confidence, current_eta, thr
     return {"status": result.status, "diff_days": result.diff_days}
 
 
-def _record(shipment: Shipment, *, current_eta=None, screenshot=None, status=None, note="") -> dict:
+def _record(shipment: Shipment, *, current_eta=None, status=None, note="") -> dict:
     current = current_eta or parse_date(shipment.current_eta_raw)
     return {
         "carrier": shipment.carrier, "bl": shipment.bl,
@@ -233,14 +258,5 @@ def _record(shipment: Shipment, *, current_eta=None, screenshot=None, status=Non
         "new_eta": None, "diff_days": None, "status": status,
         "vessel": None, "pod": None, "confidence": None, "arrived": None, "page_state": None,
         "checked_at": datetime.now().replace(microsecond=0).isoformat(),
-        "note": note, "screenshot": screenshot,
+        "note": note, "evidence": None,
     }
-
-
-def _relative(path, runs_dir: Path) -> str | None:
-    if not path:
-        return None
-    try:
-        return str(Path(path).relative_to(runs_dir))
-    except ValueError:
-        return str(path)

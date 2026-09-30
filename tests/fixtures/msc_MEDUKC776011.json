@@ -1,0 +1,9 @@
+{"tracking_number":"MEDUKC776011","tracking_type":"Bill Of Lading","bill_of_ladings":[{"BillOfLadingNumber":"MEDUKC776011","NumberOfContainers":1,"Delivered":false,
+"GeneralTrackingInfo":{"ShippedFrom":"BUSAN, KR","ShippedTo":"MAPUTO, MZ","PortOfLoad":"BUSAN, KR","PortOfDischarge":"MAPUTO, MZ","Transshipments":["COEGA, ZA"],"PriceCalculationDate":"13/08/2026","FinalPodEtaDate":"03/10/2026"},
+"ContainersInfo":[{"ContainerNumber":"MSGU9284613","ContainerType":"40' HIGH CUBE REEFER","LatestMove":"COEGA, ZA","PodEtaDate":"03/10/2026","Delivered":false,
+"Events":[
+{"Order":7,"Date":"03/10/2026","Location":"MAPUTO, MZ","UnLocationCode":"MZMPM","Description":"Estimated Time of Arrival","Detail":["MSC SANDY III","JO638A"]},
+{"Order":6,"Date":"30/09/2026","Location":"COEGA, ZA","UnLocationCode":"ZAZBA","Description":"Full Intended Transshipment","Detail":["MSC SANDY III","JO638A"]},
+{"Order":3,"Date":"20/09/2026","Location":"PORT ELIZABETH, ZA","UnLocationCode":"ZAPLZ","Description":"Full Transshipment Discharged","Detail":["MSC LUDOVICA","ZF631A"]},
+{"Order":2,"Date":"13/08/2026","Location":"BUSAN, KR","UnLocationCode":"KRPUS","Description":"Export Loaded on Vessel","Detail":["MSC LUDOVICA","ZF631A"]}
+]}]}]}

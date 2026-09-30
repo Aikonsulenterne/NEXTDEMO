@@ -1,14 +1,22 @@
 # Opsætning, trin for trin
 
-Forventet tid: ca. 30 min første gang.
+Forventet tid: ca. 30 min første gang. Kør kommandoerne én linje ad gangen.
 
-## 1. Google Sheet
+## 1. Python 3.12 (Mac)
 
-1. Opret et nyt Google Sheet, fx **"ETA Tracker – Demo"**.
+```bash
+brew install python@3.12
+```
+
+Har du ikke Homebrew: hent Python 3.12 fra https://www.python.org/downloads/macos/. Luk og åbn terminalen bagefter.
+
+## 2. Google Sheet
+
+1. Brug arket **"Active BL List"** (eller opret et nyt).
 2. Kopiér sheet-ID fra URL'en: `https://docs.google.com/spreadsheets/d/`**`<SHEET_ID>`**`/edit`
-3. Lad det være tomt. `setup-sheet` opretter faner, headers og formatering.
+3. `setup-sheet` opretter fanerne `Shipments` og `Log`. Eksisterende faner røres ikke.
 
-## 2. Google service account (så scriptet kan skrive i arket)
+## 3. Google service account (så scriptet kan skrive i arket)
 
 1. Gå til https://console.cloud.google.com/ → opret projekt **eta-tracker-poc**.
 2. *APIs & Services → Library* → aktivér **Google Sheets API** (og **Google Drive API**).
@@ -17,35 +25,39 @@ Forventet tid: ca. 30 min første gang.
 5. Kopiér service account-mailen (`eta-tracker@<projekt>.iam.gserviceaccount.com`).
 6. I Google Sheet: **Del** → indsæt mailen → **Editor**.
 
-## 3. Anthropic API-nøgle
+## 4. Apify-nøgle
+
+1. Log ind på https://console.apify.com/ → *Settings → API & Integrations* → kopiér **Personal API token**.
+2. Gratis-niveauet rækker langt: en kørsel med 25 BL koster ca. 0,26 USD.
+
+## 5. Anthropic API-nøgle
 
 1. https://console.anthropic.com/ → *API Keys* → opret nøgle.
-2. Sæt et lille månedligt loft (fx 10 USD). POC'en bruger langt under det.
+2. Sæt et lille månedligt loft (fx 10 USD). Claude bruges kun, når data har en uventet form.
 
-## 4. Lokalt miljø
+## 6. Lokalt miljø
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-playwright install chromium   # fallback; har du Chrome installeret, bruges den
+python -m pytest
 cp .env.example .env
+open -e .env
 ```
 
-Udfyld `.env` (se `.env.example`).
+Udfyld `APIFY_TOKEN`, `ANTHROPIC_API_KEY` og `GOOGLE_SHEET_ID` i `.env` og gem.
 
-## 5. Første kørsel
+## 7. Første kørsel
 
 ```bash
-python -m eta_tracker setup-sheet     # opretter faner + importerer 25 BL
-python -m eta_tracker run --bl COP0305302,MEDUKC776011 --manual   # test med 1 CMA + 1 MSC
+python -m eta_tracker setup-sheet
+python -m eta_tracker run --bl COP0305302,MEDUKC776011
 ```
-
-Første gang åbner browseren, og du kan få cookie-bannere eller captcha. Acceptér/løs dem manuelt; med `--manual` venter scriptet på dig.
-Profilen gemmes i `.browser-profile/`, så det kun sker én gang.
 
 ## Tjekliste
 
-- [ ] Sheet oprettet og delt med service account-mailen
-- [ ] `secrets/service-account.json` ligger på plads
+- [ ] `python -m pytest` er grøn
+- [ ] Sheet delt med service account-mailen, og `secrets/service-account.json` ligger på plads
 - [ ] `.env` udfyldt
 - [ ] Testkørslen skriver 2 rækker med farve

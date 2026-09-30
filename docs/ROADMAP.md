@@ -1,26 +1,24 @@
 # Roadmap
 
-## Fase 0: Afklaring (½ dag)
+## Fase 0: Afklaring
 
-- [ ] Svar på `OPEN_QUESTIONS.md` fra kusinen
-- [ ] **Spike:** slå 2 CMA + 2 MSC BL op manuelt i en almindelig browser. Notér præcis flow, URL'er og hvor ETA står. Tag et af MSC-BL'erne med bogstavet O med
-- [ ] **Spike:** samme 4 via Playwright headed (prøv `channel="chrome"`). Kommer vi forbi bot-beskyttelsen? *Det er projektets største risiko, så gør det først*
-- [ ] **Spike:** tag tid på ét opslag pr. rederi. Bestemmer, hvor mange BL der kan køres live
+- [ ] Svar på `OPEN_QUESTIONS.md` fra kusinen (især #9: data til Apify)
+- [x] **Spike:** browser-opslag vs. API vs. Apify. Apify valgt: samme data som rederiernes sider, ~5 sek. og 0,01 USD pr. BL
+- [x] MSC `MEDUKC776011` kontrolleret mod msc.com: POD ETA 03/10/2026 matcher
+- [ ] CMA `COP0305302` kontrolleres mod cma-cgm.com (vores læsning: 03-10-2026, Mombasa)
 
-## Fase 1: POC (1–2 dage)
+## Fase 1: POC
 
-| # | Opgave | Estimat |
+| # | Opgave | Status |
 |---|---|---|
-| 1 | Projektskelet, config, CLI (`--limit`, `--bl`, `--skip-checked`, `--manual`, `--replay`) | 1 t |
-| 2 | `sheet.py`: læs, skriv, `setup-sheet`, conditional formatting | 2 t |
-| 3 | `compare.py` + tests | 1 t |
-| 4 | `browser.py` + `carriers/msc.py` | 2–3 t |
-| 5 | `carriers/cma.py` | 2 t |
-| 6 | `extract.py` (Claude + Pydantic) | 1 t |
-| 7 | `run`-orkestrering, Rich-UI, `runs/`-lagring | 2 t |
-| 8 | `--replay` + `reset-sheet` | 1 t |
-| 9 | Fuld kørsel på 25 BL, fejlret. Lås versioner (`pip freeze > requirements.lock`) når det virker | 2 t |
-| 10 | Generalprøve efter `DEMO_SCRIPT.md` | 1 t |
+| 1 | Projektskelet, config, CLI (`--limit`, `--bl`, `--skip-checked`, `--replay`) | ✅ |
+| 2 | `sheet.py`: læs, skriv, `setup-sheet`, conditional formatting | ✅ (ikke kørt mod rigtigt ark endnu) |
+| 3 | `compare.py` + tests | ✅ |
+| 4 | `apify.py` + `carriers.py` (parsere testet på rigtige svar) | ✅ |
+| 5 | `extract.py` (Claude-fallback + Pydantic) | ✅ |
+| 6 | `run`-orkestrering, Rich-UI, `runs/`-lagring, `--replay`, `reset-sheet` | ✅ |
+| 7 | Fuld kørsel på 25 BL med rigtige nøgler, fejlret. Lås versioner (`pip freeze > requirements.lock`) | ⏳ |
+| 8 | Generalprøve efter `DEMO_SCRIPT.md` | ⏳ |
 
 ## Fase 2: Hvis kunden vil have det rigtigt (efter demoen)
 
@@ -39,8 +37,8 @@ Det her er **tilbuddet**. POC'en viser værdien, og produktet bygges ordentligt:
 
 | Risiko | Sandsynlighed | Afbødning |
 |---|---|---|
-| Bot-beskyttelse blokerer Playwright | Middel | Headed + `channel="chrome"` + persistent profil (varmet op med `--manual`) + langsomt tempo. Ellers `--replay` eller Claude in Chrome |
-| Siden viser flere ETA'er (omladning) | Høj | Prompt beder om POD-ETA. Lav confidence → `Tjek manuelt` |
+| Apify-scraperne holder op med at virke (uofficielle, én udvikler) | Middel | Kør aftenen før, `--replay` på dagen. Til drift: officielle API'er |
+| Data har flere ETA'er (omladning, flere containere) | Høj | Parser vælger ankomst ved POD og seneste container-ETA. Uventet form → Claude → evt. `Tjek manuelt` |
 | BL er leveret/arkiveret og findes ikke længere | Middel | Status `Ikke fundet` med note |
-| Rederiets side er nede på demodagen | Lav | `--replay` + videobackup |
-| Live-kørslen tager længere end demo-slottet | Høj | Kun 4–5 BL live via `--bl`, resten forkørt. Tages tid på ved generalprøven |
+| Apify eller nettet er nede på demodagen | Lav | `--replay` + videobackup |
+| Kunden vil ikke sende BL-numre til tredjepart | Middel | Spørg nu (#9). Alternativ: CMA's officielle API (selvbetjening) |

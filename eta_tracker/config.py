@@ -16,6 +16,13 @@ def _int(name: str, default: int) -> int:
         return default
 
 
+def _float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, default))
+    except ValueError:
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     anthropic_api_key: str
@@ -25,11 +32,11 @@ class Settings:
     tab_shipments: str
     tab_log: str
     delay_threshold_days: int
-    headless: bool
-    browser_profile_dir: Path
-    page_timeout_seconds: int
-    min_delay_seconds: int
-    max_delay_seconds: int
+    apify_token: str
+    actor_cma: str
+    actor_msc: str
+    apify_timeout_seconds: int
+    reveal_delay_seconds: float
     runs_dir: Path
     seed_csv: Path
 
@@ -49,11 +56,11 @@ def load_settings() -> Settings:
         tab_shipments=os.getenv("SHEET_TAB_SHIPMENTS", "Shipments"),
         tab_log=os.getenv("SHEET_TAB_LOG", "Log"),
         delay_threshold_days=_int("DELAY_THRESHOLD_DAYS", 1),
-        headless=os.getenv("HEADLESS", "false").strip().lower() in ("1", "true", "yes"),
-        browser_profile_dir=_path(os.getenv("BROWSER_PROFILE_DIR", "./.browser-profile")),
-        page_timeout_seconds=_int("PAGE_TIMEOUT_SECONDS", 30),
-        min_delay_seconds=_int("MIN_DELAY_SECONDS", 3),
-        max_delay_seconds=_int("MAX_DELAY_SECONDS", 8),
+        apify_token=os.getenv("APIFY_TOKEN", ""),
+        actor_cma=os.getenv("APIFY_ACTOR_CMA", "muhammetakkurtt/cma-cgm-cargo-tracking-scraper"),
+        actor_msc=os.getenv("APIFY_ACTOR_MSC", "muhammetakkurtt/msc-cargo-tracking-scraper"),
+        apify_timeout_seconds=_int("APIFY_TIMEOUT_SECONDS", 300),
+        reveal_delay_seconds=_float("REVEAL_DELAY_SECONDS", 1.0),
         runs_dir=ROOT / "runs",
         seed_csv=ROOT / "data" / "seed_bl_list.csv",
     )

@@ -5,10 +5,10 @@ Den skal ikke være smuk kode eller klar til produktion.
 
 ## Mål (i prioriteret rækkefølge)
 
-1. **Virker live**: opslag hos CMA CGM og MSC lykkes, og resultatet lander i Google Sheet med farver.
-2. **Ser overbevisende ud**: synlig browser, pæn terminal-output (Rich), arket opdaterer sig mens man kigger.
+1. **Virker live**: data fra CMA CGM og MSC hentes, og resultatet lander i Google Sheet med farver.
+2. **Ser overbevisende ud**: pæn terminal-output (Rich), arket opdaterer sig række for række, mens man kigger.
 3. **Fejler pænt**: et BL der ikke kan slås op giver status `Ikke fundet` + note. Programmet crasher aldrig.
-4. **Kan afspilles**: `--replay` genbruger seneste gode resultat pr. BL, hvis nettet eller rederiets side driller på dagen.
+4. **Kan afspilles**: `--replay` genbruger seneste gode resultat pr. BL, hvis nettet eller Apify driller på dagen.
 
 ## Læs først
 
@@ -20,20 +20,17 @@ Den skal ikke være smuk kode eller klar til produktion.
 
 - **Python 3.12**, afhængigheder kun fra `docs/TECH_STACK.md`. Spørg før du tilføjer nye.
 - **Overskriv aldrig kolonnen `Current ETA`** (baseline). Nye data skrives kun i output-kolonnerne.
-- **Ét BL ad gangen**, med 3–8 sek. tilfældig pause imellem. Ingen parallelle opslag mod rederierne.
-- **Headed browser** (`headless=False`) med persistent profil i `./.browser-profile/`. Det ligner et menneske og ser godt ud i demoen.
-  Brug `channel="chrome"` (installeret Chrome), hvis den findes; fald tilbage til Playwrights Chromium. Den er sværere at genkende som bot.
-- **Blokering tjekkes i carrier-modulet**, før Claude kaldes: simpelt keyword-tjek på sideteksten
-  (fx "captcha", "access denied", "verify you are human") → `Ikke fundet` + note "Blokeret af rederiets side". Spar Claude-kaldet.
-- **Ekstraktion via Claude**: send sidens synlige tekst (ikke HTML) til `claude-haiku-4-5` og tving struktureret svar
-  via et tool-/JSON-schema (ikke kun "returnér JSON" i prompten):
+- **Data hentes via Apify**, én kørsel pr. rederi med alle BL (`eta_tracker/apify.py`). Ingen browser, ingen scraping i vores kode.
+  Actor-navne og format: `docs/CARRIERS.md`.
+- **Kode læser data, Claude er fallback.** `carriers.py` finder ETA ved POD deterministisk. Har dataene en uventet form,
+  sendes rå-JSON'en til `claude-haiku-4-5` med struktureret output:
   `{"page_state": "ok|not_found|blocked|error", "eta": "YYYY-MM-DD" | null, "arrived": bool, "vessel": str|null, "pod": str|null, "confidence": "high|medium|low", "note": str}`.
   Validér med Pydantic. Status-mapping står i `docs/DATA_MODEL.md`.
 - **Skriv til arket via BL-opslag**, ikke via rækkenummer fundet ved start. Find rækken med BL'et lige før hver skrivning,
   så en sortering/filtrering undervejs ikke sender resultatet til den forkerte forsendelse.
 - **Datoer skrives som rigtige datoer** (`value_input_option="USER_ENTERED"`, ISO-streng), og arket sættes til locale `da_DK`.
   Ellers bliver de tekst, og sortering + conditional formatting virker ikke.
-- **Gem bevis** for hvert opslag: screenshot til `./runs/<timestamp>/<BL>.png` og rå sidetekst til `<BL>.txt`.
+- **Gem bevis** for hvert opslag: rå data til `./runs/<timestamp>/<BL>.json` og resultatet i `results.json`.
   Det bruges af `--replay` og til fejlsøgning.
 - **Trim BL-numre** (der er mindst ét med mellemrum til sidst i kildedata).
 - Hemmeligheder kun i `.env` og `./secrets/`. Begge er i `.gitignore`.
@@ -50,7 +47,8 @@ Den skal ikke være smuk kode eller klar til produktion.
 - [ ] `run --replay` virker uden netadgang til rederierne og markerer rækkerne som afspillet (se `docs/ARCHITECTURE.md`)
 - [ ] `reset-sheet` tømmer kolonne D–J (rører aldrig A–C)
 - [ ] Test af `compare.py` (status-logik inkl. `page_state`, manglende/ugyldig `Current ETA`) med pytest
-- [ ] Generalprøve: én live-kørsel med 4–5 BL er timet og passer i demo-slottet
+- [ ] Parserne er testet på rigtige Apify-svar for både CMA og MSC
+- [ ] Generalprøve: en fuld live-kørsel af alle 25 er timet og passer i demo-slottet
 
 ## Ikke i scope
 

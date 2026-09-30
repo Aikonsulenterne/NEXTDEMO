@@ -34,7 +34,7 @@ Det gælder også `Current ETA` ved import af seed-data.
 | F | `Forskel (dage)` |
 | G | `Status` |
 | H | `Confidence` |
-| I | `Screenshot` (relativ sti i `runs/`) |
+| I | `Rådata` (relativ sti til rederiets rå data i `runs/`) |
 
 Bruges til at vise "ETA har rykket sig 3 gange på 2 uger" senere. Ikke nødvendigt for demoen, men gratis at have.
 

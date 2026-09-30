@@ -1,0 +1,20 @@
+{"tracking_number":"COP0305302","events":[
+{"eventType":"TRANSPORT","transportEventTypeCode":"DEPA","eventClassifierCode":"PLN","eventCreatedDateTime":"2026-09-22T08:58:12Z",
+ "carrierSpecificData":{"internalEventLabel":"Road Departure","transportationPhase":"Import"},
+ "transportCall":{"modeOfTransport":"TRUCK","location":{"UNLocationCode":"KEMBA","locationName":"MOMBASA"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"ARRI","eventClassifierCode":"PLN","eventCreatedDateTime":"2026-09-29T08:26:36Z","eventDateTime":"2026-10-03T07:00:00+03:00",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Arrival","shipmentLocationType":"POD","transportationPhase":"Import"},
+ "transportCall":{"modeOfTransport":"VESSEL","location":{"UNLocationCode":"KEMBA","locationName":"MOMBASA"},"vessel":{"vesselName":"HYUNDAI BUSAN"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"ARRI","eventClassifierCode":"PLN","eventCreatedDateTime":"2026-09-22T08:58:12Z","eventDateTime":"2026-10-02T12:00:00+03:00",
+ "carrierSpecificData":{"internalEventLabel":"Road Arrival","shipmentLocationType":"ABP_IMP","transportationPhase":"Import"},
+ "transportCall":{"modeOfTransport":"TRUCK","location":{"UNLocationCode":"KEMBA","locationName":"MOMBASA"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"DEPA","eventClassifierCode":"ACT","eventCreatedDateTime":"2026-09-24T07:45:31Z","eventDateTime":"2026-09-24T00:15:00+05:30",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Departure","shipmentLocationType":"PTS","transportationPhase":"Transshipment"},
+ "transportCall":{"modeOfTransport":"VESSEL","location":{"UNLocationCode":"LKCMB","locationName":"COLOMBO"},"vessel":{"vesselName":"HYUNDAI BUSAN"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"ARRI","eventClassifierCode":"ACT","eventCreatedDateTime":"2026-09-15T03:47:47Z","eventDateTime":"2026-09-15T08:16:00+05:30",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Arrival","shipmentLocationType":"PTS","transportationPhase":"Transshipment"},
+ "transportCall":{"modeOfTransport":"VESSEL","location":{"UNLocationCode":"LKCMB","locationName":"COLOMBO"},"vessel":{"vesselName":"EVER AEON"}}},
+{"eventType":"EQUIPMENT","equipmentEventTypeCode":"LOAD","eventClassifierCode":"ACT","eventCreatedDateTime":"2026-08-18T14:51:43Z","eventDateTime":"2026-08-18T16:17:00+02:00","equipmentReference":"SEKU9432441",
+ "carrierSpecificData":{"internalEventLabel":"Loaded on board","transportationPhase":"Export"},
+ "transportCall":{"modeOfTransport":"VESSEL","location":{"UNLocationCode":"NLRTM","locationName":"ROTTERDAM"},"vessel":{"vesselName":"EVER AEON"}}}
+]}

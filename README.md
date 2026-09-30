@@ -13,47 +13,48 @@ og det er dér, man overser den ene forsinkelse, der betyder noget.
 ## Hvad POC'en gør
 
 ```
-Google Sheet  ──►  Slå hvert BL op hos rederiet  ──►  AI læser ny ETA  ──►  Sammenlign  ──►  Skriv tilbage + farv
-(BL-liste)         (browser, som et menneske)        (fra sidens tekst)    (gammel vs ny)    (rød = forsinket)
+Google Sheet  ──►  Hent tracking-data hos rederiet  ──►  Find ETA ved POD  ──►  Sammenlign  ──►  Skriv tilbage + farv
+(BL-liste)         (Apify, alle BL på én gang)           (kode, ellers Claude)   (gammel vs ny)    (rød = forsinket)
 ```
 
 1. Læser listen af forsendelser fra et **Google Sheet** (Carrier, BL, Current ETA).
-2. Åbner rederiets tracking-side for hvert BL-nummer (**CMA CGM** og **MSC**) i en rigtig browser.
-3. Lader **Claude** læse sidens indhold og finde den nye ETA. Så er vi ikke afhængige af præcis sidelayout.
+2. Henter rederiernes egne tracking-data for alle BL-numre via **Apify** (én kørsel pr. rederi, **CMA CGM** og **MSC**).
+3. Finder ETA ved losningshavnen (POD). Har dataene en uventet form, læser **Claude** dem i stedet.
 4. Sammenligner ny ETA med gammel ETA og regner forskellen ud i dage.
-5. Skriver resultatet tilbage i arket: **rød** = forsinket, **grøn** = tidligere, neutral = uændret, **gul** = tjek manuelt, grå = ikke fundet.
+5. Skriver resultatet tilbage i arket, række for række: **rød** = forsinket, **grøn** = tidligere, neutral = uændret, **gul** = tjek manuelt, grå = ikke fundet.
 6. Logger hver kørsel i en separat fane, så man kan se udviklingen over tid.
+
+Alle 25 BL tager ca. 20 sekunder og koster ca. 2 kr. i Apify pr. kørsel.
 
 ## Hvad POC'en IKKE er
 
 - Ikke et produkt. Ingen login, ingen brugere, ingen server. Den kører lokalt fra en terminal.
-- Ikke skalerbar scraping. Til produktion skal man bruge rederiernes API'er eller en tracking-aggregator (se [`docs/ROADMAP.md`](docs/ROADMAP.md)).
+- Apify-scraperne er lavet af en uafhængig udvikler, ikke rederierne. Til drift skal man over på rederiernes officielle API'er
+  eller en tracking-aggregator (se [`docs/ROADMAP.md`](docs/ROADMAP.md)).
 
 ## Kom i gang (kort)
 
+Kør én linje ad gangen (ingen kommentarer bag kommandoerne; zsh på Mac læser dem ikke som kommentarer).
+
 ```bash
-# 1. Installér
-python -m venv .venv && source .venv/bin/activate
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-playwright install chromium
-
-# 2. Konfigurér
-cp .env.example .env              # udfyld nøgler + sheet-id
-# læg Google service account-nøglen i ./secrets/service-account.json
-
-# 3. Forbered arket (første gang)
-python -m eta_tracker setup-sheet   # importerer data/seed_bl_list.csv + formatering
-
-# 4. Kør
-python -m eta_tracker run           # alle BL-numre
-python -m eta_tracker run --limit 3 # hurtig test
-python -m eta_tracker run --bl COP0305302,MEDUKC776011   # kun udvalgte BL (bruges live)
-python -m eta_tracker run --skip-checked                 # spring allerede tjekkede rækker over
-python -m eta_tracker run --replay  # demo-sikkerhed: afspil seneste gode resultat pr. BL
-python -m eta_tracker reset-sheet   # tøm output-kolonner før demo
+python -m pytest
+cp .env.example .env
 ```
 
-Den fulde opsætning, inkl. Google Cloud, står i [`docs/SETUP.md`](docs/SETUP.md).
+Udfyld `.env` (Apify-, Anthropic- og Google-nøgler), og læg Google service account-nøglen i `./secrets/service-account.json`.
+
+```bash
+python -m eta_tracker setup-sheet
+python -m eta_tracker run --bl COP0305302,MEDUKC776011
+python -m eta_tracker run
+python -m eta_tracker run --replay
+python -m eta_tracker reset-sheet
+```
+
+Den fulde opsætning står i [`docs/SETUP.md`](docs/SETUP.md).
 
 ## Dokumentation
 
@@ -63,10 +64,10 @@ Den fulde opsætning, inkl. Google Cloud, står i [`docs/SETUP.md`](docs/SETUP.m
 | [`docs/TECH_STACK.md`](docs/TECH_STACK.md) | Valgte værktøjer og hvorfor |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Flow, moduler, fejlhåndtering |
 | [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) | Google Sheet-layout (vores "database"), status-regler og farver |
-| [`docs/CARRIERS.md`](docs/CARRIERS.md) | Sådan slås BL op hos CMA CGM og MSC, og hvad der kan gå galt |
-| [`docs/SETUP.md`](docs/SETUP.md) | Trin for trin: Google Sheet, service account, API-nøgle |
+| [`docs/CARRIERS.md`](docs/CARRIERS.md) | Sådan hentes og læses data fra CMA CGM og MSC |
+| [`docs/SETUP.md`](docs/SETUP.md) | Trin for trin: Google Sheet, service account, API-nøgler |
 | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) | Sådan vises det live, og hvad plan B er |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Byggeplan for POC'en og vejen videre til et rigtigt produkt |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Byggeplan og vejen videre til et rigtigt produkt |
 | [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) | Det, vi skal have afklaret med kunden |
 
 ## Test
@@ -77,11 +78,9 @@ python -m pytest
 
 ## Status
 
-🟡 **Kode skrevet, ikke kørt mod de rigtige sider endnu.**
+🟡 **Kode skrevet og testet mod rigtige data, ikke kørt fuldt igennem med nøgler endnu.**
 
-- Afprøvet: status-logik, BL-udvælgelse, replay og skrivning via BL (pytest), og hele kæden
-  browser → skærmbillede → sammenligning → `runs/` → replay mod lokale test-sider.
-- Ikke afprøvet: rigtige CMA CGM- og MSC-sider, rigtigt Claude-kald og rigtigt Google Sheet.
-  Kræver nøgler og netadgang, altså fase 0-spiken i [`docs/ROADMAP.md`](docs/ROADMAP.md).
-- Søgefelter og "resultat klar"-tekster i `eta_tracker/carriers/cma.py` og `msc.py` er gæt ud fra `docs/CARRIERS.md`.
-  Justér dem efter spiken.
+- Afprøvet: Apify-scraperne returnerer samme ETA som rederiernes egne sider (MSC `MEDUKC776011`: 03-10-2026,
+  kontrolleret på msc.com). Parserne er testet på de rigtige svar. Hele kæden er testet med falsk Apify og uden ark.
+- Ikke afprøvet: en fuld kørsel med rigtig Apify-nøgle og rigtigt Google Sheet.
+- Mangler kontrol: CMA `COP0305302` (vores læsning: 03-10-2026 i Mombasa) på cma-cgm.com.
