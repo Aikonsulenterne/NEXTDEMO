@@ -1,0 +1,10 @@
+{"tracking_number":"COP0306236","events":[
+{"eventType":"TRANSPORT","transportEventTypeCode":"ARRI","eventClassifierCode":"PLN","eventCreatedDateTime":"2026-09-27T00:00:00Z",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Arrival","shipmentLocationType":"POD"},"transportCall":{"location":{"locationName":"MOMBASA"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"DEPA","eventClassifierCode":"PLN","eventCreatedDateTime":"2026-09-27T00:00:00Z",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Departure","shipmentLocationType":"PTS"},"transportCall":{"location":{"locationName":"COLOMBO"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"ARRI","eventClassifierCode":"PLN","eventCreatedDateTime":"2026-09-29T00:00:00Z","eventDateTime":"2026-10-19T16:00:00+05:30",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Arrival","shipmentLocationType":"PTS"},"transportCall":{"location":{"locationName":"COLOMBO"},"vessel":{"vesselName":"EVER ACME"}}},
+{"eventType":"TRANSPORT","transportEventTypeCode":"DEPA","eventClassifierCode":"ACT","eventCreatedDateTime":"2026-09-09T00:00:00Z","eventDateTime":"2026-09-09T05:20:00+02:00",
+ "carrierSpecificData":{"internalEventLabel":"Vessel Departure","shipmentLocationType":"POL"},"transportCall":{"location":{"locationName":"ROTTERDAM"},"vessel":{"vesselName":"EVER ACME"}}}
+]}

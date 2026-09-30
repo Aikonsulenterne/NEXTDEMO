@@ -68,14 +68,15 @@ def parse_cma(item: dict) -> Extraction | None:
     if not events:
         return _not_found("CMA CGM har ingen data for BL'et")
 
-    pod_arrivals = [
+    arrivals = [
         e for e in events
-        if e.get("eventType") == "TRANSPORT"
-        and e.get("transportEventTypeCode") == "ARRI"
-        and (e.get("carrierSpecificData") or {}).get("shipmentLocationType") == "POD"
-        and e.get("eventDateTime")
+        if e.get("eventType") == "TRANSPORT" and e.get("transportEventTypeCode") == "ARRI"
     ]
+    pod_all = [e for e in arrivals if (e.get("carrierSpecificData") or {}).get("shipmentLocationType") == "POD"]
+    pod_arrivals = [e for e in pod_all if e.get("eventDateTime")]
     if not pod_arrivals:
+        if pod_all:
+            return _pod_not_scheduled(pod_all[0], arrivals)
         return None
 
     actual = [e for e in pod_arrivals if e.get("eventClassifierCode") == "ACT"]
@@ -102,6 +103,25 @@ def parse_cma(item: dict) -> Extraction | None:
         notes.append("via " + ", ".join(transshipments))
     return Extraction(page_state="ok", eta=eta.isoformat(), arrived=arrived, vessel=vessel, pod=pod,
                       confidence="high", note=", ".join(notes))
+
+
+def _pod_not_scheduled(pod_event: dict, arrivals: list[dict]) -> Extraction:
+    """CMA knows the destination but has no date for it yet (onward vessel not planned).
+    Tell the user the latest dated stop instead, since the shipment cannot arrive before that."""
+    pod = _clean(((pod_event.get("transportCall") or {}).get("location") or {}).get("locationName"))
+    dated = [
+        e for e in arrivals
+        if e.get("eventDateTime") and (e.get("carrierSpecificData") or {}).get("shipmentLocationType") == "PTS"
+    ]
+    note = f"CMA CGM har endnu ingen dato for ankomst til {pod or 'POD'} (videre skib ikke planlagt)"
+    if dated:
+        last = max(dated, key=lambda e: e["eventDateTime"])
+        where = _clean(((last.get("transportCall") or {}).get("location") or {}).get("locationName"))
+        when = parse_date(last["eventDateTime"][:10])
+        if when:
+            note += f". Når først omladning i {where} {when.strftime('%d-%m-%Y')}"
+    return Extraction(page_state="ok", eta=None, arrived=False, vessel=None, pod=pod,
+                      confidence="low", note=note)
 
 
 @dataclass(frozen=True)

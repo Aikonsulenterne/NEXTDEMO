@@ -148,3 +148,9 @@ def test_apify_timeout(monkeypatch):
 def test_apify_requires_token():
     with pytest.raises(ApifyError, match="APIFY_TOKEN"):
         Apify("")
+
+
+def test_cma_pod_without_date_needs_manual_check_and_says_why():
+    ex = parse_cma(load("cma_COP0306236.json"))  # real case: onward vessel from Colombo not planned yet
+    assert ex.page_state == "ok" and ex.eta is None and ex.confidence == "low"
+    assert "MOMBASA" in ex.note and "COLOMBO 19-10-2026" in ex.note
