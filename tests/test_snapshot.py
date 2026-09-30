@@ -25,7 +25,7 @@ def test_build_statuses_routes_and_summary():
     assert by["MEDUKC776011"]["status"] == "Forsinket" and by["MEDUKC776011"]["diff_days"] == 2
     assert [p["name"] for p in by["MEDUKC776011"]["route"]] == ["BUSAN", "COEGA", "MAPUTO"]
     assert by["MEDUKC776011"]["position"]["name"] == "PORT ELIZABETH"  # latest actual event in the trimmed fixture
-    assert [p["kind"] for p in by["COP0305302"]["route"]] == ["POL", "PTS", "POD"]
+    assert [p["name"] for p in by["COP0305302"]["route"]] == ["COLOMBO", "MOMBASA"]  # trimmed fixture has no POL-tagged event
     assert all(p["lat"] is not None for s in doc["shipments"] for p in s["route"])
     assert by["COP0306236"]["status"] == "Tjek manuelt"
     assert by["COP0308433"]["status"] == "Ikke fundet"

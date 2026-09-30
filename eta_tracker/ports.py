@@ -1,4 +1,4 @@
-"""Coordinates for ports that MSC data names without coordinates (CMA data carries its own)."""
+"""Port coordinates. CMA data usually carries its own; this table covers MSC and gaps."""
 
 PORTS: dict[str, tuple[str, float, float]] = {
     "BJCOO": ("COTONOU", 6.35, 2.43),
@@ -20,4 +20,21 @@ PORTS: dict[str, tuple[str, float, float]] = {
     "TGLFW": ("LOME", 6.13, 1.28),
     "ZAPLZ": ("PORT ELIZABETH", -33.96, 25.62),
     "ZAZBA": ("COEGA", -33.80, 25.68),
+    "LKCMB": ("COLOMBO", 6.94, 79.84),
+    "NLRTM": ("ROTTERDAM", 51.94, 4.04),
+    "LRMLW": ("MONROVIA", 6.31, -10.8),
+    "MAPTM": ("TANGER MED", 35.89, -5.49),
+    "INMUN": ("MUNDRA", 22.75, 69.57),
+    "ZACPT": ("CAPE TOWN", -33.81, 18.54),
+    "IDJKT": ("JAKARTA", -6.13, 106.82),
+    "HKHKG": ("HONG KONG", 22.37, 113.94),
+    "ESALG": ("ALGECIRAS", 36.1, -5.45),
+    "MTMAR": ("MALTA", 35.82, 14.53),
+    "CGPNR": ("POINTE NOIRE", -4.79, 11.85),
+    "CNNSA": ("NANSHA", 22.64, 113.69),
+    "THLCH": ("LAEM CHABANG", 13.12, 100.97),
+    "MZBEW": ("BEIRA", -19.82, 34.84),
+    "MMRGN": ("YANGON", 16.66, 96.26),
+    "CNXAM": ("XIAMEN", 24.46, 118.01),
+    "NAWVB": ("WALVIS BAY", -22.95, 14.49),
 }
