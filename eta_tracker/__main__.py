@@ -67,6 +67,7 @@ def snapshot_cmd(
     previous: Optional[str] = typer.Option(None, "--previous", help="Gårsdagens data.json (til historik)."),
     baseline: str = typer.Option("data/seed_bl_list.csv", "--baseline", help="Listen med Current ETA."),
     summary: Optional[str] = typer.Option(None, "--summary", help="Erstat standard-opsummeringen."),
+    news: Optional[str] = typer.Option(None, "--news", help="Nyheder om havne og ruter (dashboard/news.json)."),
 ) -> None:
     """Byg dashboardets data.json ud fra rå Apify-data."""
     from pathlib import Path
@@ -74,7 +75,7 @@ def snapshot_cmd(
     from .snapshot import main as build_snapshot
 
     doc = build_snapshot([Path(r) for r in raw], Path(baseline), Path(previous) if previous else None,
-                         Path(out), summary)
+                         Path(out), summary, news=Path(news) if news else None)
     console.print(f"[green]{out}[/] skrevet: {doc['counts']}")
 
 

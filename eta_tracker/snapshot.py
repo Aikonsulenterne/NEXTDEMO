@@ -7,6 +7,7 @@ Pure apart from reading/writing the files in main().
 
 import csv
 import json
+import re
 from datetime import date, datetime
 from pathlib import Path
 
@@ -94,7 +95,8 @@ def route_msc(item: dict) -> tuple[list[dict], dict | None]:
 ROUTES = {"CMA": route_cma, "MSC": route_msc}
 
 
-def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, today: date, threshold: int = 1) -> dict:
+def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, today: date, threshold: int = 1,
+          news: dict | None = None) -> dict:
     previous = previous or {}
     prev_rows = {s["bl"]: s for s in previous.get("shipments", [])}
     shipments = []
@@ -126,6 +128,7 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
             "route": route, "position": position, "history": history,
         })
 
+    linked_news = link_news(news, shipments)
     counts: dict[str, int] = {}
     for s in shipments:
         counts[s["status"]] = counts.get(s["status"], 0) + 1
@@ -139,7 +142,47 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
         "counts": counts,
         "runs": runs[-60:],
         "shipments": shipments,
+        "news": linked_news,
     }
+
+
+ROLE = {"POL": "afgangshavn", "PTS": "omladning", "POD": "destination"}
+SEVERITY_ORDER = {"høj": 0, "middel": 1, "lav": 2, "info": 3}
+DEPARTED = re.compile(r"depart|loaded on (board|vessel)", re.IGNORECASE)
+
+
+def link_news(news: dict | None, shipments: list[dict]) -> dict | None:
+    """Attach each news item to the shipments whose remaining route passes its ports.
+
+    A port counts for a shipment when it is the port of loading and the shipment is still there,
+    or a transshipment/destination the shipment has not arrived at yet.
+    """
+    if not news:
+        return None
+    items = []
+    for item in news.get("items", []):
+        ports = set(item.get("ports") or [])
+        affected = []
+        for s in shipments:
+            if s["arrived"] or not ports:
+                continue
+            here = (s.get("position") or {}).get("code")
+            left_origin = bool(DEPARTED.search((s.get("position") or {}).get("event") or ""))
+            stops = s["route"]
+            passed = {p.get("code") for p in stops[: next((i for i, p in enumerate(stops) if p.get("code") == here), 0)]}
+            for stop in stops:
+                code = stop.get("code")
+                if code not in ports or code in passed:
+                    continue
+                if stop["kind"] == "POL" and (here != code or left_origin):
+                    continue
+                affected.append({"bl": s["bl"], "port": stop["name"], "role": ROLE[stop["kind"]]})
+                s.setdefault("risks", []).append({"id": item["id"], "title": item["title"], "severity": item["severity"],
+                                                  "port": stop["name"], "role": ROLE[stop["kind"]]})
+                break
+        items.append({**item, "affected": affected})
+    items.sort(key=lambda i: (SEVERITY_ORDER.get(i["severity"], 9), -len(i["affected"])))
+    return {"checked_at": news.get("checked_at"), "items": items}
 
 
 def summarize(shipments: list[dict]) -> str:
@@ -168,14 +211,15 @@ def _load_items(path: Path) -> dict[str, dict]:
 
 
 def main(raw_files: list[Path], baseline_csv: Path, previous: Path | None, out: Path, summary: str | None,
-         today: date | None = None) -> dict:
+         today: date | None = None, news: Path | None = None) -> dict:
     items: dict[str, dict] = {}
     for f in raw_files:
         items.update(_load_items(f))
     with baseline_csv.open(encoding="utf-8") as f:
         baseline = [r for r in csv.DictReader(f) if r.get("BL", "").strip()]
     prev = json.loads(previous.read_text(encoding="utf-8")) if previous and previous.exists() else None
-    doc = build(items, baseline, prev, today or date.today())
+    news_doc = json.loads(news.read_text(encoding="utf-8")) if news and news.exists() else None
+    doc = build(items, baseline, prev, today or date.today(), news=news_doc)
     if summary:
         doc["summary"] = summary
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")

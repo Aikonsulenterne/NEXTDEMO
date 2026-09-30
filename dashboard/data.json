@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-09-30T10:45:37",
+ "generated_at": "2026-09-30T11:32:38",
  "run_date": "2026-09-30",
  "threshold_days": 1,
- "summary": "Godmorgen. 17 af jeres 25 forsendelser ankommer senere end jeres liste siger, flere af dem 1-2 uger. Listen er sandsynligvis ikke opdateret for nylig. Ring først om COP0307899 til Dakar og COP0308196 til Jakarta (+15 dage hver) og COP0305645 til Monrovia (+13). To CMA-forsendelser har endnu ingen ankomstdato, fordi sidste skib ikke er planlagt: COP0306236 når tidligst omladningen i Colombo 19. oktober, efter jeres ETA til Mombasa. MEDUAEO13818 til Lomé og MEDUKC808954 til Cotonou kommer 1-2 dage før.",
+ "summary": "Godmorgen. 17 af jeres 25 forsendelser ankommer senere end jeres liste siger, flere af dem 1-2 uger. Listen er sandsynligvis ikke opdateret for nylig. Ring først om COP0307899 til Dakar og COP0308196 til Jakarta (+15 dage hver) og COP0305645 til Monrovia (+13). To CMA-forsendelser har endnu ingen ankomstdato: COP0306236 når tidligst omladningen i Colombo 19. oktober, efter jeres ETA til Mombasa. Hold øje med Colombo, Abidjan og Tema, hvor skibe venter op til en uge. Det rammer 9 af jeres forsendelser.",
  "counts": {
   "Forsinket": 17,
   "Tidligere": 2,
@@ -69,6 +69,15 @@
      "date": "2026-09-30",
      "eta": "2026-10-03"
     }
+   ],
+   "risks": [
+    {
+     "id": "coega",
+     "title": "Coega (Ngqura): blæst og reparationer",
+     "severity": "middel",
+     "port": "COEGA",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -125,6 +134,29 @@
     {
      "date": "2026-09-30",
      "eta": "2026-09-30"
+    }
+   ],
+   "risks": [
+    {
+     "id": "abidjan",
+     "title": "Abidjan: næsten syv dages ventetid",
+     "severity": "høj",
+     "port": "ABIDJAN",
+     "role": "omladning"
+    },
+    {
+     "id": "dakar",
+     "title": "Dakar: ca. 2,5 dages ventetid",
+     "severity": "middel",
+     "port": "DAKAR",
+     "role": "destination"
+    },
+    {
+     "id": "singapore",
+     "title": "Singapore: bedre end i sommer",
+     "severity": "lav",
+     "port": "SINGAPORE",
+     "role": "omladning"
     }
    ]
   },
@@ -219,6 +251,22 @@
      "date": "2026-09-30",
      "eta": "2026-10-03"
     }
+   ],
+   "risks": [
+    {
+     "id": "colombo",
+     "title": "Colombo: lange ventetider på omladning",
+     "severity": "høj",
+     "port": "COLOMBO",
+     "role": "omladning"
+    },
+    {
+     "id": "mombasa",
+     "title": "Mombasa: ventetiden er faldet, men havnen er presset",
+     "severity": "middel",
+     "port": "MOMBASA",
+     "role": "destination"
+    }
    ]
   },
   {
@@ -254,6 +302,15 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-23"
+    }
+   ],
+   "risks": [
+    {
+     "id": "mombasa",
+     "title": "Mombasa: ventetiden er faldet, men havnen er presset",
+     "severity": "middel",
+     "port": "MOMBASA",
+     "role": "destination"
     }
    ]
   },
@@ -355,6 +412,22 @@
      "date": "2026-09-30",
      "eta": "2026-10-17"
     }
+   ],
+   "risks": [
+    {
+     "id": "abidjan",
+     "title": "Abidjan: næsten syv dages ventetid",
+     "severity": "høj",
+     "port": "ABIDJAN",
+     "role": "destination"
+    },
+    {
+     "id": "tanger-med",
+     "title": "Tanger Med: stabil, men blæst har givet uorden",
+     "severity": "lav",
+     "port": "TANGER MED",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -404,6 +477,15 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-01"
+    }
+   ],
+   "risks": [
+    {
+     "id": "douala-kribi",
+     "title": "Douala og Kribi: regntid og nye toldregler",
+     "severity": "middel",
+     "port": "KRIBI",
+     "role": "omladning"
     }
    ]
   },
@@ -462,6 +544,22 @@
      "date": "2026-09-30",
      "eta": "2026-11-07"
     }
+   ],
+   "risks": [
+    {
+     "id": "dakar",
+     "title": "Dakar: ca. 2,5 dages ventetid",
+     "severity": "middel",
+     "port": "DAKAR",
+     "role": "destination"
+    },
+    {
+     "id": "tanger-med",
+     "title": "Tanger Med: stabil, men blæst har givet uorden",
+     "severity": "lav",
+     "port": "TANGER MED",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -511,6 +609,22 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-06"
+    }
+   ],
+   "risks": [
+    {
+     "id": "dakar",
+     "title": "Dakar: ca. 2,5 dages ventetid",
+     "severity": "middel",
+     "port": "DAKAR",
+     "role": "destination"
+    },
+    {
+     "id": "tanger-med",
+     "title": "Tanger Med: stabil, men blæst har givet uorden",
+     "severity": "lav",
+     "port": "TANGER MED",
+     "role": "omladning"
     }
    ]
   },
@@ -569,6 +683,15 @@
      "date": "2026-09-30",
      "eta": "2026-11-01"
     }
+   ],
+   "risks": [
+    {
+     "id": "singapore",
+     "title": "Singapore: bedre end i sommer",
+     "severity": "lav",
+     "port": "SINGAPORE",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -611,6 +734,15 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-10"
+    }
+   ],
+   "risks": [
+    {
+     "id": "tema",
+     "title": "Tema: over seks dages ventetid",
+     "severity": "høj",
+     "port": "TEMA",
+     "role": "destination"
     }
    ]
   },
@@ -712,6 +844,22 @@
      "date": "2026-09-30",
      "eta": "2026-11-07"
     }
+   ],
+   "risks": [
+    {
+     "id": "abidjan",
+     "title": "Abidjan: næsten syv dages ventetid",
+     "severity": "høj",
+     "port": "ABIDJAN",
+     "role": "destination"
+    },
+    {
+     "id": "tanger-med",
+     "title": "Tanger Med: stabil, men blæst har givet uorden",
+     "severity": "lav",
+     "port": "TANGER MED",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -754,6 +902,22 @@
     {
      "date": "2026-09-30",
      "eta": "2026-12-05"
+    }
+   ],
+   "risks": [
+    {
+     "id": "colombo",
+     "title": "Colombo: lange ventetider på omladning",
+     "severity": "høj",
+     "port": "COLOMBO",
+     "role": "omladning"
+    },
+    {
+     "id": "mombasa",
+     "title": "Mombasa: ventetiden er faldet, men havnen er presset",
+     "severity": "middel",
+     "port": "MOMBASA",
+     "role": "destination"
     }
    ]
   },
@@ -811,6 +975,15 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-19"
+    }
+   ],
+   "risks": [
+    {
+     "id": "tanger-med",
+     "title": "Tanger Med: stabil, men blæst har givet uorden",
+     "severity": "lav",
+     "port": "TANGER MED",
+     "role": "omladning"
     }
    ]
   },
@@ -907,7 +1080,23 @@
     "event": "Vessel Departure",
     "date": "2026-09-09"
    },
-   "history": []
+   "history": [],
+   "risks": [
+    {
+     "id": "colombo",
+     "title": "Colombo: lange ventetider på omladning",
+     "severity": "høj",
+     "port": "COLOMBO",
+     "role": "omladning"
+    },
+    {
+     "id": "mombasa",
+     "title": "Mombasa: ventetiden er faldet, men havnen er presset",
+     "severity": "middel",
+     "port": "MOMBASA",
+     "role": "destination"
+    }
+   ]
   },
   {
    "carrier": "CMA CGM",
@@ -956,6 +1145,15 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-04"
+    }
+   ],
+   "risks": [
+    {
+     "id": "tema",
+     "title": "Tema: over seks dages ventetid",
+     "severity": "høj",
+     "port": "TEMA",
+     "role": "destination"
     }
    ]
   },
@@ -1007,6 +1205,22 @@
      "date": "2026-09-30",
      "eta": "2026-10-12"
     }
+   ],
+   "risks": [
+    {
+     "id": "mombasa",
+     "title": "Mombasa: ventetiden er faldet, men havnen er presset",
+     "severity": "middel",
+     "port": "MOMBASA",
+     "role": "destination"
+    },
+    {
+     "id": "singapore",
+     "title": "Singapore: bedre end i sommer",
+     "severity": "lav",
+     "port": "SINGAPORE",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -1056,6 +1270,15 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-22"
+    }
+   ],
+   "risks": [
+    {
+     "id": "colombo",
+     "title": "Colombo: lange ventetider på omladning",
+     "severity": "høj",
+     "port": "COLOMBO",
+     "role": "omladning"
     }
    ]
   },
@@ -1193,6 +1416,15 @@
      "date": "2026-09-30",
      "eta": "2026-10-22"
     }
+   ],
+   "risks": [
+    {
+     "id": "singapore",
+     "title": "Singapore: bedre end i sommer",
+     "severity": "lav",
+     "port": "SINGAPORE",
+     "role": "omladning"
+    }
    ]
   },
   {
@@ -1238,7 +1470,353 @@
     "event": "Received for export transfer",
     "date": "2026-09-16"
    },
-   "history": []
+   "history": [],
+   "risks": [
+    {
+     "id": "douala-kribi",
+     "title": "Douala og Kribi: regntid og nye toldregler",
+     "severity": "middel",
+     "port": "KRIBI",
+     "role": "destination"
+    },
+    {
+     "id": "nhava-sheva",
+     "title": "Nhava Sheva: monsunvejr bremser terminalerne",
+     "severity": "middel",
+     "port": "NHAVA SHEVA",
+     "role": "afgangshavn"
+    }
+   ]
   }
- ]
+ ],
+ "news": {
+  "checked_at": "2026-09-30",
+  "items": [
+   {
+    "id": "colombo",
+    "severity": "høj",
+    "ports": [
+     "LKCMB"
+    ],
+    "title": "Colombo: lange ventetider på omladning",
+    "summary": "Skibe har ventet op til 24–36 timer på kaj, og ekspeditionen af de største skibe har taget op til seks dage. Et efterslæb på op til 35.000 TEU mellem terminalerne og dårligt vejr trækker ud. Presset kommer bl.a. fra last, der er omlagt fra Golfen.",
+    "as_of": "slut august–september 2026",
+    "source": {
+     "name": "Maritime Gateway",
+     "url": "https://www.maritimegateway.com/colombo-port-sees-transshipment-share-climb-to-82-as-weather-risks-threaten-congestion/"
+    },
+    "affected": [
+     {
+      "bl": "COP0305302",
+      "port": "COLOMBO",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0308382",
+      "port": "COLOMBO",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0306236",
+      "port": "COLOMBO",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0307708",
+      "port": "COLOMBO",
+      "role": "omladning"
+     }
+    ]
+   },
+   {
+    "id": "abidjan",
+    "severity": "høj",
+    "ports": [
+     "CIABJ"
+    ],
+    "title": "Abidjan: næsten syv dages ventetid",
+    "summary": "Skibe venter i gennemsnit omkring 6,8 dage, og forsinkelser på op til ca. 12 dage er meldt. Årsagen er udstyrsproblemer, mangel på lastbiler og stigende mængder. Containere bliver længe i havnen.",
+    "as_of": "uge 16.–22. september 2026",
+    "source": {
+     "name": "Kuehne+Nagel, havneopdatering",
+     "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-22-09-2026"
+    },
+    "affected": [
+     {
+      "bl": "MEDUYJ453487",
+      "port": "ABIDJAN",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0305863",
+      "port": "ABIDJAN",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0306944",
+      "port": "ABIDJAN",
+      "role": "destination"
+     }
+    ]
+   },
+   {
+    "id": "tema",
+    "severity": "høj",
+    "ports": [
+     "GHTEM"
+    ],
+    "title": "Tema: over seks dages ventetid",
+    "summary": "Gennemsnitlig ventetid omkring 6,4 dage og forsinkelser på ca. en uge pga. fyldt containerplads, mangel på lastbiler og høj efterspørgsel. Ventetiden er faldet lidt, men transport ud af havnen er stadig flaskehalsen.",
+    "as_of": "uge 16.–22. september 2026",
+    "source": {
+     "name": "Kuehne+Nagel, havneopdatering",
+     "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-22-09-2026"
+    },
+    "affected": [
+     {
+      "bl": "MEDUAAM80238",
+      "port": "TEMA",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0308369",
+      "port": "TEMA",
+      "role": "destination"
+     }
+    ]
+   },
+   {
+    "id": "mombasa",
+    "severity": "middel",
+    "ports": [
+     "KEMBA"
+    ],
+    "title": "Mombasa: ventetiden er faldet, men havnen er presset",
+    "summary": "Gennemsnitlig ventetid omkring 2 dage i slutningen af september, ned fra ca. 4 dage (og over 6 dage for linjefart) i starten af måneden. Mangel på lastbiler, told og udstyr giver fortsat forsinkelser.",
+    "as_of": "september 2026",
+    "source": {
+     "name": "Kuehne+Nagel, havneopdatering",
+     "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-22-09-2026"
+    },
+    "affected": [
+     {
+      "bl": "COP0305302",
+      "port": "MOMBASA",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0308433",
+      "port": "MOMBASA",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0308382",
+      "port": "MOMBASA",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0306236",
+      "port": "MOMBASA",
+      "role": "destination"
+     },
+     {
+      "bl": "MEDUABK49475",
+      "port": "MOMBASA",
+      "role": "destination"
+     }
+    ]
+   },
+   {
+    "id": "dakar",
+    "severity": "middel",
+    "ports": [
+     "SNDKR"
+    ],
+    "title": "Dakar: ca. 2,5 dages ventetid",
+    "summary": "Moderat trængsel med omkring 2,5 dages gennemsnitlig ventetid. Ekstra last, der er omlagt fra Mali-korridoren, presser havnen.",
+    "as_of": "september 2026",
+    "source": {
+     "name": "Portcast, live havnedata",
+     "url": "https://www.portcast.io/port-congestion/dakar"
+    },
+    "affected": [
+     {
+      "bl": "MEDUYJ453487",
+      "port": "DAKAR",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0307369",
+      "port": "DAKAR",
+      "role": "destination"
+     },
+     {
+      "bl": "COP0307899",
+      "port": "DAKAR",
+      "role": "destination"
+     }
+    ]
+   },
+   {
+    "id": "douala-kribi",
+    "severity": "middel",
+    "ports": [
+     "CMDLA",
+     "CMKBI"
+    ],
+    "title": "Douala og Kribi: regntid og nye toldregler",
+    "summary": "Douala har haft 3–4 dages ventetid. I Kribi forsinker nye toldprocedurer udlevering af containere, og regntiden gør nogle veje ind i landet svære at køre på.",
+    "as_of": "slut august–start september 2026",
+    "source": {
+     "name": "Hapag-Lloyd, driftsopdatering Afrika uge 35",
+     "url": "https://www.hapag-lloyd.com/en/services-information/operational-updates/updates/2026/08/ops-update-africa-week35.html"
+    },
+    "affected": [
+     {
+      "bl": "MEDUAFO34490",
+      "port": "KRIBI",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0306231",
+      "port": "KRIBI",
+      "role": "destination"
+     }
+    ]
+   },
+   {
+    "id": "coega",
+    "severity": "middel",
+    "ports": [
+     "ZAZBA",
+     "ZAPLZ"
+    ],
+    "title": "Coega (Ngqura): blæst og reparationer",
+    "summary": "Gennemsnitlig ventetid omkring 3,3 dage, med forsinkelser på op til 5 dage. Kraftig vind og reparationer af udstyr på containerterminalen bremser arbejdet.",
+    "as_of": "midt september 2026",
+    "source": {
+     "name": "Kuehne+Nagel, havneopdatering",
+     "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-22-09-2026"
+    },
+    "affected": [
+     {
+      "bl": "MEDUKC776011",
+      "port": "COEGA",
+      "role": "omladning"
+     }
+    ]
+   },
+   {
+    "id": "nhava-sheva",
+    "severity": "middel",
+    "ports": [
+     "INNSA"
+    ],
+    "title": "Nhava Sheva: monsunvejr bremser terminalerne",
+    "summary": "Kraftig vind og regn har i perioder sænket tempoet eller stoppet arbejdet på flere terminaler. Det rammer forsendelser, der endnu ikke har forladt havnen.",
+    "as_of": "september 2026",
+    "source": {
+     "name": "Mohawk Global, India export update",
+     "url": "https://mohawkglobal.com/india-center-of-excellence/india-export-market-update-bmct-congestion-regional-transshipment-delays-continue/"
+    },
+    "affected": [
+     {
+      "bl": "COP0306231",
+      "port": "NHAVA SHEVA",
+      "role": "afgangshavn"
+     }
+    ]
+   },
+   {
+    "id": "tanger-med",
+    "severity": "lav",
+    "ports": [
+     "MAPTM"
+    ],
+    "title": "Tanger Med: stabil, men blæst har givet uorden",
+    "summary": "Omkring 1 dags ventetid. Kraftig vind har væltet containerstakke på pladsen, og der ryddes op.",
+    "as_of": "uge 9.–15. september 2026",
+    "source": {
+     "name": "Kuehne+Nagel, havneopdatering",
+     "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-09-09-2026"
+    },
+    "affected": [
+     {
+      "bl": "COP0305863",
+      "port": "TANGER MED",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0307369",
+      "port": "TANGER MED",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0307899",
+      "port": "TANGER MED",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0306944",
+      "port": "TANGER MED",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0307065",
+      "port": "TANGER MED",
+      "role": "omladning"
+     }
+    ]
+   },
+   {
+    "id": "singapore",
+    "severity": "lav",
+    "ports": [
+     "SGSIN"
+    ],
+    "title": "Singapore: bedre end i sommer",
+    "summary": "Omkring 2 dages ventetid midt i september og 85 % fyldt containerplads, mod op til 7 dage i juni. Stadig et punkt at holde øje med for omladning.",
+    "as_of": "uge 16.–22. september 2026",
+    "source": {
+     "name": "Kuehne+Nagel, havneopdatering",
+     "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-22-09-2026"
+    },
+    "affected": [
+     {
+      "bl": "MEDUYJ453487",
+      "port": "SINGAPORE",
+      "role": "omladning"
+     },
+     {
+      "bl": "COP0305645",
+      "port": "SINGAPORE",
+      "role": "omladning"
+     },
+     {
+      "bl": "MEDUABK49475",
+      "port": "SINGAPORE",
+      "role": "omladning"
+     },
+     {
+      "bl": "MEDUAAO53495",
+      "port": "SINGAPORE",
+      "role": "omladning"
+     }
+    ]
+   },
+   {
+    "id": "suez",
+    "severity": "info",
+    "ports": [],
+    "title": "Rødehavet: nogle ruter tilbage via Suez, de fleste sejler stadig syd om Afrika",
+    "summary": "Enkelte rederier og tjenester er vendt tilbage til Suezkanalen i september, men situationen er usikker, og mange sejler stadig rundt om Kap Det Gode Håb. Ruteskift kan flytte ankomstdatoer med dage eller uger.",
+    "as_of": "september 2026",
+    "source": {
+     "name": "gCaptain",
+     "url": "https://gcaptain.com/container-shipping-returns-to-suez-despite-rising-red-sea-risks/"
+    },
+    "affected": []
+   }
+  ]
+ }
 }

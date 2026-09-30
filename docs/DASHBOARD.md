@@ -11,6 +11,8 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
   Resultatet gemmes ikke for andre seere; det gør morgenjobbet.
 - **Informér kunden:** færdig besked pr. forsendelse på dansk, engelsk eller fransk (fransk foreslås for fransktalende
   destinationer). "Omskriv med Claude" skriver den om live i valgt tone. Beskeden kopieres; den sendes ikke fra siden.
+- **Det skal I holde øje med:** nyheder om havne og ruter (fra `news.json`), koblet til de forsendelser, der endnu skal forbi
+  havnen. Klik fremhæver dem på kortet; trekanter på kortet markerer havnene.
 - **Gennemgå kundebeskeder:** bladr gennem alle forsinkede, tidligere og udaterede forsendelser én ad gangen.
 - Siden erklærer `mcp` (Apify) og `sample`. Knapperne vises kun, når seeren har adgang til dem.
 
@@ -24,13 +26,19 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
    - MSC: `muhammetakkurtt/msc-cargo-tracking-scraper`
 4. Hent resultaterne med `get-dataset-items` (hele datasættet). Store svar gemmes som fil; brug filstien direkte.
 5. Hent gårsdagens data: læs artifactens `data.json` (Artifact `read` med `path: "data.json"`) og gem den som `prev.json`.
-6. Byg ny data: `.venv/bin/python -m eta_tracker snapshot <cma-fil> <msc-fil> --previous prev.json --out dashboard/data.json`
-7. Læs `dashboard/data.json` og skriv en kort morgenbrief på dansk (3–5 sætninger): hvor mange er forsinket, hvilke 2–3 skal man
-   ringe om først, hvad har ændret sig siden i går (`changed_since_last`), og hvilke mangler dato. Kun fakta fra filen.
-   Kør trin 6 igen med `--summary "<brief>"`.
-8. Publicér: Artifact `publish` med `url` = artifactens URL, `file_path` = `dashboard/index.html` og
+6. Nyheder: find havnene på ruterne (`route[].name` i `prev.json`, ellers `dashboard/news.json`s eksisterende havne) og søg på nettet
+   efter aktuelle forhold, der kan forsinke: trængsel/ventetid, strejker, vejr, toldregler, ruteomlægninger (Rødehavet/Suez).
+   Skriv `dashboard/news.json` i samme format som den nuværende: `checked_at`, og `items` med `id`, `severity`
+   (høj ≥ 5 dages ventetid eller stop, middel 2–5 dage, lav < 2 dage, info = generelt), `ports` (UN/LOCODE, fx LKCMB),
+   `title`, `summary` (2–3 sætninger på dansk, kun det kilden siger, med tal), `as_of` og `source` (`name`, `url`).
+   Kun nyheder fra de seneste ca. 3 uger og kun med en kilde. Hellere færre end gættede.
+7. Byg ny data: `.venv/bin/python -m eta_tracker snapshot <cma-fil> <msc-fil> --previous prev.json --news dashboard/news.json --out dashboard/data.json`
+8. Læs `dashboard/data.json` og skriv en kort morgenbrief på dansk (3–5 sætninger): hvor mange er forsinket, hvilke 2–3 skal man
+   ringe om først, hvad har ændret sig siden i går (`changed_since_last`), hvilke mangler dato, og hvilke havne med høj risiko
+   flest forsendelser skal igennem (`news.items[].affected`). Kun fakta fra filen. Kør trin 7 igen med `--summary "<brief>"`.
+9. Publicér: Artifact `publish` med `url` = artifactens URL, `file_path` = `dashboard/index.html` og
    `files` = `{"data.json": "dashboard/data.json"}`.
-9. Fejler Apify, så publicér ikke. Dashboardet viser så gårsdagens data med gårsdagens dato, hvilket er ærligt.
+10. Fejler Apify, så publicér ikke. Dashboardet viser så gårsdagens data med gårsdagens dato, hvilket er ærligt.
 
 ## Omkostning
 

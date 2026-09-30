@@ -83,7 +83,7 @@ h2 { font: 800 22px/1 var(--display); text-transform: uppercase; letter-spacing:
 .land { fill: var(--land); }
 .route { fill: none; stroke-width: 1.6; stroke-linecap: round; opacity: .75; transition: opacity .2s, stroke-width .2s; }
 .route.todo { stroke-dasharray: 3 4; opacity: .55; }
-.dim .route, .dim .ship, .dim .pod { opacity: .08; }
+.dim .route, .dim .ship, .dim .pod, .dim .risk { opacity: .08; }
 .dim .hl { opacity: 1 !important; stroke-width: 3; }
 .ship { stroke: var(--panel); stroke-width: 1.5; }
 .pod { fill: none; stroke-width: 1.5; }
@@ -119,6 +119,22 @@ tr.detail td { background: color-mix(in srgb, var(--accent) 5%, var(--panel)); p
 
 footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 4px; }
 .empty { padding: 40px 0; text-align: center; color: var(--muted); }
+.newsgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.news { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; align-content: start; padding: 12px 14px; border: 1px solid var(--line); border-top: 4px solid var(--sev); border-radius: 4px; background: var(--panel); }
+.news:hover, .news:focus-visible { border-color: var(--sev); }
+.news:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.news[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--sev) inset; }
+.news h4 { margin: 0; font-size: 15px; line-height: 1.3; }
+.news p { margin: 0; font-size: 13px; color: var(--muted); }
+.sev { font: 600 11px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--sev); }
+.sev-høj { --sev: var(--late); } .sev-middel { --sev: var(--check); } .sev-lav { --sev: var(--same); } .sev-info { --sev: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font: 500 11px var(--mono); padding: 2px 6px; border-radius: 3px; background: var(--same-bg); color: var(--ink); }
+.src { font-size: 12px; color: var(--muted); }
+.src a { color: var(--accent); }
+.risk { stroke: var(--panel); stroke-width: 1; }
+.risks { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 3px; font-size: 13px; }
+.risks b { color: var(--sev); }
 .head-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
 .btn { font: 600 14px/1 var(--body); border-radius: 4px; padding: 10px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
 .btn:hover { border-color: var(--accent); }
@@ -190,6 +206,11 @@ tr.row.flash td { animation: flash 2.4s ease-out 1; }
     </div>
   </section>
 
+  <section id="newsSection" hidden>
+    <div class="tablehead"><h2>Det skal I holde øje med</h2><span class="small" id="newsChecked"></span></div>
+    <div class="newsgrid" id="newsgrid"></div>
+  </section>
+
   <section class="panel mapbox">
     <p class="eyebrow">Hvor er varerne nu</p>
     <svg id="map" viewBox="0 0 1000 470" role="img" aria-label="Kort over ruter og skibenes seneste position"></svg>
@@ -199,7 +220,8 @@ tr.row.flash td { animation: flash 2.4s ease-out 1; }
       <span><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="currentColor" stroke-width="2" stroke-dasharray="3 4"/></svg>mangler</span>
       <span><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="currentColor"/></svg>seneste position</span>
       <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>losningshavn</span>
-      <span>Farve = status. Klik en rute eller række for at fremhæve den.</span>
+      <span><svg width="12" height="12" viewBox="-6 -6 12 12"><path d="M0,-5L5,4H-5Z" fill="currentColor"/></svg>havn med nyhed</span>
+      <span>Farve = status. Klik en rute, en række eller en nyhed for at fremhæve den.</span>
     </div>
   </section>
 
@@ -270,6 +292,7 @@ const STATUS = {
   "Ikke understøttet":{ cls: "s-same",  color: "--same",  order: 5 },
 };
 const st = s => STATUS[s] || STATUS["Uændret"];
+const byId = id => document.getElementById(id);
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const col = s => css(st(s).color);
 const fmt = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("da-DK", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\./g, "-") : "–";
@@ -293,7 +316,7 @@ async function load() {
     return;
   }
   // Each section renders on its own, so one failing part never blanks the page.
-  for (const fn of [renderHeader, renderTally, renderCallFirst, () => renderMap(window.__land), renderTable]) {
+  for (const fn of [renderHeader, renderTally, renderCallFirst, renderNews, () => renderMap(window.__land), renderTable]) {
     try { fn(); } catch (e) { console.error(e); }
   }
 }
@@ -342,6 +365,30 @@ function renderCallFirst() {
   document.getElementById("bulkInform").onclick = () => openDrawer(needs.map(s => s.bl), 0);
 }
 
+let NEWS_SEL = null;
+function renderNews() {
+  const news = DATA.news?.items || [];
+  byId("newsSection").hidden = !news.length;
+  if (!news.length) return;
+  byId("newsChecked").textContent = DATA.news.checked_at ? `Nyheder tjekket ${fmtShort(DATA.news.checked_at)}` : "";
+  byId("newsgrid").innerHTML = news.map(n => {
+    const aff = n.affected || [];
+    return `<button class="news sev-${esc(n.severity)}" data-news="${esc(n.id)}" aria-pressed="${NEWS_SEL === n.id}">
+      <span class="sev">${esc({ "høj": "Høj risiko", "middel": "Middel risiko", "lav": "Lav risiko", "info": "Til orientering" }[n.severity] || n.severity)}</span>
+      <h4>${esc(n.title)}</h4>
+      <p>${esc(n.summary)}</p>
+      ${aff.length ? `<span class="small">Berører ${aff.length} forsendelse${aff.length === 1 ? "" : "r"}:</span><span class="chips">${aff.map(a => `<span class="chip" title="${esc(a.port)}: ${esc(a.role)}">${esc(a.bl)}</span>`).join("")}</span>` : `<span class="small">${n.ports?.length ? "Ingen af jeres forsendelser skal forbi lige nu." : "Gælder ruter generelt."}</span>`}
+      <span class="src">${esc(n.as_of || "")} · <a href="${esc(n.source?.url || "#")}" target="_blank" rel="noopener">${esc(n.source?.name || "Kilde")}</a></span>
+    </button>`;
+  }).join("");
+  byId("newsgrid").querySelectorAll(".news").forEach(b => b.onclick = e => {
+    if (e.target.closest("a")) return;
+    NEWS_SEL = NEWS_SEL === b.dataset.news ? null : b.dataset.news;
+    selected = null; renderNews(); renderTable(); highlight(null);
+    if (NEWS_SEL) document.querySelector(".mapbox").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+
 function renderMap(land) {
   if (!window.d3) return;
   const svg = d3.select("#map"), W = 1000, H = 470;
@@ -383,6 +430,19 @@ function renderMap(land) {
     g.append("circle").datum(s).attr("class", "ship").attr("data-bl", s.bl).attr("cx", x).attr("cy", y).attr("r", 4.5).attr("fill", color);
   });
   const tip = document.getElementById("tip"), box = document.querySelector(".mapbox");
+  const SEVC = { "høj": "--late", "middel": "--check", "lav": "--same", "info": "--accent" };
+  (DATA.news?.items || []).forEach(n => (n.ports || []).forEach(code => {
+    const pt = typeof PORTS !== "undefined" && PORTS[code]; if (!pt) return;
+    const [x, y] = proj([pt[2], pt[1]]);
+    g.append("path").datum(n).attr("class", "risk").attr("data-news", n.id)
+      .attr("d", d3.symbol(d3.symbolTriangle, 70)()).attr("transform", `translate(${x},${y - 10})`).attr("fill", css(SEVC[n.severity] || "--accent"));
+  }));
+  g.selectAll(".risk").on("mousemove", (ev, n) => {
+      const r = box.getBoundingClientRect(); tip.hidden = false;
+      tip.innerHTML = `<b>${esc(n.title)}</b><br>${(n.affected || []).length} af jeres forsendelser berøres`;
+      tip.style.left = Math.min(ev.clientX - r.left + 12, r.width - 270) + "px"; tip.style.top = (ev.clientY - r.top + 12) + "px";
+    }).on("mouseleave", () => tip.hidden = true)
+    .on("click", (ev, n) => { NEWS_SEL = NEWS_SEL === n.id ? null : n.id; selected = null; renderNews(); renderTable(); highlight(null); });
   g.selectAll(".route, .ship, .pod")
     .on("mousemove", (ev, s) => {
       const r = box.getBoundingClientRect();
@@ -399,14 +459,19 @@ function renderMap(land) {
 function highlight(bl) {
   const g = document.getElementById("routes"); if (!g) return;
   g.querySelectorAll(".hl").forEach(n => n.classList.remove("hl"));
-  const dim = bl || filter;
+  const news = !bl && NEWS_SEL ? (DATA.news?.items || []).find(n => n.id === NEWS_SEL) : null;
+  const dim = bl || filter || news;
   g.classList.toggle("dim", !!dim);
-  if (bl) g.querySelectorAll(`[data-bl="${CSS.escape(bl)}"]`).forEach(n => n.classList.add("hl"));
+  if (news) {
+    (news.affected || []).forEach(a => g.querySelectorAll(`[data-bl="${CSS.escape(a.bl)}"]`).forEach(n => n.classList.add("hl")));
+    g.querySelectorAll(`[data-news="${CSS.escape(news.id)}"]`).forEach(n => n.classList.add("hl"));
+  } else if (bl) g.querySelectorAll(`[data-bl="${CSS.escape(bl)}"]`).forEach(n => n.classList.add("hl"));
   else if (filter) DATA.shipments.filter(s => s.status === filter).forEach(s => g.querySelectorAll(`[data-bl="${CSS.escape(s.bl)}"]`).forEach(n => n.classList.add("hl")));
 }
 
 function select(bl, scroll) {
   selected = selected === bl ? null : bl;
+  if (selected && NEWS_SEL) { NEWS_SEL = null; renderNews(); }
   if (selected && filter && DATA.shipments.find(s => s.bl === selected)?.status !== filter) filter = null;
   renderTally(); renderTable(); highlight(selected);
   if (selected && scroll) document.querySelector(`tr.row[data-bl="${CSS.escape(selected)}"]`)?.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -440,6 +505,7 @@ function renderTable() {
         <div class="legs">${legs || "Ingen rute i data"}</div>
         <p class="note">${esc(s.note)}${s.vessel ? ` · Skib: ${esc(s.vessel)}` : ""}${s.position ? ` · Seneste hændelse: ${esc(s.position.event)} i ${esc(s.position.name)} ${fmt(s.position.date)}` : ""}</p>
         <p class="note small">${hist}</p>
+        ${(s.risks || []).length ? `<ul class="risks">${s.risks.map(k => `<li class="sev-${esc(k.severity)}"><b>${esc({ "høj": "Høj", "middel": "Middel", "lav": "Lav", "info": "Info" }[k.severity] || k.severity)}</b> · ${esc(k.title)} <span class="small">(${esc(k.port)}, ${esc(k.role)})</span></li>`).join("")}</ul>` : ""}
         <div class="detail-actions"><button class="btn small" data-inform="${esc(s.bl)}">Informér kunden</button></div></td></tr>`;
     }
     return html;
@@ -455,7 +521,7 @@ document.querySelectorAll("#tbl th").forEach(th => th.onclick = () => {
   if (sortKey === th.dataset.k) sortDir = -sortDir; else { sortKey = th.dataset.k; sortDir = th.dataset.k === "diff_days" ? -1 : 1; }
   if (DATA) renderTable();
 });
-const repaint = () => { if (DATA) { renderTally(); renderCallFirst(); renderMap(window.__land); renderTable(); highlight(selected); } };
+const repaint = () => { if (DATA) { renderTally(); renderCallFirst(); renderNews(); renderMap(window.__land); renderTable(); highlight(selected); } };
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", repaint);
 new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 load();
@@ -552,7 +618,8 @@ function showDrawerItem() {
   const d = s.diff_days;
   $("dFacts").innerHTML = `<span><span class="pill ${st(s.status).cls}">${esc(s.status)}</span>${d ? ` <b>${d > 0 ? "+" : ""}${d} dage</b>` : ""}</span>
     <span>Jeres ETA <b>${fmt(s.current_eta)}</b> · rederiets ETA nu <b>${fmt(s.new_eta)}</b></span>
-    <span>${esc(s.route.map(p => placeName(p.name)).join(" → "))}${s.vessel ? ` · ${esc(s.vessel)}` : ""}</span>`;
+    <span>${esc(s.route.map(p => placeName(p.name)).join(" → "))}${s.vessel ? ` · ${esc(s.vessel)}` : ""}</span>
+    ${(s.risks || []).length ? `<span>Til jer, ikke i beskeden: ${s.risks.map(k => esc(k.title.split(":")[0])).join(", ")} kan give yderligere forsinkelse.</span>` : ""}`;
   const sug = suggestLang(s);
   $("langSeg").querySelectorAll("button").forEach(b => {
     b.setAttribute("aria-pressed", String(b.dataset.lang === D.lang));
@@ -768,7 +835,7 @@ async function runNow() {
   DATA.summary = summarizeJs(DATA.shipments);
   DATA.generated_at = new Date().toLocaleString("sv-SE").replace(" ", "T");
   DATA.run_date = today;
-  for (const fn of [renderHeader, renderTally, renderCallFirst, () => renderMap(window.__land), renderTable]) { try { fn(); } catch (e) { console.error(e); } }
+  for (const fn of [renderHeader, renderTally, renderCallFirst, renderNews, () => renderMap(window.__land), renderTable]) { try { fn(); } catch (e) { console.error(e); } }
   highlight(selected);
   const secs = Math.round((performance.now() - t0) / 1000);
   const partial = failed.length ? " Et rederi svarede ikke; dets rækker viser seneste kendte data." : "";

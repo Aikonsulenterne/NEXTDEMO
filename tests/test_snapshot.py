@@ -44,3 +44,28 @@ def test_history_and_change_flag_across_days():
     assert s["history"] == [{"date": "2026-09-30", "eta": "2026-10-03"}, {"date": "2026-10-01", "eta": "2026-10-05"}]
     assert [r["date"] for r in day2["runs"]] == ["2026-09-30", "2026-10-01"]
     assert "1 har fået ny ETA" in day2["summary"]
+
+
+def test_news_links_only_ports_still_ahead():
+    news = {"checked_at": "2026-09-30", "items": [
+        {"id": "maputo", "severity": "høj", "ports": ["MZMPM"], "title": "Maputo", "summary": "", "source": {}},
+        {"id": "busan", "severity": "lav", "ports": ["KRPUS"], "title": "Busan", "summary": "", "source": {}},
+        {"id": "global", "severity": "info", "ports": [], "title": "Suez", "summary": "", "source": {}},
+    ]}
+    doc = build(items(), BASELINE, None, date(2026, 9, 30), news=news)
+    by = {n["id"]: n for n in doc["news"]["items"]}
+    assert by["maputo"]["affected"] == [{"bl": "MEDUKC776011", "port": "MAPUTO", "role": "destination"}]
+    assert by["busan"]["affected"] == []  # already left the port of loading
+    assert by["global"]["affected"] == []
+    ship = next(s for s in doc["shipments"] if s["bl"] == "MEDUKC776011")
+    assert [r["id"] for r in ship["risks"]] == ["maputo"]
+    assert [n["id"] for n in doc["news"]["items"]] == ["maputo", "busan", "global"]
+
+
+def test_news_skips_origin_once_loaded():
+    news = {"items": [{"id": "busan", "severity": "lav", "ports": ["KRPUS"], "title": "Busan", "summary": "", "source": {}}]}
+    it = items()
+    events = it["MEDUKC776011"]["bill_of_ladings"][0]["ContainersInfo"][0]["Events"]
+    it["MEDUKC776011"]["bill_of_ladings"][0]["ContainersInfo"][0]["Events"] = [e for e in events if e["Order"] <= 2]
+    doc = build(it, BASELINE, None, date(2026, 9, 30), news=news)
+    assert doc["news"]["items"][0]["affected"] == []  # last event "Export Loaded on Vessel" in Busan
