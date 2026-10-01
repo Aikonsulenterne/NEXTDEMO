@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-09-30T13:46:32",
- "run_date": "2026-09-30",
+ "generated_at": "2026-10-01T11:28:01",
+ "run_date": "2026-10-01",
  "threshold_days": 1,
- "summary": "Godmorgen. 17 af jeres 25 forsendelser ankommer senere end jeres liste siger, flere af dem 1-2 uger. Listen er sandsynligvis ikke opdateret for nylig. Ring først om COP0307899 til Dakar og COP0308196 til Jakarta (+15 dage hver) og COP0305645 til Monrovia (+13). To CMA-forsendelser har endnu ingen ankomstdato: COP0306236 når tidligst omladningen i Colombo 19. oktober, efter jeres ETA til Mombasa. Hold øje med Colombo, Abidjan og Tema, hvor skibe venter op til en uge. Det rammer 9 af jeres forsendelser.",
+ "summary": "Godmorgen. 18 af 25 forsendelser er forsinket i forhold til jeres liste. Ring først om COP0306236 til Mombasa (+27 dage; CMA CGM har nu sat ankomst til 10. november), COP0308196 til Jakarta (+16) og COP0307899 til Dakar (+15). Siden i går har 6 fået ny ETA, bl.a. MEDUAAO53495 til Cotonou, der er rykket 10 dage frem og nu er til tiden. COP0306231 til Kribi mangler stadig dato, og MSC svarede ikke for MEDUYJ453487 (Dakar) i dag, så den viser gårsdagens data. Colombo, hvor 4 forsendelser skal omlades, har stadig lange ventetider.",
  "counts": {
-  "Forsinket": 17,
+  "Forsinket": 18,
   "Tidligere": 2,
   "Uændret": 4,
-  "Tjek manuelt": 2
+  "Tjek manuelt": 1
  },
  "runs": [
   {
@@ -17,6 +17,15 @@
     "Tidligere": 2,
     "Uændret": 4,
     "Tjek manuelt": 2
+   }
+  },
+  {
+   "date": "2026-10-01",
+   "counts": {
+    "Forsinket": 18,
+    "Tidligere": 2,
+    "Uændret": 4,
+    "Tjek manuelt": 1
    }
   }
  ],
@@ -61,8 +70,8 @@
     "name": "COEGA",
     "lat": -33.8,
     "lon": 25.68,
-    "event": "Full Transshipment Positioned In",
-    "date": "2026-09-24"
+    "event": "Full Transshipment Loaded",
+    "date": "2026-09-30"
    },
    "history": [
     {
@@ -91,7 +100,7 @@
    "vessel": null,
    "pod": "DAKAR, SN",
    "arrived": false,
-   "note": "ETA ved DAKAR, SN, via SINGAPORE, SG, ABIDJAN, CI",
+   "note": "Rederiet svarede ikke i dag; viser data fra 2026-09-30. ETA ved DAKAR, SN, via SINGAPORE, SG, ABIDJAN, CI",
    "route": [
     {
      "code": "MYPKG",
@@ -157,17 +166,39 @@
      "severity": "lav",
      "port": "SINGAPORE",
      "role": "omladning"
+    },
+    {
+     "id": "abidjan",
+     "title": "Abidjan: næsten syv dages ventetid",
+     "severity": "høj",
+     "port": "ABIDJAN",
+     "role": "omladning"
+    },
+    {
+     "id": "dakar",
+     "title": "Dakar: ca. 2,5 dages ventetid",
+     "severity": "middel",
+     "port": "DAKAR",
+     "role": "destination"
+    },
+    {
+     "id": "singapore",
+     "title": "Singapore: bedre end i sommer",
+     "severity": "lav",
+     "port": "SINGAPORE",
+     "role": "omladning"
     }
-   ]
+   ],
+   "stale": true
   },
   {
    "carrier": "MSC",
    "bl": "MEDUAEO13818",
    "current_eta": "2026-10-02",
-   "new_eta": "2026-09-30",
-   "diff_days": -2,
+   "new_eta": "2026-10-01",
+   "diff_days": -1,
    "status": "Tidligere",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "MSC MARIANNA",
    "pod": "LOME, TG",
    "arrived": false,
@@ -200,6 +231,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-09-30"
+    },
+    {
+     "date": "2026-10-01",
+     "eta": "2026-10-01"
     }
    ]
   },
@@ -297,7 +332,14 @@
      "kind": "POD"
     }
    ],
-   "position": null,
+   "position": {
+    "code": "INNSA",
+    "name": "NHAVA SHEVA",
+    "lat": 18.963134,
+    "lon": 73.049107,
+    "event": "Empty Picked-up at Depot",
+    "date": "2026-09-30"
+   },
    "history": [
     {
      "date": "2026-09-30",
@@ -311,6 +353,13 @@
      "severity": "middel",
      "port": "MOMBASA",
      "role": "destination"
+    },
+    {
+     "id": "nhava-sheva",
+     "title": "Nhava Sheva: monsunvejr bremser terminalerne",
+     "severity": "middel",
+     "port": "NHAVA SHEVA",
+     "role": "afgangshavn"
     }
    ]
   },
@@ -368,10 +417,10 @@
    "carrier": "CMA CGM",
    "bl": "COP0305863",
    "current_eta": "2026-10-17",
-   "new_eta": "2026-10-17",
-   "diff_days": 0,
-   "status": "Uændret",
-   "changed_since_last": false,
+   "new_eta": "2026-10-18",
+   "diff_days": 1,
+   "status": "Forsinket",
+   "changed_since_last": true,
    "vessel": "CMA CGM SAVANNAH",
    "pod": "ABIDJAN",
    "arrived": false,
@@ -411,6 +460,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-17"
+    },
+    {
+     "date": "2026-10-01",
+     "eta": "2026-10-18"
     }
    ],
    "risks": [
@@ -434,10 +487,10 @@
    "carrier": "MSC",
    "bl": "MEDUAFO34490",
    "current_eta": "2026-10-22",
-   "new_eta": "2026-11-01",
-   "diff_days": 10,
+   "new_eta": "2026-10-29",
+   "diff_days": 7,
    "status": "Forsinket",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "MSC BAHRAIN II",
    "pod": "DOUALA, CM",
    "arrived": false,
@@ -477,6 +530,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-01"
+    },
+    {
+     "date": "2026-10-01",
+     "eta": "2026-10-29"
     }
    ],
    "risks": [
@@ -1041,14 +1098,14 @@
    "carrier": "CMA CGM",
    "bl": "COP0306236",
    "current_eta": "2026-10-14",
-   "new_eta": null,
-   "diff_days": null,
-   "status": "Tjek manuelt",
-   "changed_since_last": false,
-   "vessel": null,
+   "new_eta": "2026-11-10",
+   "diff_days": 27,
+   "status": "Forsinket",
+   "changed_since_last": true,
+   "vessel": "ADAMASTOS",
    "pod": "MOMBASA",
    "arrived": false,
-   "note": "CMA CGM har endnu ingen dato for ankomst til MOMBASA (videre skib ikke planlagt). Når først omladning i COLOMBO 19-10-2026",
+   "note": "ETA ved MOMBASA, via COLOMBO",
    "route": [
     {
      "code": "NLRTM",
@@ -1067,8 +1124,8 @@
     {
      "code": "KEMBA",
      "name": "MOMBASA",
-     "lat": -4.05,
-     "lon": 39.6666667,
+     "lat": -2.2719,
+     "lon": 40.902,
      "kind": "POD"
     }
    ],
@@ -1080,7 +1137,12 @@
     "event": "Vessel Departure",
     "date": "2026-09-09"
    },
-   "history": [],
+   "history": [
+    {
+     "date": "2026-10-01",
+     "eta": "2026-11-10"
+    }
+   ],
    "risks": [
     {
      "id": "colombo",
@@ -1286,10 +1348,10 @@
    "carrier": "CMA CGM",
    "bl": "COP0308196",
    "current_eta": "2026-10-09",
-   "new_eta": "2026-10-24",
-   "diff_days": 15,
+   "new_eta": "2026-10-25",
+   "diff_days": 16,
    "status": "Forsinket",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "ZHONG GU GUI YANG",
    "pod": "JAKARTA",
    "arrived": false,
@@ -1315,6 +1377,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-24"
+    },
+    {
+     "date": "2026-10-01",
+     "eta": "2026-10-25"
     }
    ]
   },
@@ -1326,7 +1392,7 @@
    "diff_days": 1,
    "status": "Forsinket",
    "changed_since_last": false,
-   "vessel": "ISEACO FORTUNE",
+   "vessel": "XIN HUA YUAN",
    "pod": "YANGON",
    "arrived": false,
    "note": "ETA ved YANGON, via PORT KLANG",
@@ -1372,11 +1438,11 @@
    "carrier": "MSC",
    "bl": "MEDUAAO53495",
    "current_eta": "2026-10-12",
-   "new_eta": "2026-10-22",
-   "diff_days": 10,
-   "status": "Forsinket",
-   "changed_since_last": false,
-   "vessel": "MSC KATYAYNI VI",
+   "new_eta": "2026-10-12",
+   "diff_days": 0,
+   "status": "Uændret",
+   "changed_since_last": true,
+   "vessel": "TBN",
    "pod": "COTONOU, BJ",
    "arrived": false,
    "note": "ETA ved COTONOU, BJ, via SINGAPORE, SG",
@@ -1415,6 +1481,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-22"
+    },
+    {
+     "date": "2026-10-01",
+     "eta": "2026-10-12"
     }
    ],
    "risks": [
@@ -1685,6 +1755,32 @@
     ]
    },
    {
+    "id": "nhava-sheva",
+    "severity": "middel",
+    "ports": [
+     "INNSA"
+    ],
+    "title": "Nhava Sheva: monsunvejr bremser terminalerne",
+    "summary": "Kraftig vind og regn har i perioder sænket tempoet eller stoppet arbejdet på flere terminaler. Det rammer forsendelser, der endnu ikke har forladt havnen.",
+    "as_of": "september 2026",
+    "source": {
+     "name": "Mohawk Global, India export update",
+     "url": "https://mohawkglobal.com/india-center-of-excellence/india-export-market-update-bmct-congestion-regional-transshipment-delays-continue/"
+    },
+    "affected": [
+     {
+      "bl": "COP0308433",
+      "port": "NHAVA SHEVA",
+      "role": "afgangshavn"
+     },
+     {
+      "bl": "COP0306231",
+      "port": "NHAVA SHEVA",
+      "role": "afgangshavn"
+     }
+    ]
+   },
+   {
     "id": "coega",
     "severity": "middel",
     "ports": [
@@ -1703,27 +1799,6 @@
       "bl": "MEDUKC776011",
       "port": "COEGA",
       "role": "omladning"
-     }
-    ]
-   },
-   {
-    "id": "nhava-sheva",
-    "severity": "middel",
-    "ports": [
-     "INNSA"
-    ],
-    "title": "Nhava Sheva: monsunvejr bremser terminalerne",
-    "summary": "Kraftig vind og regn har i perioder sænket tempoet eller stoppet arbejdet på flere terminaler. Det rammer forsendelser, der endnu ikke har forladt havnen.",
-    "as_of": "september 2026",
-    "source": {
-     "name": "Mohawk Global, India export update",
-     "url": "https://mohawkglobal.com/india-center-of-excellence/india-export-market-update-bmct-congestion-regional-transshipment-delays-continue/"
-    },
-    "affected": [
-     {
-      "bl": "COP0306231",
-      "port": "NHAVA SHEVA",
-      "role": "afgangshavn"
      }
     ]
    },

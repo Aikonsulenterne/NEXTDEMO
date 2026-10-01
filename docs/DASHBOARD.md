@@ -16,13 +16,19 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
 - **Eksportér til Excel:** .xlsx med fanerne Oversigt, Forsendelser (farvet status, rigtige datoer, filtre), Havnenyheder
   (med links) og Kundebeskeder (danske skabeloner). Bygges i browseren med `xlsx-js-style` (hentes først ved klik) og gemmes
   via `downloads`-kapabiliteten, så seeren bekræfter filen.
+- **Nyheder** vises som små kort; et klik åbner hele nyheden i en popup med berørte BL, kilde og "Vis på kortet".
+- **Manglende svar:** springer et rederi en BL over en dag, beholdes sidst kendte data med en note ("Rederiet svarede ikke i dag …"),
+  i stedet for at rækken skifter til "Ikke fundet".
 - **Gennemgå kundebeskeder:** bladr gennem alle forsinkede, tidligere og udaterede forsendelser én ad gangen.
 - Siden erklærer `mcp` (Apify) og `sample`. Knapperne vises kun, når seeren har adgang til dem.
 
 ## Morgenjobbets trin (følges af den planlagte Claude-session)
 
 1. Hent repoet `Aikonsulenterne/nextdemo` og opret venv: `python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt`.
-2. Læs BL-listen i `data/seed_bl_list.csv` (Carrier, BL, Current ETA). Del BL-numrene i CMA og MSC.
+2. Læs BL-listen fra Google-arket "Active BL List" (fil-id `1PoG4ljFHCGiktp9R0EOa1fT07MRRqqJQWcV8grpy6gs`) via Google Drive-connectoren
+   og skriv den til `data/seed_bl_list.csv` (Carrier, BL, Current ETA; datoer dd/mm/yy → yyyy-mm-dd, mellemrum fjernes).
+   Så er "Jeres ETA" altid den, der står i arket. Er Google Drive ikke forbundet, bruges `data/seed_bl_list.csv` som den er.
+   Del BL-numrene i CMA og MSC.
 3. Kør Apify-actorerne via Apify-connectoren (`call-actor`), én kørsel pr. rederi, med `{"trackingNumbers": [...]}` og
    `maxTotalChargeUsd` 0,5:
    - CMA: `muhammetakkurtt/cma-cgm-cargo-tracking-scraper`

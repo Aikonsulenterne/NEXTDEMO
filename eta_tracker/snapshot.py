@@ -115,13 +115,27 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
         history = list(prev_rows.get(bl, {}).get("history", []))
         if new and (not history or history[-1]["eta"] != new.isoformat()):
             history.append({"date": today.isoformat(), "eta": new.isoformat()})
-        prev_eta = prev_rows.get(bl, {}).get("new_eta")
+        prev = prev_rows.get(bl)
+        if item is None and carrier and prev and prev.get("new_eta"):
+            # The carrier sometimes drops a BL for a day (or once delivered). Keep the last known
+            # data, say so, rather than flipping a known shipment to "Ikke fundet".
+            seen = previous.get("run_date") or "sidste kørsel"
+            note = prev.get("note") or ""
+            if not note.startswith("Rederiet svarede ikke i dag"):
+                note = f"Rederiet svarede ikke i dag; viser data fra {seen}. {note}".strip()
+            kept = compare(supported=True, lookup_failed=False, page_state="ok", confidence="high",
+                           new_eta=date.fromisoformat(prev["new_eta"]), current_eta=current, threshold=threshold)
+            shipments.append({**prev, "current_eta": current.isoformat() if current else None,
+                              "diff_days": kept.diff_days, "status": kept.status,
+                              "changed_since_last": False, "stale": True, "note": note})
+            continue
+        prev_eta = prev.get("new_eta") if prev else None
         shipments.append({
             "carrier": carrier.name if carrier else row["Carrier"], "bl": bl,
             "current_eta": current.isoformat() if current else None,
             "new_eta": new.isoformat() if new else None,
             "diff_days": res.diff_days, "status": res.status,
-            "changed_since_last": bool(prev_eta and new and prev_eta != new.isoformat()),
+            "changed_since_last": bool(prev and new and prev_eta != new.isoformat()),
             "vessel": ex.vessel if ex else None, "pod": ex.pod if ex else None,
             "arrived": bool(ex and ex.arrived),
             "note": ex.note if ex else ("Rederiet returnerede intet" if carrier else "Rederi understøttes ikke"),

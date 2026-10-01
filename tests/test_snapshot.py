@@ -69,3 +69,16 @@ def test_news_skips_origin_once_loaded():
     it["MEDUKC776011"]["bill_of_ladings"][0]["ContainersInfo"][0]["Events"] = [e for e in events if e["Order"] <= 2]
     doc = build(it, BASELINE, None, date(2026, 9, 30), news=news)
     assert doc["news"]["items"][0]["affected"] == []  # last event "Export Loaded on Vessel" in Busan
+
+
+def test_missing_reply_keeps_last_known_and_first_date_counts_as_change():
+    day1 = build(items(), BASELINE, None, date(2026, 9, 30))
+    gone = items()
+    del gone["MEDUKC776011"]
+    day2 = build(gone, BASELINE, day1, date(2026, 10, 1))
+    s = next(x for x in day2["shipments"] if x["bl"] == "MEDUKC776011")
+    assert s["status"] == "Forsinket" and s["new_eta"] == "2026-10-03" and s["stale"]
+    assert s["note"].startswith("Rederiet svarede ikke i dag; viser data fra 2026-09-30.")
+    assert not s["changed_since_last"]
+    never = next(x for x in day2["shipments"] if x["bl"] == "COP0308433")
+    assert never["status"] == "Ikke fundet"  # nothing known before either

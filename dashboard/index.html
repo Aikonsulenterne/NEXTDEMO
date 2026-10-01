@@ -34,7 +34,7 @@ body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
 .wrap > * { min-width: 0; }
 .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .small { font-size: 12px; color: var(--muted); }
-h2 { font: 800 26px/1 var(--display); text-transform: uppercase; letter-spacing: .02em; margin: 0; text-wrap: balance; }
+h2 { font: 800 clamp(19px, 5.5vw, 26px)/1 var(--display); text-transform: uppercase; letter-spacing: .02em; margin: 0; text-wrap: balance; }
 .sechead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 14px; }
 .sechead p { margin: 0; color: var(--muted); font-size: 14px; }
 
@@ -131,14 +131,22 @@ header.top { display: flex; flex-wrap: wrap; align-items: center; justify-conten
 .notify p { margin: 0; }
 
 /* ---------- news ---------- */
-.newsgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
-.news { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 7px; align-content: start; padding: 14px 16px 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); position: relative; }
+.newsgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.news { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; align-content: start; padding: 11px 12px 11px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); position: relative; }
 .news::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 4px; border-radius: 0 3px 3px 0; background: var(--sev); }
 .news:hover { border-color: var(--sev); }
 .news:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .news[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--sev) inset; }
-.news h4 { margin: 0; font-size: 15px; line-height: 1.3; }
-.news p { margin: 0; font-size: 13px; color: var(--muted); }
+.news h4 { margin: 0; font-size: 14px; line-height: 1.3; }
+.news .more { font-size: 12px; color: var(--muted); }
+.newsdlg { width: min(520px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow-y: auto; padding: 22px 22px 18px 26px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+.newsdlg::backdrop { background: color-mix(in srgb, #000 45%, transparent); }
+.newsdlg::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 4px; border-radius: 0 3px 3px 0; background: var(--sev); }
+.newsdlg .dhead { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.newsdlg h3 { margin: 6px 0 0; font-size: 19px; line-height: 1.3; }
+.newsdlg p { margin: 12px 0; font-size: 15px; line-height: 1.55; }
+.newsdlg .chips { margin: 6px 0 12px; }
+.newsdlg .dfoot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
 .sev { font: 700 11px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--sev); }
 .sev::before { content: "▲ "; }
 .sev-høj { --sev: var(--late); } .sev-middel { --sev: var(--check); } .sev-lav { --sev: var(--same); } .sev-info { --sev: var(--accent); }
@@ -270,6 +278,13 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
   <section id="newsSection" hidden>
     <div class="sechead"><h2>Det skal I holde øje med</h2><p id="newsChecked"></p></div>
     <div class="newsgrid" id="newsgrid"></div>
+    <dialog class="newsdlg" id="newsDlg" aria-labelledby="ndTitle">
+      <div class="dhead"><span class="sev" id="ndSev"></span><button class="btn small" id="ndClose" aria-label="Luk">✕</button></div>
+      <h3 id="ndTitle"></h3>
+      <p id="ndText"></p>
+      <div id="ndAff"></div>
+      <div class="dfoot"><span class="src" id="ndSrc"></span><button class="btn primary" id="ndMap">Vis på kortet</button></div>
+    </dialog>
   </section>
 
   <section class="manifest">
@@ -447,23 +462,38 @@ function renderNews() {
   const news = DATA.news?.items || [];
   byId("newsSection").hidden = !news.length;
   if (!news.length) return;
-  byId("newsChecked").textContent = `Havne og ruter jeres forsendelser skal igennem${DATA.news.checked_at ? ` · tjekket ${fmtShort(DATA.news.checked_at)}` : ""}. Klik for at se dem på kortet.`;
-  byId("newsgrid").innerHTML = news.map(n => {
-    const aff = n.affected || [];
-    return `<button class="news sev-${esc(n.severity)}" data-news="${esc(n.id)}" aria-pressed="${NEWS_SEL === n.id}">
-      <span class="sev">${esc({ "høj": "Høj risiko", "middel": "Middel risiko", "lav": "Lav risiko", "info": "Til orientering" }[n.severity] || n.severity)}</span>
+  byId("newsChecked").textContent = `Havne og ruter jeres forsendelser skal igennem${DATA.news.checked_at ? ` · tjekket ${fmtShort(DATA.news.checked_at)}` : ""}`.replace(/\.?$/, ". Klik for at læse mere.");
+  const SEV = { "høj": "Høj risiko", "middel": "Middel risiko", "lav": "Lav risiko", "info": "Til orientering" };
+  const affText = n => (n.affected || []).length
+    ? `Berører ${n.affected.length} forsendelse${n.affected.length === 1 ? "" : "r"}`
+    : (n.ports?.length ? "Ingen af jeres forsendelser skal forbi lige nu" : "Gælder ruter generelt");
+  byId("newsgrid").innerHTML = news.map(n => `<button class="news sev-${esc(n.severity)}" data-news="${esc(n.id)}" aria-pressed="${NEWS_SEL === n.id}" aria-haspopup="dialog">
+      <span class="sev">${esc(SEV[n.severity] || n.severity)}</span>
       <h4>${esc(n.title)}</h4>
-      <p>${esc(n.summary)}</p>
-      ${aff.length ? `<span class="small">Berører ${aff.length} forsendelse${aff.length === 1 ? "" : "r"}:</span><span class="chips">${aff.map(a => `<span class="chip" title="${esc(a.port)}: ${esc(a.role)}">${esc(a.bl)}</span>`).join("")}</span>` : `<span class="small">${n.ports?.length ? "Ingen af jeres forsendelser skal forbi lige nu." : "Gælder ruter generelt."}</span>`}
-      <span class="src">${esc(n.as_of || "")} · <a href="${esc(n.source?.url || "#")}" target="_blank" rel="noopener">${esc(n.source?.name || "Kilde")}</a></span>
-    </button>`;
-  }).join("");
-  byId("newsgrid").querySelectorAll(".news").forEach(b => b.onclick = e => {
-    if (e.target.closest("a")) return;
-    NEWS_SEL = NEWS_SEL === b.dataset.news ? null : b.dataset.news;
-    selected = null; renderNews(); renderTable(); highlight(null);
+      <span class="more">${esc(affText(n))} · Læs mere</span>
+    </button>`).join("");
+  const dlg = byId("newsDlg");
+  const showOnMap = id => {
+    NEWS_SEL = id; selected = null; renderNews(); renderTable(); highlight(null);
     if (NEWS_SEL) document.querySelector(".sea").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  byId("newsgrid").querySelectorAll(".news").forEach(b => b.onclick = () => {
+    const n = news.find(x => x.id === b.dataset.news);
+    if (!n) return;
+    const aff = n.affected || [];
+    dlg.className = `newsdlg sev-${n.severity}`;
+    byId("ndSev").textContent = SEV[n.severity] || n.severity;
+    byId("ndTitle").textContent = n.title;
+    byId("ndText").textContent = n.summary;
+    byId("ndAff").innerHTML = `<span class="small">${esc(affText(n))}${aff.length ? ":" : "."}</span>` +
+      (aff.length ? `<span class="chips">${aff.map(a => `<span class="chip" title="${esc(a.port)}: ${esc(a.role)}">${esc(a.bl)}</span>`).join("")}</span>` : "");
+    byId("ndSrc").innerHTML = `${esc(n.as_of || "")} · <a href="${esc(n.source?.url || "#")}" target="_blank" rel="noopener">${esc(n.source?.name || "Kilde")}</a>`;
+    byId("ndMap").hidden = !aff.length && !n.ports?.length;
+    byId("ndMap").onclick = () => { dlg.close(); showOnMap(n.id); };
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
   });
+  byId("ndClose").onclick = () => dlg.close();
+  dlg.onclick = e => { if (e.target === dlg) dlg.close(); };
 }
 
 function renderMap(land) {
@@ -939,7 +969,7 @@ async function runNow() {
     if (changed) FLASH.add(s.bl);
     const history = [...(s.history || [])];
     if (eta && (!history.length || history[history.length - 1].eta !== eta)) history.push({ date: today, eta });
-    return { ...s, new_eta: eta, diff_days: diff, status, changed_since_last: !!(s.new_eta && eta && s.new_eta !== eta),
+    return { ...s, new_eta: eta, diff_days: diff, status, changed_since_last: !!(eta && s.new_eta !== eta),
       vessel: ex.vessel ?? null, pod: ex.pod ?? s.pod, arrived: !!ex.arrived, note: ex.note,
       route: ex.route?.length ? ex.route : s.route, position: ex.position || s.position, history };
   });
