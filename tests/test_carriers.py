@@ -154,3 +154,17 @@ def test_cma_pod_without_date_needs_manual_check_and_says_why():
     ex = parse_cma(load("cma_COP0306236.json"))  # real case: onward vessel from Colombo not planned yet
     assert ex.page_state == "ok" and ex.eta is None and ex.confidence == "low"
     assert "MOMBASA" in ex.note and "COLOMBO 19-10-2026" in ex.note
+
+
+def test_msc_discharged_without_eta_counts_as_arrived():
+    import copy
+    item = copy.deepcopy(json.loads((FIXTURES / "msc_MEDUKC776011.json").read_text()))
+    bl = item["bill_of_ladings"][0]
+    bl["GeneralTrackingInfo"]["FinalPodEtaDate"] = ""
+    for c in bl["ContainersInfo"]:
+        c["PodEtaDate"] = ""
+        c["Events"].insert(0, {"Order": 99, "Date": "04/10/2026", "Description": "Import Discharged from Vessel",
+                               "Location": "MAPUTO, MZ", "UnLocationCode": "MZMPM", "Detail": []})
+    ex = parse_msc(item)
+    assert ex.page_state == "ok" and ex.eta == "2026-10-04" and ex.arrived
+    assert ex.note.startswith("Losset i MAPUTO, MZ 04-10-2026")

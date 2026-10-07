@@ -367,7 +367,10 @@ let DATA = null, filter = null, selected = null, sortKey = "status", sortDir = 1
 
 async function load() {
   try {
-    const [data, land] = await Promise.all([
+    const EMB = window.__EMBED;  // set by the standalone file (tools/standalone.py), which carries its own data
+    // the later <script> blocks (customer messages, export) must be parsed before the first render
+    if (EMB && document.readyState === "loading") await new Promise(r => addEventListener("DOMContentLoaded", r, { once: true }));
+    const [data, land] = EMB ? [EMB.data, EMB.land] : await Promise.all([
       fetch("data.json", { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
       fetch("land-110m.json").then(r => r.json()).catch(() => null),
     ]);
@@ -849,11 +852,17 @@ function parseMsc(item) {
   const ce = [...new Set(cs.map(c => isoDate(c.PodEtaDate)).filter(Boolean))].sort();
   let eta = isoDate(info.FinalPodEtaDate);
   if (ce.length) eta = [eta, ce[ce.length - 1]].filter(Boolean).sort().pop();
-  if (!eta) return null;
+  const pod = info.PortOfDischarge || null;
+  // MSC drops the ETA once the box is off the ship; the discharge date at POD is the arrival
+  const discharged = eta ? null : cs.flatMap(c => c.Events || []).filter(e => /discharged/i.test(e.Description || "") && pod && (e.Location || "").trim().toUpperCase() === pod.trim().toUpperCase()).map(e => isoDate(e.Date)).filter(Boolean).sort().pop() || null;
+  if (!eta && !discharged) return null;
+  if (discharged) eta = discharged;
   let vessel = null;
   for (const c of cs) { const e = (c.Events || []).find(e => /estimated time of arrival/i.test(e.Description || "") && e.Detail?.length); if (e) { vessel = e.Detail[0]; break; } }
-  const pod = info.PortOfDischarge || null, arrived = !!bl.Delivered;
-  const notes = [arrived ? "Ankommet" : null, pod ? `ETA ved ${pod}` : "ETA ved POD", (info.Transshipments || []).length ? "via " + info.Transshipments.join(", ") : null].filter(Boolean);
+  const arrived = !!bl.Delivered || !!discharged;
+  const notes = discharged ? [`Losset i ${pod} ${discharged.split("-").reverse().join("-")}`]
+    : [arrived ? "Ankommet" : null, pod ? `ETA ved ${pod}` : "ETA ved POD"];
+  if ((info.Transshipments || []).length) notes.push("via " + info.Transshipments.join(", "));
   const stops = [info.PortOfLoad && ["POL", info.PortOfLoad], ...(info.Transshipments || []).map(t => ["PTS", t]), pod && ["POD", pod]].filter(Boolean);
   const codes = {}; cs.forEach(c => (c.Events || []).forEach(e => { if (e.Location) codes[e.Location.toUpperCase()] = e.UnLocationCode; }));
   const route = stops.map(([k, n]) => { const p = port(codes[n.toUpperCase()], n); return p && { ...p, kind: k }; }).filter(Boolean);
@@ -1110,5 +1119,13 @@ async function exportExcel() {
 
 if (window.claude?.use) {
   window.claude.use("downloads").then(d => { DOWNLOADS = d; if (d) { $("exportBtn").hidden = false; $("exportBtn").onclick = exportExcel; } }).catch(() => { });
+} else {
+  // Outside Claude (the standalone file opened in a normal browser): an ordinary browser download.
+  DOWNLOADS = { save: async ({ filename, data }) => {
+    const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(data), download: filename });
+    document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    return { status: "saved" };
+  } };
+  $("exportBtn").hidden = false; $("exportBtn").onclick = exportExcel;
 }
 </script>

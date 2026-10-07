@@ -22,6 +22,13 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
 - **Gennemgå kundebeskeder:** bladr gennem alle forsinkede, tidligere og udaterede forsendelser én ad gangen.
 - Siden erklærer `mcp` (Apify) og `sample`. Knapperne vises kun, når seeren har adgang til dem.
 
+## Vis tavlen uden for Claude (præsentation, offline)
+
+`python tools/standalone.py` bygger `dist/ETA-tavlen.html`: én fil med data, kort, biblioteker, skrifttyper og
+Excel-værktøj indbygget. Den åbner i enhver browser uden internet. "Kør nu" og "Omskriv med Claude" kræver Claude og
+er skjult; Excel-eksporten bliver en almindelig download. Filen viser data fra den `dashboard/data.json`, den blev bygget af,
+og indeholder rigtige BL-numre: del den kun med folk, der må se dem.
+
 ## Morgenjobbets trin (følges af den planlagte Claude-session)
 
 1. Hent repoet `Aikonsulenterne/nextdemo` og opret venv: `python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt`.

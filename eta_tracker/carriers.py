@@ -21,6 +21,15 @@ def _clean(value: str | None) -> str | None:
     return value.strip() if value and value.strip() else None
 
 
+def _discharged_at(containers: list[dict], pod: str | None):
+    """Latest 'Discharged' event at the port of discharge, if MSC has one."""
+    dates = [parse_date(e.get("Date")) for c in containers for e in c.get("Events") or []
+             if "discharged" in str(e.get("Description", "")).lower()
+             and pod and _clean(e.get("Location")) == pod]
+    dates = [d for d in dates if d]
+    return max(dates) if dates else None
+
+
 def parse_msc(item: dict) -> Extraction | None:
     """MSC gives the ETA directly: GeneralTrackingInfo.FinalPodEtaDate (dd/mm/yyyy)."""
     bls = item.get("bill_of_ladings") or []
@@ -34,8 +43,12 @@ def parse_msc(item: dict) -> Extraction | None:
     container_etas = sorted({d for d in (parse_date(c.get("PodEtaDate")) for c in containers) if d})
     if container_etas:
         eta = max([eta, container_etas[-1]] if eta else container_etas)  # latest ETA: the one the shipment waits for
-    if eta is None:
+    pod = _clean(info.get("PortOfDischarge"))
+    discharged = _discharged_at(containers, pod) if eta is None else None
+    if eta is None and discharged is None:
         return None
+    if discharged:  # MSC drops the ETA once the box is off the ship; the discharge date is the arrival
+        eta = discharged
 
     vessel = None
     for container in containers:
@@ -46,12 +59,14 @@ def parse_msc(item: dict) -> Extraction | None:
         if vessel:
             break
 
-    pod = _clean(info.get("PortOfDischarge"))
-    arrived = bool(bl.get("Delivered"))
+    arrived = bool(bl.get("Delivered")) or discharged is not None
     notes = []
-    if arrived:
-        notes.append("Ankommet")
-    notes.append(f"ETA ved {pod}" if pod else "ETA ved POD")
+    if discharged:
+        notes.append(f"Losset i {pod} {discharged:%d-%m-%Y}")
+    else:
+        if arrived:
+            notes.append("Ankommet")
+        notes.append(f"ETA ved {pod}" if pod else "ETA ved POD")
     transshipments = [_clean(t) for t in info.get("Transshipments") or [] if t]
     if transshipments:
         notes.append("via " + ", ".join(transshipments))
