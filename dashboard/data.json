@@ -1,11 +1,11 @@
 {
- "generated_at": "2026-10-07T10:59:40",
- "run_date": "2026-10-07",
+ "generated_at": "2026-10-08T17:13:34",
+ "run_date": "2026-10-08",
  "threshold_days": 1,
- "summary": "Godmorgen. 19 af 25 forsendelser er forsinket i forhold til jeres liste. Ring først om COP0306236 til Mombasa (+25 dage), MEDUAFO34490 til Douala (+21; rykket 14 dage siden 1. oktober) og COP0308369 til Tema (+21; også rykket 14 dage). Siden sidste kørsel har 13 fået ny ETA, og 4 er nu ankommet (Maputo, Mombasa, Walvis Bay og Jakarta). COP0306231 til Kribi mangler stadig dato, og rederiet svarede ikke i dag for COP0308196 (Jakarta) og MEDUAEO13818 (Lomé), så de viser data fra 1. oktober.",
+ "summary": "Godmorgen. 18 af 25 forsendelser er forsinket i forhold til jeres liste. Ring først om COP0306236 til Mombasa (+25 dage), MEDUAFO34490 til Douala (+21) og COP0308369 til Tema (+21). Siden i går har 7 fået ny ETA: COP0305645 til Monrovia er rykket 6 dage senere (nu +19), mens COP0307899 til Dakar er rykket 6 dage frem, og MEDUAAO53495 til Cotonou nu kommer en dag før planlagt. 5 er ankommet, COP0306231 til Kribi mangler stadig dato, og CMA CGM svarede ikke for COP0308196 (Jakarta), så den viser sidst kendte data.",
  "counts": {
-  "Forsinket": 19,
-  "Tidligere": 1,
+  "Forsinket": 18,
+  "Tidligere": 2,
   "Uændret": 4,
   "Tjek manuelt": 1
  },
@@ -36,6 +36,15 @@
     "Uændret": 4,
     "Tjek manuelt": 1
    }
+  },
+  {
+   "date": "2026-10-08",
+   "counts": {
+    "Forsinket": 18,
+    "Tidligere": 2,
+    "Uændret": 4,
+    "Tjek manuelt": 1
+   }
   }
  ],
  "shipments": [
@@ -46,7 +55,7 @@
    "new_eta": "2026-10-04",
    "diff_days": 3,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": null,
    "pod": "MAPUTO, MZ",
    "arrived": true,
@@ -97,11 +106,11 @@
    "carrier": "MSC",
    "bl": "MEDUYJ453487",
    "current_eta": "2026-09-29",
-   "new_eta": "2026-10-16",
-   "diff_days": 17,
+   "new_eta": "2026-10-15",
+   "diff_days": 16,
    "status": "Forsinket",
    "changed_since_last": true,
-   "vessel": "MSC RABAT IV",
+   "vessel": "MSC ESHA III",
    "pod": "DAKAR, SN",
    "arrived": false,
    "note": "ETA ved DAKAR, SN, via SINGAPORE, SG, ABIDJAN, CI",
@@ -140,8 +149,8 @@
     "name": "KRIBI",
     "lat": 2.95,
     "lon": 9.92,
-    "event": "Full Transshipment Discharged",
-    "date": "2026-09-13"
+    "event": "Full Transshipment Loaded",
+    "date": "2026-10-06"
    },
    "history": [
     {
@@ -151,6 +160,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-10-16"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-10-15"
     }
    ],
    "risks": [
@@ -185,10 +198,10 @@
    "diff_days": -1,
    "status": "Tidligere",
    "changed_since_last": false,
-   "vessel": "MSC MARIANNA",
+   "vessel": null,
    "pod": "LOME, TG",
-   "arrived": false,
-   "note": "Rederiet svarede ikke i dag; viser data fra 2026-10-01. ETA ved LOME, TG",
+   "arrived": true,
+   "note": "Losset i LOME, TG 01-10-2026",
    "route": [
     {
      "code": "INNSA",
@@ -206,12 +219,12 @@
     }
    ],
    "position": {
-    "code": "INNSA",
-    "name": "NHAVA SHEVA",
-    "lat": 18.89,
-    "lon": 73.06,
-    "event": "Export Loaded on Vessel",
-    "date": "2026-08-13"
+    "code": "TGLFW",
+    "name": "LOME",
+    "lat": 6.13,
+    "lon": 1.28,
+    "event": "Import Discharged from Vessel",
+    "date": "2026-10-01"
    },
    "history": [
     {
@@ -222,8 +235,7 @@
      "date": "2026-10-01",
      "eta": "2026-10-01"
     }
-   ],
-   "stale": true
+   ]
   },
   {
    "carrier": "CMA CGM",
@@ -232,7 +244,7 @@
    "new_eta": "2026-10-04",
    "diff_days": 1,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "HYUNDAI BUSAN",
    "pod": "MOMBASA",
    "arrived": true,
@@ -283,8 +295,8 @@
    "carrier": "CMA CGM",
    "bl": "COP0308433",
    "current_eta": "2026-10-21",
-   "new_eta": "2026-10-24",
-   "diff_days": 3,
+   "new_eta": "2026-10-25",
+   "diff_days": 4,
    "status": "Forsinket",
    "changed_since_last": true,
    "vessel": "CMA CGM FORT ST GEORGES",
@@ -312,8 +324,8 @@
     "name": "NHAVA SHEVA",
     "lat": 18.9453,
     "lon": 72.94,
-    "event": "Gate in at Port terminal",
-    "date": "2026-10-07"
+    "event": "Loaded on board",
+    "date": "2026-10-08"
    },
    "history": [
     {
@@ -323,6 +335,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-10-24"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-10-25"
     }
    ],
    "risks": [
@@ -332,13 +348,6 @@
      "severity": "middel",
      "port": "MOMBASA",
      "role": "destination"
-    },
-    {
-     "id": "nhava-sheva",
-     "title": "Nhava Sheva: monsunvejr bremser terminalerne",
-     "severity": "middel",
-     "port": "NHAVA SHEVA",
-     "role": "afgangshavn"
     }
    ]
   },
@@ -349,7 +358,7 @@
    "new_eta": "2026-10-26",
    "diff_days": 0,
    "status": "Uændret",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "MSC UNITE VI",
    "pod": "COTONOU, BJ",
    "arrived": false,
@@ -403,7 +412,7 @@
    "new_eta": "2026-10-17",
    "diff_days": 0,
    "status": "Uændret",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "CMA CGM SAVANNAH",
    "pod": "ABIDJAN",
    "arrived": false,
@@ -477,7 +486,7 @@
    "new_eta": "2026-11-12",
    "diff_days": 21,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "MSC BAHRAIN II",
    "pod": "DOUALA, CM",
    "arrived": false,
@@ -584,8 +593,8 @@
     "name": "MALTA",
     "lat": 35.8177857478,
     "lon": 14.5309605423,
-    "event": "Discharged in transhipment",
-    "date": "2026-10-03"
+    "event": "Vessel Departure",
+    "date": "2026-10-08"
    },
    "history": [
     {
@@ -614,11 +623,11 @@
    "carrier": "CMA CGM",
    "bl": "COP0307899",
    "current_eta": "2026-10-22",
-   "new_eta": "2026-11-06",
-   "diff_days": 15,
+   "new_eta": "2026-10-31",
+   "diff_days": 9,
    "status": "Forsinket",
-   "changed_since_last": false,
-   "vessel": "LION",
+   "changed_since_last": true,
+   "vessel": "CMA CGM AMBER",
    "pod": "DAKAR",
    "arrived": false,
    "note": "ETA ved DAKAR, via TANGER MED",
@@ -657,6 +666,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-06"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-10-31"
     }
    ],
    "risks": [
@@ -680,11 +693,11 @@
    "carrier": "CMA CGM",
    "bl": "COP0305645",
    "current_eta": "2026-10-19",
-   "new_eta": "2026-11-01",
-   "diff_days": 13,
+   "new_eta": "2026-11-07",
+   "diff_days": 19,
    "status": "Forsinket",
-   "changed_since_last": false,
-   "vessel": "CMA CGM MALTA",
+   "changed_since_last": true,
+   "vessel": "AL BATEEN",
    "pod": "MONROVIA",
    "arrived": false,
    "note": "ETA ved MONROVIA, via ALGECIRAS, SINGAPORE",
@@ -730,6 +743,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-11-01"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-11-07"
     }
    ]
   },
@@ -875,8 +892,8 @@
     "name": "MALTA",
     "lat": 35.8177857478,
     "lon": 14.5309605423,
-    "event": "Discharged in transhipment",
-    "date": "2026-10-04"
+    "event": "Vessel Departure",
+    "date": "2026-10-08"
    },
    "history": [
     {
@@ -971,8 +988,8 @@
    "carrier": "CMA CGM",
    "bl": "COP0307065",
    "current_eta": "2026-11-12",
-   "new_eta": "2026-11-15",
-   "diff_days": 3,
+   "new_eta": "2026-11-16",
+   "diff_days": 4,
    "status": "Forsinket",
    "changed_since_last": true,
    "vessel": "CMA CGM FORT ST PIERRE",
@@ -1025,6 +1042,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-11-15"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-11-16"
     }
    ],
    "risks": [
@@ -1044,7 +1065,7 @@
    "new_eta": "2026-10-07",
    "diff_days": 3,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "HANOVER EXPRESS",
    "pod": "WALVIS BAY",
    "arrived": true,
@@ -1098,7 +1119,7 @@
    "new_eta": "2026-11-08",
    "diff_days": 25,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "ADAMASTOS",
    "pod": "MOMBASA",
    "arrived": false,
@@ -1168,7 +1189,7 @@
    "new_eta": "2026-11-18",
    "diff_days": 21,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "ASTRID MAERSK",
    "pod": "TEMA",
    "arrived": false,
@@ -1294,8 +1315,8 @@
    "carrier": "CMA CGM",
    "bl": "COP0307708",
    "current_eta": "2026-10-21",
-   "new_eta": "2026-10-23",
-   "diff_days": 2,
+   "new_eta": "2026-10-25",
+   "diff_days": 4,
    "status": "Forsinket",
    "changed_since_last": true,
    "vessel": "CMA CGM LONGONI",
@@ -1341,6 +1362,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-10-23"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-10-25"
     }
    ],
    "risks": [
@@ -1464,14 +1489,14 @@
    "carrier": "MSC",
    "bl": "MEDUAAO53495",
    "current_eta": "2026-10-12",
-   "new_eta": "2026-10-22",
-   "diff_days": 10,
-   "status": "Forsinket",
+   "new_eta": "2026-10-11",
+   "diff_days": -1,
+   "status": "Tidligere",
    "changed_since_last": true,
-   "vessel": "MSC KATYAYNI VI",
+   "vessel": "MSC APOLLO",
    "pod": "COTONOU, BJ",
    "arrived": false,
-   "note": "ETA ved COTONOU, BJ, via SINGAPORE, SG, containere har forskellige ETA'er: 11-10-2026, 22-10-2026",
+   "note": "ETA ved COTONOU, BJ, via SINGAPORE, SG",
    "route": [
     {
      "code": "CNSHK",
@@ -1496,12 +1521,12 @@
     }
    ],
    "position": {
-    "code": "SGSIN",
-    "name": "SINGAPORE",
-    "lat": 1.27,
-    "lon": 103.79,
-    "event": "Full Transshipment Loaded",
-    "date": "2026-09-11"
+    "code": "GHTEM",
+    "name": "TEMA",
+    "lat": 5.61,
+    "lon": -0.02,
+    "event": "Full Transshipment Discharged",
+    "date": "2026-10-07"
    },
    "history": [
     {
@@ -1515,6 +1540,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-10-22"
+    },
+    {
+     "date": "2026-10-08",
+     "eta": "2026-10-11"
     }
    ],
    "risks": [
@@ -1788,11 +1817,6 @@
      "url": "https://mohawkglobal.com/india-center-of-excellence/india-export-market-update-bmct-congestion-regional-transshipment-delays-continue/"
     },
     "affected": [
-     {
-      "bl": "COP0308433",
-      "port": "NHAVA SHEVA",
-      "role": "afgangshavn"
-     },
      {
       "bl": "COP0306231",
       "port": "NHAVA SHEVA",

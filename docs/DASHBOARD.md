@@ -34,6 +34,10 @@ Excel-værktøj indbygget. Den åbner i enhver browser uden internet. "Kør nu" 
 er skjult; Excel-eksporten bliver en almindelig download. Filen viser data fra den `dashboard/data.json`, den blev bygget af,
 og indeholder rigtige BL-numre: del den kun med folk, der må se dem.
 
+"Kør nu" og "Tilføj BL" virker også i filen: uden Claude kalder siden Apify's API direkte
+(`run-sync-get-dataset-items`, samme som `eta_tracker/apify.py`) med seerens eget API-token. Tokenet tastes ind første
+gang og gemmes kun i browserens localStorage, aldrig i filen. Afviser Apify tokenet (401/403), glemmes det.
+
 ## Morgenjobbets trin (følges af den planlagte Claude-session)
 
 1. Hent repoet `Aikonsulenterne/nextdemo` og opret venv: `python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt`.

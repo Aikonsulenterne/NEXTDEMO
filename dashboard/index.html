@@ -140,6 +140,11 @@ header.top { display: flex; flex-wrap: wrap; align-items: center; justify-conten
 .news h4 { margin: 0; font-size: 14px; line-height: 1.3; }
 .news .more { font-size: 12px; color: var(--muted); }
 .newsdlg { width: min(520px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow-y: auto; padding: 22px 22px 18px 26px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+.tokendlg::before { display: none; }
+.tokendlg h3 { margin: 0 0 6px; }
+.tokendlg p { font-size: 14px; margin: 8px 0; }
+.tklabel { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.tklabel input { font: 500 15px var(--mono); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; }
 .newsdlg::backdrop { background: color-mix(in srgb, #000 45%, transparent); }
 .newsdlg::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 4px; border-radius: 0 3px 3px 0; background: var(--sev); }
 .newsdlg .dhead { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
@@ -322,6 +327,15 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
     </div>
   </section>
 
+  <dialog class="newsdlg tokendlg" id="tokenDlg" aria-labelledby="tkTitle">
+      <form id="tokenForm" method="dialog">
+        <h3 id="tkTitle">Forbind til Apify</h3>
+        <p>Hentningen kører på jeres Apify-konto. Indsæt jeres API-token fra Apify Console under Settings → API &amp; Integrations.</p>
+        <label class="tklabel">API-token<input id="tokenInput" type="password" autocomplete="off" spellcheck="false" required placeholder="apify_api_…"></label>
+        <p class="small">Tokenet gemmes kun i denne browser og står ikke i filen. Brug gerne et token med begrænsede rettigheder.</p>
+        <div class="dfoot"><button class="btn" type="button" id="tokenCancel">Annullér</button><button class="btn primary" type="submit">Gem og hent</button></div>
+      </form>
+    </dialog>
   <div class="drawer" id="drawer" hidden>
     <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="dTitle">
       <div class="drawer-head">
@@ -957,6 +971,9 @@ const MCP_COPY = {
   blocked_by_policy: "Jeres organisation tillader ikke Apify her.",
   approval_required: "Apify kræver godkendelse pr. kald, som ikke understøttes her.",
   server_unavailable: "Apify svarer ikke lige nu. Prøv igen om lidt.",
+  token: "Apify afviste API-tokenet. Tryk igen og indsæt et gyldigt token.",
+  network: "Kunne ikke nå Apify. Tjek internetforbindelsen og prøv igen.",
+  declined: "Hentningen blev annulleret.",
 };
 const setRun = (t, err) => { $("runStatus").textContent = t; $("runStatus").classList.toggle("err", !!err); };
 const payload = r => { let p = r?.payload; if (typeof p === "string") { try { p = JSON.parse(p); } catch { } } return p || {}; };
@@ -972,6 +989,46 @@ async function fetchCarrier(key, bls) {
   const args = { datasetId: ds, limit: 100 }; if (OMIT[key]) args.omit = OMIT[key];
   return payload(await MCP.callTool("apify", "get-dataset-items", args, { cache: false })).items || [];
 }
+
+/* Outside Claude (the standalone presentation file) there is no connector: the page calls Apify's API itself with
+   the viewer's own API token, typed once and kept only in this browser (never in the file). */
+let DIRECT = false;
+const TOKEN_KEY = "eta-tavlen.apify-token";
+const readToken = () => { try { return localStorage.getItem(TOKEN_KEY) || null; } catch { return null; } };
+const saveToken = t => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch { } };
+
+function askToken() {
+  const dlg = $("tokenDlg");
+  return new Promise((resolve, reject) => {
+    $("tokenInput").value = "";
+    const done = ok => {
+      dlg.close(); $("tokenForm").onsubmit = null; $("tokenCancel").onclick = null;
+      ok ? resolve(ok) : reject({ code: "declined" });
+    };
+    $("tokenForm").onsubmit = e => { e.preventDefault(); const t = $("tokenInput").value.trim(); if (t) { saveToken(t); done(t); } };
+    $("tokenCancel").onclick = () => done(null);
+    dlg.oncancel = e => { e.preventDefault(); done(null); };
+    dlg.showModal(); $("tokenInput").focus();
+  });
+}
+
+async function fetchCarrierDirect(key, bls) {
+  const token = readToken() || await askToken();
+  let r;
+  try {
+    r = await fetch(`https://api.apify.com/v2/acts/${ACTORS[key].replace("/", "~")}/run-sync-get-dataset-items?timeout=300`, {
+      method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ trackingNumbers: bls }),
+    });
+  } catch { throw { code: "network" }; }
+  if (r.status === 401 || r.status === 403) { saveToken(null); throw { code: "token" }; }
+  if (!r.ok) throw { code: "tool_error", message: `HTTP ${r.status}` };
+  const items = await r.json().catch(() => null);
+  if (!Array.isArray(items)) throw { code: "tool_error", message: "uventet svar" };
+  return items;
+}
+
+const getItems = (key, bls) => MCP ? fetchCarrier(key, bls) : fetchCarrierDirect(key, bls);
 
 const carrierKey = c => c === "MSC" ? "MSC" : /^CMA/.test(c || "") ? "CMA" : null;
 
@@ -990,11 +1047,12 @@ function refreshRow(s, key, item, today, T) {
 
 async function runNow() {
   const btn = $("runBtn"); btn.disabled = true; FLASH.clear();
+  if (!MCP && !readToken()) { try { await askToken(); } catch { setRun(MCP_COPY.declined); btn.disabled = false; return; } }
   const groups = { CMA: [], MSC: [] };
   DATA.shipments.forEach(s => { const k = carrierKey(s.carrier); if (k) groups[k].push(s.bl); });
   setRun(`Henter ${groups.CMA.length + groups.MSC.length} BL fra CMA CGM og MSC …`);
   const t0 = performance.now();
-  const results = await Promise.allSettled(Object.entries(groups).filter(([, b]) => b.length).map(async ([k, b]) => [k, await fetchCarrier(k, b)]));
+  const results = await Promise.allSettled(Object.entries(groups).filter(([, b]) => b.length).map(async ([k, b]) => [k, await getItems(k, b)]));
   const items = {}, failed = [];
   results.forEach(r => { if (r.status === "fulfilled") r.value[1].forEach(it => { items[String(it.tracking_number || "").trim().toUpperCase()] = it; }); else failed.push(r.reason); });
   if (failed.length === results.length) {
@@ -1020,13 +1078,15 @@ async function runNow() {
   highlight(selected);
   const secs = Math.round((performance.now() - t0) / 1000);
   const partial = failed.length ? " Et rederi svarede ikke; dets rækker viser seneste kendte data." : "";
-  setRun(`Hentet live på ${secs} sek. ${FLASH.size ? FLASH.size + " forsendelser har ændret sig." : "Ingen ændringer siden sidst."}${partial}`, !!failed.length);
+  setRun(`Hentet live på ${secs} sek. ${FLASH.size ? FLASH.size + (FLASH.size === 1 ? " forsendelse har ændret sig." : " forsendelser har ændret sig.") : "Ingen ændringer siden sidst."}${partial}`, !!failed.length);
   btn.disabled = false;
 }
 
 if (window.claude?.use) {
   window.claude.use("mcp").then(m => { MCP = m; if (m) { $("runBtn").hidden = false; $("runBtn").onclick = runNow; } }).catch(() => { });
   window.claude.use("sample").then(sm => { SAMPLE = sm; if (sm) { $("aiBtn").hidden = false; $("toneSeg").hidden = false; $("toneWrap").hidden = false; } }).catch(() => { });
+} else {
+  DIRECT = true; $("runBtn").hidden = false; $("runBtn").onclick = runNow;
 }
 </script>
 
@@ -1208,9 +1268,10 @@ async function addBl(e) {
   const doc = { bl, carrier: key, current_eta: mine, added_at: new Date().toISOString() };
   let row = pendingRow(doc), looked = false;
   try {
-    if (MCP) {
+    if (MCP || DIRECT) {
+      if (!MCP && !readToken()) await askToken();
       setAdd(`Slår ${bl} op hos ${CARRIER_NAME[key]} …`);
-      const items = await fetchCarrier(key, [bl]);
+      const items = await getItems(key, [bl]);
       const item = items.find(it => String(it.tracking_number || "").trim().toUpperCase() === bl);
       const ex = item && (key === "MSC" ? parseMsc(item) : parseCma(item));
       if (!item || !ex || ex.page_state !== "ok") {
@@ -1236,7 +1297,7 @@ async function addBl(e) {
     const c = err?.code;
     setAdd(c === "invalid_argument" ? "Du har ikke adgang til at tilføje BL'er på denne tavle." :
       c === "quota_exceeded" ? "Listen er fuld. Fjern et BL først." :
-      MCP_COPY?.[c] || (c === "tool_error" ? `Opslaget fejlede: ${err.message || ""}` : "Det lykkedes ikke. Prøv igen om lidt."), true);
+      (c === "declined" ? "Opslaget blev annulleret. BL'et er ikke tilføjet." : null) || MCP_COPY?.[c] || (c === "tool_error" ? `Opslaget fejlede: ${err.message || ""}` : "Det lykkedes ikke. Prøv igen om lidt."), true);
   } finally { btn.disabled = false; }
 }
 
