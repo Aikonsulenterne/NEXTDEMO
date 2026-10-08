@@ -16,6 +16,11 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
 - **Eksportér til Excel:** .xlsx med fanerne Oversigt, Forsendelser (farvet status, rigtige datoer, filtre), Havnenyheder
   (med links) og Kundebeskeder (danske skabeloner). Bygges i browseren med `xlsx-js-style` (hentes først ved klik) og gemmes
   via `downloads`-kapabiliteten, så seeren bekræfter filen.
+- **Indtast nyt BL-nummer her** (over tabellen): slår BL'et op live hos rederiet via seerens Apify-connector (afviser
+  numre, rederiet ikke kender) og gemmer det i artifactens database (collection `bls`, dokument-id = BL) sammen med
+  rækken, så alle seere ser det. Uden egen dato bliver rederiets ETA i dag "Jeres ETA". Morgenjobbet tager det med fra
+  næste morgen. "Fjern fra tavlen" i rækkens detaljer sletter dokumentet. Uden Claude (den selvstændige fil) vises BL'et
+  kun i den åbne visning som "Afventer opslag".
 - **Nyheder** vises som små kort; et klik åbner hele nyheden i en popup med berørte BL, kilde og "Vis på kortet".
 - **Manglende svar:** springer et rederi en BL over en dag, beholdes sidst kendte data med en note ("Rederiet svarede ikke i dag …"),
   i stedet for at rækken skifter til "Ikke fundet".
@@ -35,6 +40,9 @@ og indeholder rigtige BL-numre: del den kun med folk, der må se dem.
 2. Læs BL-listen fra Google-arket "Active BL List" (fil-id `1PoG4ljFHCGiktp9R0EOa1fT07MRRqqJQWcV8grpy6gs`) via Google Drive-connectoren
    og skriv den til `data/seed_bl_list.csv` (Carrier, BL, Current ETA; datoer dd/mm/yy → yyyy-mm-dd, mellemrum fjernes).
    Så er "Jeres ETA" altid den, der står i arket. Er Google Drive ikke forbundet, bruges `data/seed_bl_list.csv` som den er.
+   Tilføj derefter de BL'er, der er indtastet på tavlen: `ArtifactData` `list` på artifactens URL, collection `bls`
+   (felter `bl`, `carrier` = CMA|MSC, `current_eta` = yyyy-mm-dd eller tom). Hver af dem, der ikke allerede står i listen,
+   tilføjes som en række (Carrier, BL, Current ETA). Dokumenterne slettes ikke; de er listen over ekstra BL'er.
    Del BL-numrene i CMA og MSC.
 3. Kør Apify-actorerne via Apify-connectoren (`call-actor`), én kørsel pr. rederi, med `{"trackingNumbers": [...]}` og
    `maxTotalChargeUsd` 0,5:

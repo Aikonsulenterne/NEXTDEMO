@@ -183,6 +183,18 @@ td.num { text-align: right; white-space: nowrap; }
 .s-early { background: var(--early-bg); color: var(--early); } .s-early::before { content: "▼"; }
 .s-same { background: var(--same-bg); color: var(--same); } .s-same::before { content: "="; }
 .s-check { background: var(--check-bg); color: var(--check); } .s-check::before { content: "?"; }
+.s-wait { background: var(--same-bg); color: var(--same); } .s-wait::before { content: "…"; }
+/* add-a-BL form above the table */
+.addbl { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin: 4px 0 14px; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 10px; }
+.addbl label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.addbl input, .addbl select { font: 500 15px var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-height: 40px; }
+.addbl input#addBl { font-family: var(--mono); text-transform: uppercase; width: 15ch; }
+.addbl input:focus-visible, .addbl select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.addbl .lead { flex: 1 1 100%; margin: 0; font-size: 14px; color: var(--ink); }
+.addbl .lead b { font-weight: 700; }
+.addbl .msg { flex: 1 1 220px; font-size: 13px; color: var(--muted); align-self: center; }
+.addbl .msg.err { color: var(--late); }
+@media (max-width: 600px) { .addbl input#addBl { width: 100%; } .addbl label { flex: 1 1 100%; } }
 /* timeline cell: planned ETA (hollow) to new ETA (filled) on one shared date axis */
 .axis { position: relative; height: 18px; font: 500 10px var(--mono); color: var(--muted); text-transform: none; letter-spacing: 0; }
 .axis span { position: absolute; bottom: 0; transform: translateX(-50%); white-space: nowrap; }
@@ -289,6 +301,14 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
 
   <section class="manifest">
     <div class="sechead"><h2>Alle forsendelser</h2><p id="shown"></p></div>
+    <form class="addbl" id="addForm" autocomplete="off">
+      <p class="lead"><b>Indtast nyt BL-nummer her</b>, så følger tavlen det fra nu af.</p>
+      <label>BL-nummer<input id="addBl" name="bl" required placeholder="fx MEDU1234567" spellcheck="false" maxlength="20" pattern="[A-Za-z0-9 ]{6,20}"></label>
+      <label>Rederi<select id="addCarrier"><option value="">Find selv</option><option value="CMA">CMA CGM</option><option value="MSC">MSC</option></select></label>
+      <label>Jeres ETA (valgfri)<input id="addEta" type="date"></label>
+      <button class="btn primary" id="addBtn" type="submit">Tilføj BL</button>
+      <span class="msg" id="addMsg" role="status" aria-live="polite"></span>
+    </form>
     <div class="filters" id="legend"></div>
     <div class="tablewrap">
       <table id="tbl">
@@ -350,6 +370,7 @@ const STATUS = {
   "Uændret":          { cls: "s-same",  color: "--same",  sea: "--sea-same",  order: 3 },
   "Ikke fundet":      { cls: "s-same",  color: "--same",  sea: "--sea-same",  order: 4 },
   "Ikke understøttet":{ cls: "s-same",  color: "--same",  sea: "--sea-same",  order: 5 },
+  "Afventer opslag":  { cls: "s-wait",  color: "--same",  sea: "--sea-same",  order: 6 },
 };
 const st = s => STATUS[s] || STATUS["Uændret"];
 const byId = id => document.getElementById(id);
@@ -385,6 +406,7 @@ async function load() {
   for (const fn of [renderHeader, renderTally, renderCallFirst, renderNews, () => renderMap(window.__land), renderTable]) {
     try { fn(); } catch (e) { console.error(e); }
   }
+  if (typeof mergeAdded === "function") mergeAdded();
 }
 
 function renderHeader() {
@@ -651,11 +673,12 @@ function renderTable() {
         <p class="note">${esc(s.note)}${s.position ? ` · Seneste hændelse: ${esc(s.position.event)} i ${esc(cap(s.position.name))} ${fmt(s.position.date)}` : ""}</p>
         <p class="note small">${hist}</p>
         ${(s.risks || []).length ? `<ul class="risks">${s.risks.map(k => `<li class="sev-${esc(k.severity)}"><b>▲ ${esc({ "høj": "Høj", "middel": "Middel", "lav": "Lav", "info": "Info" }[k.severity] || k.severity)}</b> · ${esc(k.title)} <span class="small">(${esc(cap(k.port))}, ${esc(k.role)})</span></li>`).join("")}</ul>` : ""}
-        <div class="detail-actions"><button class="btn small primary" data-inform="${esc(s.bl)}">Informér kunden</button></div></td></tr>`;
+        <div class="detail-actions"><button class="btn small primary" data-inform="${esc(s.bl)}">Informér kunden</button>${typeof ADDED_DB !== "undefined" && ADDED_DB && ADDED.has(s.bl) ? ` <button class="btn small" data-remove="${esc(s.bl)}">Fjern fra tavlen</button>` : ""}</div></td></tr>`;
     }
     return html;
   }).join("") || '<tr><td colspan="6" class="empty">Ingen forsendelser med denne status.</td></tr>';
   document.querySelectorAll("#rows [data-inform]").forEach(b => b.onclick = e => { e.stopPropagation(); openDrawer([b.dataset.inform], 0); });
+  document.querySelectorAll("#rows [data-remove]").forEach(b => b.onclick = e => { e.stopPropagation(); removeAdded(b.dataset.remove); });
   document.querySelectorAll("tr.row").forEach(tr => {
     tr.onclick = () => select(tr.dataset.bl, false);
     tr.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(tr.dataset.bl, false); } };
@@ -861,7 +884,7 @@ function parseMsc(item) {
   for (const c of cs) { const e = (c.Events || []).find(e => /estimated time of arrival/i.test(e.Description || "") && e.Detail?.length); if (e) { vessel = e.Detail[0]; break; } }
   const arrived = !!bl.Delivered || !!discharged;
   const notes = discharged ? [`Losset i ${pod} ${discharged.split("-").reverse().join("-")}`]
-    : [arrived ? "Ankommet" : null, pod ? `ETA ved ${pod}` : "ETA ved POD"];
+    : [arrived ? "Ankommet" : null, pod ? `ETA ved ${pod}` : "ETA ved POD"].filter(Boolean);
   if ((info.Transshipments || []).length) notes.push("via " + info.Transshipments.join(", "));
   const stops = [info.PortOfLoad && ["POL", info.PortOfLoad], ...(info.Transshipments || []).map(t => ["PTS", t]), pod && ["POD", pod]].filter(Boolean);
   const codes = {}; cs.forEach(c => (c.Events || []).forEach(e => { if (e.Location) codes[e.Location.toUpperCase()] = e.UnLocationCode; }));
@@ -950,10 +973,25 @@ async function fetchCarrier(key, bls) {
   return payload(await MCP.callTool("apify", "get-dataset-items", args, { cache: false })).items || [];
 }
 
+const carrierKey = c => c === "MSC" ? "MSC" : /^CMA/.test(c || "") ? "CMA" : null;
+
+// One shipment row brought up to date from a carrier's raw item (shared by "Kør nu" and "Tilføj BL").
+function refreshRow(s, key, item, today, T) {
+  const ex = key === "MSC" ? parseMsc(item) : parseCma(item);
+  if (!ex) return s;
+  const [diff, status] = compareJs(ex, s.current_eta, T);
+  const eta = ex.page_state === "ok" ? ex.eta : null;
+  const history = [...(s.history || [])];
+  if (eta && (!history.length || history[history.length - 1].eta !== eta)) history.push({ date: today, eta });
+  return { ...s, new_eta: eta, diff_days: diff, status, changed_since_last: !!(eta && s.new_eta !== eta),
+    vessel: ex.vessel ?? null, pod: ex.pod ?? s.pod, arrived: !!ex.arrived, note: ex.note,
+    route: ex.route?.length ? ex.route : (s.route || []), position: ex.position || s.position || null, history };
+}
+
 async function runNow() {
   const btn = $("runBtn"); btn.disabled = true; FLASH.clear();
   const groups = { CMA: [], MSC: [] };
-  DATA.shipments.forEach(s => { const k = s.carrier === "MSC" ? "MSC" : /^CMA/.test(s.carrier) ? "CMA" : null; if (k) groups[k].push(s.bl); });
+  DATA.shipments.forEach(s => { const k = carrierKey(s.carrier); if (k) groups[k].push(s.bl); });
   setRun(`Henter ${groups.CMA.length + groups.MSC.length} BL fra CMA CGM og MSC …`);
   const t0 = performance.now();
   const results = await Promise.allSettled(Object.entries(groups).filter(([, b]) => b.length).map(async ([k, b]) => [k, await fetchCarrier(k, b)]));
@@ -967,20 +1005,12 @@ async function runNow() {
   setRun("Læser rederiernes data …");
   const today = new Date().toLocaleDateString("sv-SE"), T = DATA.threshold_days || 1;
   DATA.shipments = DATA.shipments.map(s => {
-    const key = s.carrier === "MSC" ? "MSC" : /^CMA/.test(s.carrier) ? "CMA" : null;
+    const key = carrierKey(s.carrier);
     const item = items[s.bl.toUpperCase()];
     if (!key || !item) return s;                       // keep last known data for anything we could not refresh
-    const ex = key === "MSC" ? parseMsc(item) : parseCma(item);
-    if (!ex) return s;
-    const [diff, status] = compareJs(ex, s.current_eta, T);
-    const eta = ex.page_state === "ok" ? ex.eta : null;
-    const changed = !!(s.new_eta && eta && s.new_eta !== eta) || status !== s.status;
-    if (changed) FLASH.add(s.bl);
-    const history = [...(s.history || [])];
-    if (eta && (!history.length || history[history.length - 1].eta !== eta)) history.push({ date: today, eta });
-    return { ...s, new_eta: eta, diff_days: diff, status, changed_since_last: !!(eta && s.new_eta !== eta),
-      vessel: ex.vessel ?? null, pod: ex.pod ?? s.pod, arrived: !!ex.arrived, note: ex.note,
-      route: ex.route?.length ? ex.route : s.route, position: ex.position || s.position, history };
+    const next = refreshRow(s, key, item, today, T);
+    if (next !== s && (next.new_eta !== s.new_eta || next.status !== s.status)) FLASH.add(s.bl);
+    return next;
   });
   DATA.counts = DATA.shipments.reduce((c, s) => (c[s.status] = (c[s.status] || 0) + 1, c), {});
   DATA.summary = summarizeJs(DATA.shipments);
@@ -1010,7 +1040,7 @@ function loadXlsx() {
 }
 const XL_STATUS = {
   "Forsinket": ["F4C7C3", "C0392B"], "Tidligere": ["D9EAD3", "1E7A55"], "Tjek manuelt": ["FFF2CC", "A86A00"],
-  "Uændret": ["E3E8EC", "3F4E5A"], "Ikke fundet": ["EFEFEF", "5B6B78"], "Ikke understøttet": ["EFEFEF", "5B6B78"],
+  "Uændret": ["E3E8EC", "3F4E5A"], "Ikke fundet": ["EFEFEF", "5B6B78"], "Ikke understøttet": ["EFEFEF", "5B6B78"], "Afventer opslag": ["EFEFEF", "5B6B78"],
 };
 const XL_SEV = { "høj": ["F4C7C3", "C0392B"], "middel": ["FFF2CC", "A86A00"], "lav": ["E3E8EC", "3F4E5A"], "info": ["DCE9F3", "1F5F8B"] };
 const serial = iso => iso ? dayNum(iso) + 25569 : null;   // Excel day number for a YYYY-MM-DD date
@@ -1127,5 +1157,116 @@ if (window.claude?.use) {
     return { status: "saved" };
   } };
   $("exportBtn").hidden = false; $("exportBtn").onclick = exportExcel;
+}
+</script>
+
+<script>
+/* ---------- "Indtast nyt BL-nummer her": look it up live (viewer's Apify) and keep it on the shared list ----------
+   Added BLs live in the artifact's db, collection "bls" (doc id = BL). The morning job reads that collection and
+   adds them to the BL list; until then the row shown is the one saved when the BL was added. */
+var ADDED_DB = null;              // var: renderTable (an earlier script) checks it with typeof
+var ADDED = new Map();            // bl -> db document body
+const BL_RE = /^[A-Z0-9]{6,20}$/;
+const guessCarrier = bl => /^(MEDU|MSCU|MSDU|MSMU)/.test(bl) ? "MSC" : /^[A-Z]{3}\d{6,8}$/.test(bl) || /^(CMDU|CMAU)/.test(bl) ? "CMA" : null;
+const CARRIER_NAME = { CMA: "CMA CGM", MSC: "MSC" };
+const setAdd = (t, err) => { byId("addMsg").textContent = t; byId("addMsg").classList.toggle("err", !!err); };
+
+function pendingRow(d) {
+  return { carrier: CARRIER_NAME[d.carrier] || d.carrier, bl: d.bl, current_eta: d.current_eta || null, new_eta: null,
+    diff_days: null, status: "Afventer opslag", changed_since_last: false, vessel: null, pod: null, arrived: false,
+    note: `Tilføjet ${fmt(String(d.added_at || "").slice(0, 10))}. Slås op ved næste morgenopdatering.`,
+    route: [], position: null, history: [], risks: [], added: true };
+}
+
+function rerender() {
+  DATA.counts = DATA.shipments.reduce((c, s) => (c[s.status] = (c[s.status] || 0) + 1, c), {});
+  for (const fn of [renderHeader, renderTally, renderCallFirst, () => renderMap(window.__land), renderTable]) { try { fn(); } catch (e) { console.error(e); } }
+  highlight(selected);
+}
+
+// Show added BLs that today's data.json does not have yet (once the morning job has them, data.json wins).
+function mergeAdded() {
+  if (!DATA) return;
+  const known = new Set(DATA.shipments.filter(s => !s.added).map(s => s.bl));
+  const extra = [...ADDED.values()].filter(d => !known.has(d.bl)).map(d => ({ ...(d.row || pendingRow(d)), added: true }));
+  const before = DATA.shipments.filter(s => s.added).map(s => s.bl + s.status).join();
+  DATA.shipments = DATA.shipments.filter(s => !s.added).concat(extra);
+  if (extra.map(s => s.bl + s.status).join() !== before) rerender();
+}
+
+async function addBl(e) {
+  e.preventDefault();
+  if (!DATA) return;
+  const bl = byId("addBl").value.replace(/\s+/g, "").toUpperCase();
+  if (!BL_RE.test(bl)) { setAdd("Skriv et BL-nummer med 6–20 bogstaver og tal.", true); byId("addBl").focus(); return; }
+  if (DATA.shipments.some(s => s.bl === bl)) { setAdd(`${bl} er allerede på tavlen.`); selected = null; select(bl, true); return; }
+  const key = byId("addCarrier").value || guessCarrier(bl);
+  if (!key) { setAdd("Vælg rederi: nummeret ligner hverken CMA CGM eller MSC.", true); byId("addCarrier").focus(); return; }
+  const mine = byId("addEta").value || null;
+  const btn = byId("addBtn"); btn.disabled = true;
+  const today = new Date().toLocaleDateString("sv-SE"), T = DATA.threshold_days || 1;
+  const doc = { bl, carrier: key, current_eta: mine, added_at: new Date().toISOString() };
+  let row = pendingRow(doc), looked = false;
+  try {
+    if (MCP) {
+      setAdd(`Slår ${bl} op hos ${CARRIER_NAME[key]} …`);
+      const items = await fetchCarrier(key, [bl]);
+      const item = items.find(it => String(it.tracking_number || "").trim().toUpperCase() === bl);
+      const ex = item && (key === "MSC" ? parseMsc(item) : parseCma(item));
+      if (!item || !ex || ex.page_state !== "ok") {
+        setAdd(`${CARRIER_NAME[key]} kender ikke ${bl}. Tjek nummer og rederi. BL'et er ikke tilføjet.`, true);
+        return;
+      }
+      // no date of your own given: today's carrier ETA becomes the baseline, so changes from now on show
+      if (!doc.current_eta && ex.eta) doc.current_eta = ex.eta;
+      row = refreshRow({ ...pendingRow(doc), status: "Uændret" }, key, item, today, T);
+      looked = true;
+    }
+    row = { ...row, added: true };
+    if (ADDED_DB) {
+      await ADDED_DB.collection("bls").doc(bl).set({ ...doc, row });
+    }
+    ADDED.set(bl, { ...doc, row });
+    FLASH.add(bl); mergeAdded(); rerender();
+    selected = null; select(bl, true);
+    byId("addForm").reset();
+    setAdd((looked ? `${bl} er tilføjet og slået op: ${row.status.toLowerCase()}${row.diff_days ? ` (${row.diff_days > 0 ? "+" : ""}${row.diff_days} dage)` : ""}.` : `${bl} er tilføjet.`)
+      + (ADDED_DB ? " Tavlen følger det fra i morgen." : " Gemt kun i denne visning."));
+  } catch (err) {
+    const c = err?.code;
+    setAdd(c === "invalid_argument" ? "Du har ikke adgang til at tilføje BL'er på denne tavle." :
+      c === "quota_exceeded" ? "Listen er fuld. Fjern et BL først." :
+      MCP_COPY?.[c] || (c === "tool_error" ? `Opslaget fejlede: ${err.message || ""}` : "Det lykkedes ikke. Prøv igen om lidt."), true);
+  } finally { btn.disabled = false; }
+}
+
+async function removeAdded(bl) {
+  if (!ADDED_DB) return;
+  try {
+    await ADDED_DB.collection("bls").doc(bl).delete();
+    const inToday = DATA.shipments.some(s => s.bl === bl && !s.added);
+    ADDED.delete(bl); selected = null; mergeAdded(); rerender();
+    setAdd(inToday ? `${bl} er fjernet fra listen og forsvinder ved næste morgenopdatering.` : `${bl} er fjernet fra tavlen.`);
+  } catch (err) { setAdd("Kunne ikke fjerne BL'et. Prøv igen.", true); }
+}
+
+byId("addForm").addEventListener("submit", addBl);
+byId("addBl").addEventListener("input", () => {
+  const bl = byId("addBl").value.replace(/\s+/g, "").toUpperCase(), g = guessCarrier(bl);
+  if (!byId("addCarrier").dataset.touched) byId("addCarrier").value = g || "";
+});
+byId("addCarrier").addEventListener("change", e => { e.target.dataset.touched = "1"; });
+byId("addForm").addEventListener("reset", () => { delete byId("addCarrier").dataset.touched; });
+
+if (window.claude?.use) {
+  window.claude.use("db").then(db => {
+    if (!db) return;
+    ADDED_DB = db;
+    db.collection("bls").onSnapshot(snap => {
+      ADDED.clear();
+      snap.docs.forEach(d => { const b = d.data(); if (b?.bl && BL_RE.test(b.bl)) ADDED.set(b.bl, b); });
+      mergeAdded();
+    }, () => { });
+  }).catch(() => { });
 }
 </script>
