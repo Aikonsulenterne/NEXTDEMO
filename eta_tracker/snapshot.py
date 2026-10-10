@@ -13,6 +13,7 @@ from pathlib import Path
 
 from .carriers import get_carrier
 from .compare import FORSINKET, TIDLIGERE, TJEK_MANUELT, compare, parse_date
+from .kpi import CONTAINERS, DWELL, build_kpis, merge_plan, plan_cma
 from .ports import PORTS
 
 
@@ -111,6 +112,10 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
         res = compare(supported=carrier is not None, lookup_failed=failed, page_state=ex.page_state if ex else None,
                       new_eta=new, confidence=ex.confidence if ex else None, current_eta=current, threshold=threshold)
         route, position = ROUTES[carrier.code](item) if carrier and item else ([], None)
+        dwell = DWELL[carrier.code](item, today) if carrier and item else []
+        containers = CONTAINERS[carrier.code](item) if carrier and item else []
+        plan = merge_plan(prev_rows.get(bl, {}).get("plan"), plan_cma(item) if carrier and carrier.code == "CMA" and item else {},
+                          today.isoformat())
 
         history = list(prev_rows.get(bl, {}).get("history", []))
         if new and (not history or history[-1]["eta"] != new.isoformat()):
@@ -139,7 +144,8 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
             "vessel": ex.vessel if ex else None, "pod": ex.pod if ex else None,
             "arrived": bool(ex and ex.arrived),
             "note": ex.note if ex else ("Rederiet returnerede intet" if carrier else "Rederi understøttes ikke"),
-            "route": route, "position": position, "history": history,
+            "route": route, "position": position, "history": history, "dwell": dwell, "plan": plan,
+            "containers": containers,
         })
 
     linked_news = link_news(news, shipments)
@@ -157,6 +163,7 @@ def build(items: dict[str, dict], baseline: list[dict], previous: dict | None, t
         "runs": runs[-60:],
         "shipments": shipments,
         "news": linked_news,
+        "kpis": build_kpis(shipments, min((h["date"] for s in shipments for h in s.get("history") or []), default=None)),
     }
 
 

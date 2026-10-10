@@ -100,6 +100,21 @@
      "date": "2026-10-07",
      "eta": "2026-10-04"
     }
+   ],
+   "dwell": [
+    {
+     "code": "ZAPLZ",
+     "name": "PORT ELIZABETH",
+     "arrived": "2026-09-20",
+     "departed": "2026-09-30",
+     "days": 10,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {},
+   "containers": [
+    "MSGU9284613"
    ]
   },
   {
@@ -165,6 +180,31 @@
      "date": "2026-10-08",
      "eta": "2026-10-15"
     }
+   ],
+   "dwell": [
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "arrived": "2026-08-10",
+     "departed": "2026-08-15",
+     "days": 5,
+     "ongoing": false,
+     "planned_departure": null
+    },
+    {
+     "code": "CMKBI",
+     "name": "KRIBI",
+     "arrived": "2026-09-13",
+     "departed": "2026-10-06",
+     "days": 23,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {},
+   "containers": [
+    "MSGU5023458",
+    "MSGU5180441"
    ],
    "risks": [
     {
@@ -235,6 +275,11 @@
      "date": "2026-10-01",
      "eta": "2026-10-01"
     }
+   ],
+   "dwell": [],
+   "plan": {},
+   "containers": [
+    "MSGU9339887"
    ]
   },
   {
@@ -289,6 +334,46 @@
      "date": "2026-10-07",
      "eta": "2026-10-04"
     }
+   ],
+   "dwell": [
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "arrived": "2026-09-15",
+     "departed": "2026-09-24",
+     "days": 9,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:KEMBA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-04"
+     }
+    ],
+    "DEPA:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-24"
+     }
+    ],
+    "ARRI:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-15"
+     }
+    ],
+    "DEPA:NLRTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-20"
+     }
+    ]
+   },
+   "containers": [
+    "SEKU9432441"
    ]
   },
   {
@@ -340,6 +425,38 @@
      "date": "2026-10-08",
      "eta": "2026-10-25"
     }
+   ],
+   "dwell": [],
+   "plan": {
+    "ARRI:KEMBA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-25"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-09"
+     }
+    ]
+   },
+   "containers": [
+    "AMCU9340684",
+    "CGMU5409910",
+    "CGMU5477977",
+    "CGMU5514983",
+    "CGMU5700376",
+    "CGMU5889866",
+    "CGMU6562040",
+    "FBIU5114621",
+    "FBIU5224906",
+    "SEGU9655348",
+    "SEGU9658413",
+    "TEMU9816726",
+    "TEMU9894360",
+    "TLLU7036887",
+    "TTNU8677887"
    ],
    "risks": [
     {
@@ -403,6 +520,21 @@
      "date": "2026-10-07",
      "eta": "2026-10-26"
     }
+   ],
+   "dwell": [
+    {
+     "code": "CNNGB",
+     "name": "NINGBO",
+     "arrived": "2026-09-09",
+     "departed": "2026-09-19",
+     "days": 10,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {},
+   "containers": [
+    "MSGU9165722"
    ]
   },
   {
@@ -461,6 +593,50 @@
      "date": "2026-10-07",
      "eta": "2026-10-17"
     }
+   ],
+   "dwell": [
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "arrived": "2026-09-25",
+     "departed": "2026-10-05",
+     "days": 10,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:CIABJ": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-17"
+     }
+    ],
+    "DEPA:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-05"
+     }
+    ],
+    "ARRI:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-25"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-30"
+     }
+    ]
+   },
+   "containers": [
+    "CGMU6598891",
+    "CGMU6926898",
+    "CGMU7009682",
+    "SEKU9246175",
+    "SEKU9433031"
    ],
    "risks": [
     {
@@ -536,6 +712,13 @@
      "eta": "2026-11-12"
     }
    ],
+   "dwell": [],
+   "plan": {},
+   "containers": [
+    "MSDU9893223",
+    "MSGU9340640",
+    "SZLU9469394"
+   ],
    "risks": [
     {
      "id": "douala-kribi",
@@ -601,6 +784,61 @@
      "date": "2026-09-30",
      "eta": "2026-11-07"
     }
+   ],
+   "dwell": [
+    {
+     "code": "MTMAR",
+     "name": "MALTA",
+     "arrived": "2026-10-02",
+     "departed": "2026-10-08",
+     "days": 6,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:SNDKR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-07"
+     }
+    ],
+    "DEPA:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-29"
+     }
+    ],
+    "ARRI:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-16"
+     }
+    ],
+    "DEPA:MTMAR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-08"
+     }
+    ],
+    "ARRI:MTMAR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-02"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-07"
+     }
+    ]
+   },
+   "containers": [
+    "CAIU5695704",
+    "CGMU5808340",
+    "CGMU6580531",
+    "CGMU6937697"
    ],
    "risks": [
     {
@@ -671,6 +909,39 @@
      "date": "2026-10-08",
      "eta": "2026-10-31"
     }
+   ],
+   "dwell": [],
+   "plan": {
+    "ARRI:SNDKR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-31"
+     }
+    ],
+    "DEPA:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-22"
+     }
+    ],
+    "ARRI:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-14"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-23"
+     }
+    ]
+   },
+   "containers": [
+    "SEKU9005809",
+    "SEKU9453613",
+    "TLLU7035509",
+    "TTNU8777818"
    ],
    "risks": [
     {
@@ -748,6 +1019,68 @@
      "date": "2026-10-08",
      "eta": "2026-11-07"
     }
+   ],
+   "dwell": [
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "arrived": "2026-08-21",
+     "departed": "2026-09-07",
+     "days": 17,
+     "ongoing": false,
+     "planned_departure": null
+    },
+    {
+     "code": "ESALG",
+     "name": "ALGECIRAS",
+     "arrived": "2026-10-02",
+     "departed": null,
+     "days": 6,
+     "ongoing": true,
+     "planned_departure": "2026-10-19"
+    }
+   ],
+   "plan": {
+    "ARRI:LRMLW": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-07"
+     }
+    ],
+    "DEPA:ESALG": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-19"
+     }
+    ],
+    "ARRI:ESALG": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-02"
+     }
+    ],
+    "DEPA:SGSIN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-07"
+     }
+    ],
+    "ARRI:SGSIN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-21"
+     }
+    ],
+    "DEPA:CNSHK": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-17"
+     }
+    ]
+   },
+   "containers": [
+    "CMAU3715661",
+    "TIIU4597054"
    ]
   },
   {
@@ -791,6 +1124,13 @@
      "date": "2026-09-30",
      "eta": "2026-10-10"
     }
+   ],
+   "dwell": [],
+   "plan": {},
+   "containers": [
+    "FBIU5132013",
+    "MEDU9177350",
+    "MSGU9211453"
    ],
    "risks": [
     {
@@ -843,6 +1183,24 @@
      "date": "2026-09-30",
      "eta": "2026-09-28"
     }
+   ],
+   "dwell": [],
+   "plan": {
+    "ARRI:IDJKT": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-28"
+     }
+    ],
+    "DEPA:HKHKG": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-12"
+     }
+    ]
+   },
+   "containers": [
+    "GESU6448147"
    ]
   },
   {
@@ -900,6 +1258,61 @@
      "date": "2026-09-30",
      "eta": "2026-11-07"
     }
+   ],
+   "dwell": [
+    {
+     "code": "MTMAR",
+     "name": "MALTA",
+     "arrived": "2026-10-04",
+     "departed": "2026-10-08",
+     "days": 4,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:CIABJ": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-07"
+     }
+    ],
+    "DEPA:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-22"
+     }
+    ],
+    "ARRI:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-16"
+     }
+    ],
+    "DEPA:MTMAR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-08"
+     }
+    ],
+    "ARRI:MTMAR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-04"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-22"
+     }
+    ]
+   },
+   "containers": [
+    "AMCU9326768",
+    "CGMU5604243",
+    "CGMU5632950",
+    "TLLU1069585"
    ],
    "risks": [
     {
@@ -966,6 +1379,36 @@
      "date": "2026-09-30",
      "eta": "2026-12-05"
     }
+   ],
+   "dwell": [],
+   "plan": {
+    "ARRI:KEMBA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-12-05"
+     }
+    ],
+    "DEPA:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-25"
+     }
+    ],
+    "ARRI:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-09"
+     }
+    ],
+    "DEPA:NLRTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-10"
+     }
+    ]
+   },
+   "containers": [
+    "CGMU5632055"
    ],
    "risks": [
     {
@@ -1048,6 +1491,58 @@
      "eta": "2026-11-16"
     }
    ],
+   "dwell": [
+    {
+     "code": "INMUN",
+     "name": "MUNDRA",
+     "arrived": "2026-09-14",
+     "departed": "2026-09-26",
+     "days": 12,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:LRMLW": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-16"
+     }
+    ],
+    "DEPA:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-29"
+     }
+    ],
+    "ARRI:MAPTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-14"
+     }
+    ],
+    "DEPA:INMUN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-26"
+     }
+    ],
+    "ARRI:INMUN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-14"
+     }
+    ],
+    "DEPA:ZACPT": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-28"
+     }
+    ]
+   },
+   "containers": [
+    "CMAU0746910"
+   ],
    "risks": [
     {
      "id": "tanger-med",
@@ -1110,6 +1605,48 @@
      "date": "2026-10-07",
      "eta": "2026-10-07"
     }
+   ],
+   "dwell": [
+    {
+     "code": "CGPNR",
+     "name": "POINTE NOIRE",
+     "arrived": "2026-09-09",
+     "departed": "2026-09-18",
+     "days": 9,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:NAWVB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-07"
+     }
+    ],
+    "DEPA:CGPNR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-18"
+     }
+    ],
+    "ARRI:CGPNR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-09"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-08-20"
+     }
+    ]
+   },
+   "containers": [
+    "CGMU6956763",
+    "TEMU9814600",
+    "TEMU9873990"
    ]
   },
   {
@@ -1164,6 +1701,36 @@
      "date": "2026-10-07",
      "eta": "2026-11-08"
     }
+   ],
+   "dwell": [],
+   "plan": {
+    "ARRI:KEMBA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-08"
+     }
+    ],
+    "DEPA:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-30"
+     }
+    ],
+    "ARRI:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-19"
+     }
+    ],
+    "DEPA:NLRTM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-09"
+     }
+    ]
+   },
+   "containers": [
+    "TIIU7052280"
    ],
    "risks": [
     {
@@ -1235,6 +1802,36 @@
      "eta": "2026-11-18"
     }
    ],
+   "dwell": [],
+   "plan": {
+    "ARRI:GHTEM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-11-18"
+     }
+    ],
+    "DEPA:CNNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-21"
+     }
+    ],
+    "ARRI:CNNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-10"
+     }
+    ],
+    "DEPA:THLCH": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-02"
+     }
+    ]
+   },
+   "containers": [
+    "CGMU9374806"
+   ],
    "risks": [
     {
      "id": "tema",
@@ -1293,6 +1890,26 @@
      "date": "2026-09-30",
      "eta": "2026-10-12"
     }
+   ],
+   "dwell": [
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "arrived": "2026-09-19",
+     "departed": "2026-09-27",
+     "days": 8,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {},
+   "containers": [
+    "MEDU9855273",
+    "MEDU9876424",
+    "MSDU9802291",
+    "MSGU9067618",
+    "SZLU9325740",
+    "TTNU8732290"
    ],
    "risks": [
     {
@@ -1367,6 +1984,46 @@
      "date": "2026-10-08",
      "eta": "2026-10-25"
     }
+   ],
+   "dwell": [
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "arrived": "2026-09-15",
+     "departed": "2026-09-28",
+     "days": 13,
+     "ongoing": false,
+     "planned_departure": null
+    }
+   ],
+   "plan": {
+    "ARRI:MZBEW": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-25"
+     }
+    ],
+    "DEPA:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-28"
+     }
+    ],
+    "ARRI:LKCMB": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-15"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-09-10"
+     }
+    ]
+   },
+   "containers": [
+    "SEKU9433113"
    ],
    "risks": [
     {
@@ -1475,6 +2132,49 @@
      "eta": "2026-10-27"
     }
    ],
+   "dwell": [],
+   "plan": {
+    "ARRI:MMRGN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-27"
+     }
+    ],
+    "DEPA:SGSIN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-23"
+     }
+    ],
+    "ARRI:SGSIN": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-17"
+     }
+    ],
+    "DEPA:MYPKG": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-16"
+     }
+    ],
+    "ARRI:MYPKG": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-14"
+     }
+    ],
+    "DEPA:CNXAM": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-05"
+     }
+    ]
+   },
+   "containers": [
+    "CGMU5539805",
+    "CGMU5887760"
+   ],
    "risks": [
     {
      "id": "singapore",
@@ -1546,6 +2246,35 @@
      "eta": "2026-10-11"
     }
    ],
+   "dwell": [
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "arrived": "2026-08-29",
+     "departed": "2026-09-11",
+     "days": 13,
+     "ongoing": false,
+     "planned_departure": null
+    },
+    {
+     "code": "GHTEM",
+     "name": "TEMA",
+     "arrived": "2026-10-07",
+     "departed": null,
+     "days": 1,
+     "ongoing": true,
+     "planned_departure": null
+    }
+   ],
+   "plan": {},
+   "containers": [
+    "MEDU4359814",
+    "MSCU5146530",
+    "MSMU4879363",
+    "MSMU6689491",
+    "MSNU7912181",
+    "UETU8297751"
+   ],
    "risks": [
     {
      "id": "singapore",
@@ -1600,6 +2329,24 @@
     "date": "2026-09-16"
    },
    "history": [],
+   "dwell": [],
+   "plan": {
+    "ARRI:CGPNR": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-26"
+     }
+    ],
+    "DEPA:INNSA": [
+     {
+      "date": "2026-10-08",
+      "planned": "2026-10-10"
+     }
+    ]
+   },
+   "containers": [
+    "TRHU1045333"
+   ],
    "risks": [
     {
      "id": "douala-kribi",
@@ -1931,5 +2678,315 @@
     "affected": []
    }
   ]
+ },
+ "kpis": {
+  "on_time": {
+   "n": 24,
+   "late": 18,
+   "early": 2,
+   "on_time": 6,
+   "avg_late_days": 9.7
+  },
+  "by_carrier": [
+   {
+    "key": "MSC",
+    "n": 8,
+    "late": 4,
+    "avg_late_days": 10.8
+   },
+   {
+    "key": "CMA CGM",
+    "n": 16,
+    "late": 14,
+    "avg_late_days": 9.4
+   }
+  ],
+  "by_destination": [
+   {
+    "key": "TEMA",
+    "n": 2,
+    "late": 1,
+    "avg_late_days": 21.0
+   },
+   {
+    "key": "DOUALA",
+    "n": 1,
+    "late": 1,
+    "avg_late_days": 21.0
+   },
+   {
+    "key": "JAKARTA",
+    "n": 2,
+    "late": 1,
+    "avg_late_days": 16.0
+   },
+   {
+    "key": "MONROVIA",
+    "n": 2,
+    "late": 2,
+    "avg_late_days": 11.5
+   },
+   {
+    "key": "DAKAR",
+    "n": 3,
+    "late": 3,
+    "avg_late_days": 11.0
+   },
+   {
+    "key": "ABIDJAN",
+    "n": 2,
+    "late": 1,
+    "avg_late_days": 9.0
+   },
+   {
+    "key": "MOMBASA",
+    "n": 5,
+    "late": 5,
+    "avg_late_days": 8.2
+   },
+   {
+    "key": "BEIRA",
+    "n": 1,
+    "late": 1,
+    "avg_late_days": 4.0
+   },
+   {
+    "key": "MAPUTO",
+    "n": 1,
+    "late": 1,
+    "avg_late_days": 3.0
+   },
+   {
+    "key": "WALVIS BAY",
+    "n": 1,
+    "late": 1,
+    "avg_late_days": 3.0
+   },
+   {
+    "key": "YANGON",
+    "n": 1,
+    "late": 1,
+    "avg_late_days": 1.0
+   },
+   {
+    "key": "COTONOU",
+    "n": 2,
+    "late": 0,
+    "avg_late_days": null
+   },
+   {
+    "key": "LOME",
+    "n": 1,
+    "late": 0,
+    "avg_late_days": null
+   }
+  ],
+  "dwell": {
+   "n_shipments": 13,
+   "n_stops": 16,
+   "ports": [
+    {
+     "code": "CMKBI",
+     "name": "KRIBI",
+     "n": 1,
+     "avg_days": 23.0,
+     "max_days": 23,
+     "ongoing": 0
+    },
+    {
+     "code": "INMUN",
+     "name": "MUNDRA",
+     "n": 1,
+     "avg_days": 12.0,
+     "max_days": 12,
+     "ongoing": 0
+    },
+    {
+     "code": "LKCMB",
+     "name": "COLOMBO",
+     "n": 2,
+     "avg_days": 11.0,
+     "max_days": 13,
+     "ongoing": 0
+    },
+    {
+     "code": "SGSIN",
+     "name": "SINGAPORE",
+     "n": 4,
+     "avg_days": 10.8,
+     "max_days": 17,
+     "ongoing": 0
+    },
+    {
+     "code": "CNNGB",
+     "name": "NINGBO",
+     "n": 1,
+     "avg_days": 10.0,
+     "max_days": 10,
+     "ongoing": 0
+    },
+    {
+     "code": "ZAPLZ",
+     "name": "PORT ELIZABETH",
+     "n": 1,
+     "avg_days": 10.0,
+     "max_days": 10,
+     "ongoing": 0
+    },
+    {
+     "code": "MAPTM",
+     "name": "TANGER MED",
+     "n": 1,
+     "avg_days": 10.0,
+     "max_days": 10,
+     "ongoing": 0
+    },
+    {
+     "code": "CGPNR",
+     "name": "POINTE NOIRE",
+     "n": 1,
+     "avg_days": 9.0,
+     "max_days": 9,
+     "ongoing": 0
+    },
+    {
+     "code": "ESALG",
+     "name": "ALGECIRAS",
+     "n": 1,
+     "avg_days": 6.0,
+     "max_days": 6,
+     "ongoing": 1
+    },
+    {
+     "code": "MTMAR",
+     "name": "MALTA",
+     "n": 2,
+     "avg_days": 5.0,
+     "max_days": 6,
+     "ongoing": 0
+    },
+    {
+     "code": "GHTEM",
+     "name": "TEMA",
+     "n": 1,
+     "avg_days": 1.0,
+     "max_days": 1,
+     "ongoing": 1
+    }
+   ],
+   "long": [
+    {
+     "bl": "MEDUYJ453487",
+     "port": "KRIBI",
+     "days": 23,
+     "ongoing": false
+    },
+    {
+     "bl": "COP0305645",
+     "port": "SINGAPORE",
+     "days": 17,
+     "ongoing": false
+    },
+    {
+     "bl": "COP0307708",
+     "port": "COLOMBO",
+     "days": 13,
+     "ongoing": false
+    },
+    {
+     "bl": "MEDUAAO53495",
+     "port": "SINGAPORE",
+     "days": 13,
+     "ongoing": false
+    },
+    {
+     "bl": "COP0307065",
+     "port": "MUNDRA",
+     "days": 12,
+     "ongoing": false
+    },
+    {
+     "bl": "MEDUKC776011",
+     "port": "PORT ELIZABETH",
+     "days": 10,
+     "ongoing": false
+    },
+    {
+     "bl": "MEDUKC808954",
+     "port": "NINGBO",
+     "days": 10,
+     "ongoing": false
+    },
+    {
+     "bl": "COP0305863",
+     "port": "TANGER MED",
+     "days": 10,
+     "ongoing": false
+    },
+    {
+     "bl": "COP0305302",
+     "port": "COLOMBO",
+     "days": 9,
+     "ongoing": false
+    },
+    {
+     "bl": "COP0305959",
+     "port": "POINTE NOIRE",
+     "days": 9,
+     "ongoing": false
+    },
+    {
+     "bl": "MEDUABK49475",
+     "port": "SINGAPORE",
+     "days": 8,
+     "ongoing": false
+    }
+   ],
+   "threshold_days": 7
+  },
+  "eta_moves": {
+   "since": "2026-09-30",
+   "by_carrier": [
+    {
+     "carrier": "CMA CGM",
+     "n": 17,
+     "avg_moves": 0.9,
+     "moved": 11
+    },
+    {
+     "carrier": "MSC",
+     "n": 8,
+     "avg_moves": 1.3,
+     "moved": 6
+    }
+   ],
+   "top": [
+    {
+     "bl": "MEDUAAO53495",
+     "moves": 3
+    },
+    {
+     "bl": "COP0305863",
+     "moves": 2
+    },
+    {
+     "bl": "COP0307065",
+     "moves": 2
+    },
+    {
+     "bl": "COP0307708",
+     "moves": 2
+    },
+    {
+     "bl": "COP0308433",
+     "moves": 2
+    }
+   ]
+  },
+  "plan": {
+   "since": "2026-10-08",
+   "n_legs": 68,
+   "slipped": []
+  }
  }
 }

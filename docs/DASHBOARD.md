@@ -27,6 +27,24 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
 - **Gennemgå kundebeskeder:** bladr gennem alle forsinkede, tidligere og udaterede forsendelser én ad gangen.
 - Siden erklærer `mcp` (Apify) og `sample`. Knapperne vises kun, når seeren har adgang til dem.
 
+## Testversionen (faner)
+
+- **Tavle**: som før.
+- **Svar på mail**: Claude (`sample`) læser kun mailen og returnerer JSON (sprog, hensigt, numre, kundens navn).
+  Tavlens kode slår BL'et (eller containernummeret) op og fletter fakta ind i en GODKENDT skabelon. Manglende fakta
+  bliver `[UDFYLD]`. "Kortere/Venligere" omskriver med Claude, men afvises, hvis BL, datoer eller dage ændres.
+  Mailtekst gemmes aldrig; kun hensigt/sprog som brugsstatistik. Uden Claude bruges enkel genkendelse.
+- **Skabeloner**: db-collections `templates` (godkendte; kun Editor/Owner skriver) og `drafts` (kladder; alle
+  Contributors). Nøgle `<hensigt>-<sprog>`, sprog da/en/fr/pt, pladsholdere {kunde} {bl} {havn} {ny_eta} {jeres_eta}
+  {dage} {skib} {afsender}. EKSEMPEL-skabelonerne er lagt ind som kladder og skal godkendes, før de bruges.
+- **Forsinkelser**: `eta_tracker/kpi.py` (testet) og en JS-spejling i siden; tjekket ens på samme data.
+  Liggetid ved omladning, forsinkelse pr. rederi/destination, ETA-uro, og planer der skrider (gemmes pr. etape fra
+  8. okt.). Chauffør/lastbil/lager kræver data fra kundens eget system.
+- **Feedback**: `data/users/<bruger-id>/fb/items` og `/fb/usage` (privat pr. bruger; ejeren kan læse alle) plus
+  `testers/<bruger-id>` (kun id og tidspunkt), så ejeren ved, hvis feedback der skal hentes.
+  **Testoversigt** (kun ejer) viser feedback, brug pr. dag og et skøn over sparet tid.
+- Testguide til speditøren: `docs/TESTGUIDE.md`.
+
 ## Vis tavlen uden for Claude (præsentation, offline)
 
 `python tools/standalone.py` bygger `dist/ETA-tavlen.html`: én fil med data, kort, biblioteker, skrifttyper og
