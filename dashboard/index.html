@@ -190,6 +190,7 @@ td.num { text-align: right; white-space: nowrap; }
 .s-check { background: var(--check-bg); color: var(--check); } .s-check::before { content: "?"; }
 .s-wait { background: var(--same-bg); color: var(--same); } .s-wait::before { content: "…"; }
 /* add-a-BL form above the table */
+#addOpen { margin: 0 0 12px; }
 .addbl { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin: 4px 0 14px; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 10px; }
 .addbl label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); }
 .addbl input, .addbl select { font: 500 15px var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-height: 40px; }
@@ -253,6 +254,8 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
 /* ---------- v2: tabs, mail assistant, templates, delay figures, feedback ---------- */
 .tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin: -6px 0 2px; }
 .tabs button { all: unset; cursor: pointer; padding: 10px 14px; font: 600 14px var(--body); color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; }
+.tabs button.admin { margin-left: auto; font-weight: 500; font-size: 13px; }
+.tabs button.admin + .admin { margin-left: 0; }
 .tabs button[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 .tabs button:hover { color: var(--ink); }
 .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
@@ -274,6 +277,9 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
 .mailin textarea { width: 100%; box-sizing: border-box; resize: vertical; min-height: 220px; }
 .mailgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 18px; align-items: start; }
 .mailin, .mailout { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
+.found { margin: 0 0 8px; font-size: 15px; line-height: 1.5; }
+.tweak { margin: 4px 0 6px; font-size: 13px; color: var(--muted); }
+.tweak summary { cursor: pointer; }
 .mailout .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
 .mailout .meta b { color: var(--ink); font-weight: 600; }
 .approve-tag { display: inline-flex; align-items: center; gap: 6px; font: 700 12px var(--body); letter-spacing: .04em; text-transform: uppercase; color: var(--check); background: var(--check-bg); padding: 4px 10px; border-radius: 999px; }
@@ -285,6 +291,7 @@ footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line)
 .reply textarea { width: 100%; box-sizing: border-box; min-height: 260px; font: 400 14px/1.55 var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
 mark.fill { background: #ffe58a; color: #3a2e00; padding: 0 3px; border-radius: 3px; font-weight: 700; }
 mark.fact { background: transparent; color: inherit; border-bottom: 2px solid var(--accent); padding: 0; }
+.facts-used summary { cursor: pointer; }
 .facts-used { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; margin-top: 4px; display: grid; gap: 4px; }
 .facts-used b { color: var(--ink); font-weight: 600; }
 .chips button { all: unset; cursor: pointer; font: 500 12px var(--mono); padding: 3px 8px; border-radius: 6px; background: var(--soft); border: 1px solid var(--line); }
@@ -317,10 +324,13 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
 .kcard .sub { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
 .kcard.wide { grid-column: 1 / -1; }
 .kcard.todo { border-style: dashed; }
+.story { margin: 6px 0 0; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; line-height: 1.5; }
+.more { margin-top: 14px; }
+.more > summary { cursor: pointer; font-weight: 600; padding: 10px 0; }
 .bignum { font: 800 40px/1 var(--display); }
 .bignum small { font: 500 14px var(--body); color: var(--muted); margin-left: 6px; }
 .bars { display: grid; gap: 8px; }
-.bar { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) 12em; gap: 10px; align-items: center; font-size: 13px; }
+.bar { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) 15em; gap: 10px; align-items: center; font-size: 13px; }
 .bar .track { height: 12px; background: var(--soft); border-radius: 3px; position: relative; }
 .bar .fillb { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 3px; }
 .bar .fillb.max { background: transparent; border-right: 2px solid var(--ink); opacity: .55; }
@@ -353,9 +363,9 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
   <nav class="tabs" id="tabs" aria-label="Visninger">
     <button data-view="tavle" aria-current="page">Tavle</button>
     <button data-view="mail">Svar på mail</button>
-    <button data-view="tpl">Skabeloner</button>
     <button data-view="kpi">Forsinkelser</button>
-    <button data-view="test" id="tabTest" hidden>Testoversigt</button>
+    <button data-view="tpl" id="tabTpl" class="admin" hidden>Skabeloner</button>
+    <button data-view="test" id="tabTest" class="admin" hidden>Testoversigt</button>
   </nav>
 
   <div class="view" id="view-tavle">
@@ -402,8 +412,9 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
 
   <section class="manifest">
     <div class="sechead"><h2>Alle forsendelser</h2><p id="shown"></p></div>
-    <form class="addbl" id="addForm" autocomplete="off">
-      <p class="lead"><b>Indtast nyt BL-nummer her</b>, så følger tavlen det fra nu af.</p>
+    <button class="btn small" id="addOpen" type="button" aria-expanded="false" aria-controls="addForm">+ Tilføj BL</button>
+    <form class="addbl" id="addForm" autocomplete="off" hidden>
+      <p class="lead"><b>Tilføj et BL-nummer</b>, så følger tavlen det fra i dag.</p>
       <label>BL-nummer<input id="addBl" name="bl" required placeholder="fx MEDU1234567" spellcheck="false" maxlength="20" pattern="[A-Za-z0-9 ]{6,20}"></label>
       <label>Rederi<select id="addCarrier"><option value="">Find selv</option><option value="CMA">CMA CGM</option><option value="MSC">MSC</option></select></label>
       <label>Jeres ETA (valgfri)<input id="addEta" type="date"></label>
@@ -425,30 +436,30 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
   </div>
 
   <section class="view" id="view-mail" hidden aria-labelledby="mailH">
-    <div class="sechead"><h2 id="mailH">Svar på mail</h2><p>Indsæt kundens mail. Tavlen finder forsendelsen og fylder en godkendt skabelon ud.</p>
+    <div class="sechead"><h2 id="mailH">Svar på mail</h2><p>Sæt kundens mail ind. Tavlen finder forsendelsen og skriver et svar, du kan rette og kopiere.</p>
       <button class="btn small fb" data-fb="mail">Giv feedback</button></div>
-    <div class="preview-banner" id="mailPreview" hidden>Forhåndsvisning uden Claude: mailen læses med enkel genkendelse, og der bruges EKSEMPEL-skabeloner, som ikke er godkendt. I Claude-versionen bruges kun godkendte skabeloner.</div>
+    <div class="preview-banner" id="mailPreview" hidden>Du ser en forhåndsvisning uden Claude. Tavlen læser mailen med en enkel genkendelse og bruger eksempelskabeloner, som ikke er godkendt.</div>
     <div class="mailgrid">
       <div class="mailin">
         <label for="mailText" class="lbl">Kundens mail</label>
-        <textarea id="mailText" rows="12" spellcheck="false" placeholder="Indsæt mailen her …"></textarea>
+        <textarea id="mailText" rows="12" spellcheck="false" placeholder="Sæt mailen ind her …"></textarea>
         <div class="row">
           <button class="btn primary" id="mailGo">Lav svar</button>
-          <label class="inline">Dit navn <input id="mailSender" autocomplete="name" placeholder="Navn til hilsen"></label>
+          <button class="linkbtn" id="mailExample" type="button">Prøv med en eksempelmail</button>
         </div>
-        <div class="row small">EKSEMPEL-mails: <button class="linkbtn" data-ex="0">Fransk: hvor er containeren?</button> <button class="linkbtn" data-ex="1">Engelsk: dokumenter</button> <button class="linkbtn" data-ex="2">Dansk: utilfreds kunde</button></div>
-        <p class="small muted">Mailen gemmes ikke. Kun hvilken type mail og hvilket sprog, gemmes til testoversigten.</p>
+        <label class="inline" style="margin-top:12px">Dit navn til hilsenen <input id="mailSender" autocomplete="name" placeholder="fx Maria Hansen"></label>
+        <p class="small muted">Mailen bliver ikke gemt.</p>
       </div>
       <div class="mailout" id="mailOut" aria-live="polite">
-        <div class="empty-state">Svaret kommer her. Du kan også prøve en af EKSEMPEL-mails.</div>
+        <div class="empty-state">Svaret kommer her.</div>
       </div>
     </div>
   </section>
 
   <section class="view" id="view-tpl" hidden aria-labelledby="tplH">
-    <div class="sechead"><h2 id="tplH">Skabeloner</h2><p>Kun godkendte skabeloner bruges i svar til kunder. Hver ændring bliver en kladde, til den er godkendt.</p>
+    <div class="sechead"><h2 id="tplH">Skabeloner</h2><p>Svar til kunder bruger kun godkendte skabeloner. Retter du i en, bliver den til en kladde, indtil den er godkendt igen.</p>
       <button class="btn small fb" data-fb="skabeloner">Giv feedback</button></div>
-    <div class="preview-banner" id="tplPreview" hidden>Forhåndsvisning: her vises EKSEMPEL-skabelonerne. Redigering og godkendelse kræver Claude-versionen.</div>
+    <div class="preview-banner" id="tplPreview" hidden>Du ser eksempelskabelonerne. I Claude-versionen kan du rette og godkende dem.</div>
     <div class="tplwrap">
       <div class="tpltable" id="tplTable"></div>
       <div class="tpledit" id="tplEdit"><div class="empty-state">Vælg en skabelon i tabellen.</div></div>
@@ -463,7 +474,7 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
   </section>
 
   <section class="view" id="view-test" hidden aria-labelledby="testH">
-    <div class="sechead"><h2 id="testH">Testoversigt</h2><p>Kun synlig for dig som ejer. Feedback og brug fra testen.</p></div>
+    <div class="sechead"><h2 id="testH">Testoversigt</h2><p>Kun du kan se den her side. Her samles feedback og brug fra testen.</p></div>
     <div id="testBody"><div class="empty-state">Henter …</div></div>
   </section>
 
@@ -476,7 +487,7 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
         <label><input type="radio" name="fbVote" value="down"> 👎 Det virker ikke for mig</label>
       </div>
       <label class="tklabel">Hvad mangler eller er forkert?<textarea id="fbText" rows="4"></textarea></label>
-      <label class="tklabel">Hvor lang tid ville det her ellers tage dig?
+      <label class="tklabel">Hvor lang tid ville det tage dig uden tavlen?
         <select id="fbTime"><option value="">Vælg</option><option value="lt1">Under 1 minut</option><option value="1-5">1–5 minutter</option><option value="5-15">5–15 minutter</option><option value="gt15">Over 15 minutter</option></select></label>
       <p class="small" id="fbMsg" role="status"></p>
       <div class="dfoot"><button class="btn" type="button" id="fbCancel">Luk</button><button class="btn primary" type="submit" id="fbSend">Send feedback</button></div>
@@ -517,7 +528,7 @@ mark.fact { background: transparent; color: inherit; border-bottom: 2px solid va
         <button class="btn" id="copyBtn">Kopiér besked</button>
         <span class="small" id="dStatus" role="status" aria-live="polite"></span>
       </div>
-      <p class="small" style="margin:0">Beskeden sendes ikke herfra. Kopiér den ind i jeres mail. I en fuld løsning sendes den automatisk fra jeres mailsystem, når ETA flytter sig.</p>
+      <p class="small" style="margin:0">Beskeden sendes ikke herfra. Kopiér den ind i jeres mailprogram.</p>
       <div class="drawer-nav" id="dNav" hidden>
         <button class="btn small" id="dPrev">← Forrige</button><span id="dPos"></span><button class="btn small" id="dNext">Næste →</button>
       </div>
@@ -567,7 +578,7 @@ async function load() {
     ]);
     DATA = data; window.__land = land;
   } catch (e) {
-    byId("stamp").textContent = "Kunne ikke hente data";
+    byId("stamp").textContent = "Data kunne ikke hentes";
     byId("headline").textContent = "Data kunne ikke hentes";
     byId("rows").innerHTML = '<tr><td colspan="6" class="empty">Dagens data kunne ikke hentes. Prøv at genindlæse siden.</td></tr>';
     return;
@@ -598,13 +609,14 @@ function renderTally() {
   const notify = typeof notifyList === "function" ? notifyList().length : 0;
   const k = [
     { cls: "late", v: c["Forsinket"] || 0, l: `af ${total} forsinket`, act: "late" },
-    { cls: "", v: days, l: "forsinkelsesdage i alt", act: "late" },
+    { cls: "", v: (c["Tjek manuelt"] || 0), l: "mangler en ankomstdato", act: "check" },
     { cls: "risk", v: highRisk.size, l: "skal gennem en havn med høj risiko", act: "news" },
-    { cls: "check", v: notify, l: "kunder bør have besked i dag", act: "notify" },
+    { cls: "check", v: notify, l: "kunder bør have en besked i dag", act: "notify" },
   ];
   byId("kpis").innerHTML = k.map(x => `<button class="kpi ${x.cls}" data-act="${x.act}"><span class="v">${x.v}</span><span class="l">${x.l}</span></button>`).join("");
   byId("kpis").querySelectorAll(".kpi").forEach(b => b.onclick = () => {
     if (b.dataset.act === "late") { filter = "Forsinket"; NEWS_SEL = null; renderTally(); renderNews(); renderTable(); highlight(null); document.querySelector(".manifest").scrollIntoView({ behavior: "smooth" }); }
+    if (b.dataset.act === "check") { filter = "Tjek manuelt"; NEWS_SEL = null; renderTally(); renderNews(); renderTable(); highlight(null); document.querySelector(".manifest").scrollIntoView({ behavior: "smooth" }); }
     if (b.dataset.act === "news") byId("newsSection").scrollIntoView({ behavior: "smooth" });
     if (b.dataset.act === "notify") byId("bulkInform").click();
   });
@@ -649,7 +661,7 @@ function renderCallFirst() {
   box.querySelectorAll("[data-inform]").forEach(b => b.onclick = () => openDrawer([b.dataset.inform], 0));
   const needs = notifyList();
   byId("notify").hidden = needs.length === 0;
-  byId("notifyText").innerHTML = `<b>${needs.length} kunder</b> bør have besked i dag om en ændret eller manglende ankomstdato. Beskederne er skrevet klar.`;
+  byId("notifyText").innerHTML = `<b>${needs.length} kunder</b> bør have en besked i dag, fordi ankomstdatoen er flyttet eller mangler. Beskederne er skrevet på forhånd.`;
   byId("bulkInform").onclick = () => openDrawer(needs.map(s => s.bl), 0);
 }
 
@@ -1223,13 +1235,13 @@ function summarizeJs(ships) {
 const MCP_COPY = {
   server_not_connected: "Apify er ikke forbundet. Tilføj den i claude.ai under Indstillinger → Connectors.",
   needs_reauth: "Apify-forbindelsen er udløbet. Forbind den igen i claude.ai under Indstillinger → Connectors.",
-  selection_required: "Vælg hvilken Apify-forbindelse siden skal bruge, og prøv igen.",
+  selection_required: "Vælg, hvilken Apify-forbindelse siden skal bruge, og prøv igen.",
   not_in_manifest: "Apify er ikke tilladt for denne side. Tillad den, når du bliver spurgt, og prøv igen.",
   blocked_by_policy: "Jeres organisation tillader ikke Apify her.",
-  approval_required: "Apify kræver godkendelse pr. kald, som ikke understøttes her.",
+  approval_required: "Apify vil have en godkendelse for hvert opslag, og det kan siden ikke håndtere.",
   server_unavailable: "Apify svarer ikke lige nu. Prøv igen om lidt.",
   token: "Apify afviste API-tokenet. Tryk igen og indsæt et gyldigt token.",
-  network: "Kunne ikke nå Apify. Tjek internetforbindelsen og prøv igen.",
+  network: "Tavlen kunne ikke få forbindelse til Apify. Tjek internettet, og prøv igen.",
   declined: "Hentningen blev annulleret.",
 };
 const setRun = (t, err) => { $("runStatus").textContent = t; $("runStatus").classList.toggle("err", !!err); };
@@ -1317,7 +1329,7 @@ async function runNow() {
   results.forEach(r => { if (r.status === "fulfilled") r.value[1].forEach(it => { items[String(it.tracking_number || "").trim().toUpperCase()] = it; }); else failed.push(r.reason); });
   if (failed.length === results.length) {
     const e = failed[0] || {};
-    setRun(MCP_COPY[e.code] || (e.code === "tool_error" ? `Apify fejlede: ${e.message || ""}` : "Kunne ikke hente data. Prøv igen om lidt."), true);
+    setRun(MCP_COPY[e.code] || (e.code === "tool_error" ? `Apify fejlede: ${e.message || ""}` : "Tavlen kunne ikke hente data. Prøv igen om lidt."), true);
     btn.disabled = false; return;
   }
   setRun("Læser rederiernes data …");
@@ -1337,8 +1349,8 @@ async function runNow() {
   for (const fn of [renderHeader, renderTally, renderCallFirst, renderNews, () => renderMap(window.__land), renderTable]) { try { fn(); } catch (e) { console.error(e); } }
   highlight(selected);
   const secs = Math.round((performance.now() - t0) / 1000);
-  const partial = failed.length ? " Et rederi svarede ikke; dets rækker viser seneste kendte data." : "";
-  setRun(`Hentet live på ${secs} sek. ${FLASH.size ? FLASH.size + (FLASH.size === 1 ? " forsendelse har ændret sig." : " forsendelser har ændret sig.") : "Ingen ændringer siden sidst."}${partial}`, !!failed.length);
+  const partial = failed.length ? " Et rederi svarede ikke, så dets forsendelser viser de seneste kendte data." : "";
+  setRun(`${secs < 2 ? "Hentet nu." : `Hentet på ${secs} sekunder.`} ${FLASH.size ? FLASH.size + (FLASH.size === 1 ? " forsendelse har ændret sig." : " forsendelser har ændret sig.") : "Ingen ændringer siden sidst."}${partial}`, !!failed.length);
   btn.disabled = false;
 }
 
@@ -1568,10 +1580,11 @@ async function removeAdded(bl) {
     const inToday = DATA.shipments.some(s => s.bl === bl && !s.added);
     ADDED.delete(bl); selected = null; mergeAdded(); rerender();
     setAdd(inToday ? `${bl} er fjernet fra listen og forsvinder ved næste morgenopdatering.` : `${bl} er fjernet fra tavlen.`);
-  } catch (err) { setAdd("Kunne ikke fjerne BL'et. Prøv igen.", true); }
+  } catch (err) { setAdd("BL'et blev ikke fjernet. Prøv igen.", true); }
 }
 
 byId("addForm").addEventListener("submit", addBl);
+byId("addOpen").onclick = () => { const f = byId("addForm"); f.hidden = !f.hidden; byId("addOpen").setAttribute("aria-expanded", String(!f.hidden)); if (!f.hidden) byId("addBl").focus(); };
 byId("addBl").addEventListener("input", () => {
   const bl = byId("addBl").value.replace(/\s+/g, "").toUpperCase(), g = guessCarrier(bl);
   if (!byId("addCarrier").dataset.touched) byId("addCarrier").value = g || "";
@@ -1673,7 +1686,7 @@ const storeSet = (k, v) => { try { localStorage.setItem(k, v); } catch { } };
 
 /* ---------- faner ---------- */
 function showView(v) {
-  if (v === "test" && !V2.isOwner) v = "tavle";
+  if ((v === "test" && !V2.isOwner) || (v === "tpl" && !V2.canEdit)) v = "tavle";
   if (!document.getElementById("view-" + v)) v = "tavle";
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "view-" + v);
   document.querySelectorAll("#tabs button").forEach(b => b.dataset.view === v ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
@@ -1741,7 +1754,7 @@ function pickIntent(read, s) {
   if (read.hensigt === "dokumenter") return "docs";
   if (read.hensigt === "klage") return "complaint";
   if (read.hensigt === "andet") return "other";
-  if (!s) return "ask_bl";
+  if (!s) return read.numre.length ? "other" : "ask_bl";   // a number we do not know: acknowledge, do not ask for it again
   if (s.arrived) return "arrived";
   if (!s.new_eta) return "no_date";
   return s.status === "Forsinket" ? "eta_late" : "eta_ok";
@@ -1750,12 +1763,12 @@ function factsFor(s, lang, read) {
   const sender = $("mailSender").value.trim();
   return {
     kunde: { v: read.kundenavn || DEFAULT_NAME[lang], soft: true },
-    bl: { v: s?.bl || null, label: "BL" }, havn: { v: s ? (cap(s.pod) || null) : null, label: "Destination" },
-    ny_eta: { v: s ? fmtLong(s.new_eta, lang) : null, label: s?.arrived ? "Ankommet" : "Rederiets ETA nu" },
-    jeres_eta: { v: s ? fmtLong(s.current_eta, lang) : null, label: "Jeres ETA" },
-    dage: { v: s && s.diff_days != null ? String(Math.abs(s.diff_days)) : null, label: "Dage" },
-    skib: { v: s?.vessel || null, label: "Skib" },
-    afsender: { v: sender || null, label: "Afsender" },
+    bl: { v: s?.bl || null, label: "BL-nummer" }, havn: { v: s ? (cap(s.pod) || null) : null, label: "destination" },
+    ny_eta: { v: s ? fmtLong(s.new_eta, lang) : null, label: s?.arrived ? "ankommet" : "ny ankomstdato" },
+    jeres_eta: { v: s ? fmtLong(s.current_eta, lang) : null, label: "jeres dato" },
+    dage: { v: s && s.diff_days != null ? String(Math.abs(s.diff_days)) : null, label: "antal dage" },
+    skib: { v: s?.vessel || null, label: "skib" },
+    afsender: { v: sender || null, label: "dit navn" },
   };
 }
 function fill(tpl, facts) {
@@ -1782,8 +1795,8 @@ async function makeReply() {
   let read;
   try { read = SAMPLE ? await claudeRead(text) : simpleRead(text); }
   catch (e) {
-    if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e?.code)) read = { ...simpleRead(text), via: "enkel", note: "Claude er ikke slået til. Mailen er læst med enkel genkendelse." };
-    else read = { ...simpleRead(text), via: "enkel", note: "Claude kunne ikke læse mailen lige nu. Den er læst med enkel genkendelse; tjek felterne." };
+    if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e?.code)) read = { ...simpleRead(text), via: "enkel", note: "Claude er ikke slået til, så tavlen har brugt en enkel genkendelse. Tjek svaret ekstra grundigt." };
+    else read = { ...simpleRead(text), via: "enkel", note: "Claude kunne ikke læse mailen lige nu. Tavlen har brugt en enkel genkendelse, så tjek svaret ekstra grundigt." };
   } finally { $("mailGo").disabled = false; }
   const hits = read.numre.map(n => ({ n, s: findShipment(n) }));
   const first = hits.find(h => h.s) || null;
@@ -1804,31 +1817,32 @@ function renderReply() {
   const custTxt = R ? R.text : out ? `${out.subject}\n\n${out.body}` : "";
   const daTxt = R ? R.dansk : outD ? `${outD.subject}\n\n${outD.body}` : "";
   const sourceDate = fmt(DATA.run_date);
-  const head = `<div class="meta">
-      <span>Sprog: <b>${esc(LANGS[M.read.sprog] || "ukendt")}</b></span>
-      <span>Type: <b>${esc({ status: "Status/ETA", dokumenter: "Dokumenter", klage: "Klage", andet: "Andet" }[M.read.hensigt])}</b></span>
-      <span>Numre: ${M.hits.length ? `<span class="chips">${M.hits.map(h => `<button data-pick="${esc(h.n)}" aria-pressed="${M.s && h.s === M.s}">${esc(h.n)}${h.s ? "" : " ?"}</button>`).join(" ")}</span>` : "<b>ingen fundet</b>"}</span>
-      <span>Læst ${M.read.via === "claude" ? "af Claude" : "med enkel genkendelse"}</span>
-    </div>
+  const what = { status: "spørger til status", dokumenter: "spørger til dokumenter", klage: "er utilfreds", andet: "skriver om noget andet" }[M.read.hensigt];
+  const found = s ? `Kunden ${what}. Det handler om <b>${esc(s.bl)}</b> til ${esc(cap(s.pod) || "–")}: <b>${esc(s.status.toLowerCase())}</b>${s.diff_days > 0 ? ` (+${s.diff_days} dage)` : ""}.`
+    : unknown.length ? `Kunden ${what}. Mailen nævner ${esc(unknown.join(", "))}, men det er ikke på tavlen endnu.`
+    : `Kunden ${what}. Tavlen fandt ikke noget BL- eller containernummer i mailen.`;
+  const others = M.hits.filter(h => h.s && h.s !== s);
+  const head = `<p class="found">${found}</p>
+    ${others.length ? `<p class="small">Mailen nævner også: <span class="chips">${others.map(h => `<button data-pick="${esc(h.n)}">${esc(h.n)}</button>`).join(" ")}</span></p>` : ""}
     ${M.read.note ? `<p class="warnline">${esc(M.read.note)}</p>` : ""}
-    ${unknown.length ? `<p class="warnline">${esc(unknown.join(", "))} er ikke på tavlen. <button class="btn small" id="mailAdd" data-bl="${esc(unknown[0])}">Tilføj ${esc(unknown[0])} og slå op</button></p>` : ""}`;
-  const controls = `<div class="row">
-      <label class="inline">Skabelon <select id="mailIntent">${Object.entries(INTENTS).map(([k, v]) => `<option value="${k}" ${k === M.intent ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>
+    ${unknown.length ? `<p class="row"><button class="btn small" id="mailAdd" data-bl="${esc(unknown[0])}">Tilføj ${esc(unknown[0])} til tavlen</button><span class="small muted">Lav svaret igen bagefter.</span></p>` : ""}`;
+  const controls = `<details class="tweak"><summary>Andet sprog eller en anden type svar?</summary><div class="row">
       <label class="inline">Sprog <select id="mailLang">${Object.entries(LANGS).map(([k, v]) => `<option value="${k}" ${k === lang ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>
-    </div>`;
+      <label class="inline">Type <select id="mailIntent">${Object.entries(INTENTS).map(([k, v]) => `<option value="${k}" ${k === M.intent ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>
+    </div></details>`;
   if (!tpl) {
-    $("mailOut").innerHTML = head + controls + `<div class="empty-state">Der er ingen godkendt skabelon for <b>${esc(INTENTS[M.intent])}</b> på ${esc(LANGS[lang].toLowerCase())}.<br>Godkend den under <button class="linkbtn" data-goto="tpl">Skabeloner</button>, eller vælg et andet sprog.</div>`;
+    $("mailOut").innerHTML = head + controls + `<div class="empty-state">Der er endnu ingen godkendt skabelon til "${esc(INTENTS[M.intent])}" på ${esc(LANGS[lang].toLowerCase())}.<br>${V2.canEdit ? 'Godkend den under <button class="linkbtn" data-goto="tpl">Skabeloner</button>.' : "Bed den, der godkender skabeloner, om at godkende den."}</div>`;
     wireReply(); return;
   }
   const missing = [...(out?.missing || [])].filter(k => k !== "afsender" || !$("mailSender").value.trim());
   const usedFacts = [...new Set([...(out?.used || [])])].filter(k => factsL[k]?.v && k !== "afsender");
   $("mailOut").innerHTML = head + controls + `
-    <div class="row"><span class="approve-tag">Kræver din godkendelse</span>${tpl.preview ? '<span class="small muted">EKSEMPEL-skabelon (forhåndsvisning)</span>' : `<span class="small muted">Godkendt skabelon${tpl.approved_at ? " · " + fmt(tpl.approved_at.slice(0, 10)) : ""}</span>`}</div>
+    <div class="row"><span class="approve-tag">Læs det igennem, før du sender</span>${tpl.preview ? '<span class="small muted">Eksempelskabelon</span>' : ""}</div>
     <div class="replies">
-      <div class="reply"><h4>${esc(LANGS[lang])} · til kunden</h4><div class="txt" id="replyCust">${markText(custTxt)}</div></div>
-      ${lang !== "da" ? `<div class="reply"><h4>Dansk · til kontrol</h4><div class="txt" id="replyDa">${markText(daTxt)}</div></div>` : ""}
+      <div class="reply"><h4>Til kunden (${esc(LANGS[lang].toLowerCase())})</h4><div class="txt" id="replyCust">${markText(custTxt)}</div></div>
+      ${lang !== "da" ? `<div class="reply"><h4>Det samme på dansk</h4><div class="txt" id="replyDa">${markText(daTxt)}</div></div>` : ""}
     </div>
-    ${missing.length ? `<p class="warnline">Udfyld de gule felter før du sender: ${missing.map(k => esc(factsL[k]?.label || k)).join(", ")}.</p>` : ""}
+    ${missing.length ? `<p class="warnline">Udfyld de gule felter, før du sender (${missing.map(k => esc(factsL[k]?.label || k)).join(", ")}).</p>` : ""}
     <div class="row">
       <button class="btn primary" id="mailCopy">Kopiér svar</button>
       <button class="btn" id="mailEdit">Redigér</button>
@@ -1836,10 +1850,11 @@ function renderReply() {
       ${R ? '<button class="btn" id="mailUndo">Fortryd omskrivning</button>' : ""}
       <span class="small muted" id="mailStatus" role="status">${esc(M.status || "")}</span>
     </div>
-    <div class="facts-used"><span><b>Fakta brugt</b> (fra tavlen, data hentet ${esc(sourceDate)}):</span>
-      ${s ? `<span>${usedFacts.map(k => `${esc(factsL[k].label)}: <b>${esc(factsL[k].v)}</b>`).join(" · ") || "ingen"}</span><span><button class="linkbtn" data-show="${esc(s.bl)}">Vis ${esc(s.bl)} på tavlen</button> · status ${esc(s.status)}${s.stale ? " · rederiet svarede ikke i dag" : ""}</span>` : "<span>Ingen forsendelse fundet i mailen.</span>"}
-      <span>Intet sendes herfra. Kopiér svaret ind i jeres mailprogram.</span>
-    </div>`;
+    <details class="facts-used"><summary>Hvor kommer oplysningerne fra?</summary>
+      ${s ? `<span>Fra tavlen, hentet hos rederiet ${esc(sourceDate)}: ${usedFacts.map(k => `${esc(factsL[k].label)} <b>${esc(factsL[k].v)}</b>`).join(", ") || "ingen"}.${s.stale ? " Rederiet svarede ikke i dag, så det er seneste kendte data." : ""}</span>
+      <span><button class="linkbtn" data-show="${esc(s.bl)}">Vis ${esc(s.bl)} på tavlen</button></span>` : "<span>Svaret bruger ingen oplysninger fra tavlen.</span>"}
+      <span>Tavlen sender ikke noget. Du kopierer svaret ind i jeres mailprogram.</span>
+    </details>`;
   wireReply();
 }
 
@@ -1850,11 +1865,11 @@ function wireReply() {
   $("mailLang") && ($("mailLang").onchange = e => { M.lang = e.target.value; M.rewritten = null; renderReply(); });
   document.querySelectorAll("#mailOut [data-goto]").forEach(b => b.onclick = () => showView(b.dataset.goto));
   document.querySelectorAll("#mailOut [data-show]").forEach(b => b.onclick = () => { showView("tavle"); selected = null; select(b.dataset.show, true); });
-  $("mailAdd") && ($("mailAdd").onclick = () => { showView("tavle"); byId("addBl").value = $("mailAdd").dataset.bl; byId("addBl").dispatchEvent(new Event("input")); byId("addForm").scrollIntoView({ behavior: "smooth", block: "center" }); byId("addBl").focus(); });
+  $("mailAdd") && ($("mailAdd").onclick = () => { showView("tavle"); byId("addForm").hidden = false; byId("addOpen").setAttribute("aria-expanded", "true"); byId("addBl").value = $("mailAdd").dataset.bl; byId("addBl").dispatchEvent(new Event("input")); byId("addForm").scrollIntoView({ behavior: "smooth", block: "center" }); byId("addBl").focus(); });
   $("mailCopy") && ($("mailCopy").onclick = async () => {
     const txt = ($("replyCustEdit")?.value) ?? $("replyCust").innerText;
-    try { await navigator.clipboard.writeText(txt); $("mailStatus").textContent = /\[UDFYLD\]/.test(txt) ? "Kopieret, men der er stadig [UDFYLD]-felter." : "Kopieret. Læs det igennem, før du sender."; }
-    catch { const r = document.createRange(); r.selectNodeContents($("replyCust")); getSelection().removeAllRanges(); getSelection().addRange(r); $("mailStatus").textContent = "Markeret: tryk Ctrl/Cmd+C for at kopiere."; }
+    try { await navigator.clipboard.writeText(txt); $("mailStatus").textContent = /\[UDFYLD\]/.test(txt) ? "Kopieret. Husk at udfylde de gule felter." : "Kopieret."; }
+    catch { const r = document.createRange(); r.selectNodeContents($("replyCust")); getSelection().removeAllRanges(); getSelection().addRange(r); $("mailStatus").textContent = "Teksten er markeret. Tryk Ctrl+C (Cmd+C på Mac) for at kopiere."; }
   });
   $("mailEdit") && ($("mailEdit").onclick = () => {
     const box = $("replyCust"); if ($("replyCustEdit")) return;
@@ -1877,10 +1892,10 @@ Mail:
 ${cur}
 """`, { modelTier: "quick", cache: false });
       const lost = must.filter(v => !String(r?.tekst || "").includes(v));
-      if (!r?.tekst || lost.length) { M.status = $("mailStatus").textContent = `Omskrivningen blev afvist, fordi den ændrede fakta (${lost.join(", ") || "tomt svar"}). Den godkendte tekst er bevaret.`; return; }
-      M.rewritten = { text: r.tekst, dansk: r.dansk || "" }; M.status = "Omskrevet af Claude. Fakta er kontrolleret."; renderReply();
+      if (!r?.tekst || lost.length) { M.status = $("mailStatus").textContent = "Claude ændrede en dato eller et nummer, så omskrivningen er ikke brugt. Teksten er som før."; return; }
+      M.rewritten = { text: r.tekst, dansk: r.dansk || "" }; M.status = "Claude har omskrevet teksten. Datoer og numre er tjekket."; renderReply();
       logUse("mail_rewrite", { slags: kind });
-    } catch (e) { M.status = $("mailStatus").textContent = e?.code === "rate_limited" ? "For mange forespørgsler. Prøv igen om lidt." : "Omskrivningen lykkedes ikke. Den godkendte tekst er bevaret."; }
+    } catch (e) { M.status = $("mailStatus").textContent = e?.code === "rate_limited" ? "Claude har travlt lige nu. Prøv igen om lidt." : "Omskrivningen lykkedes ikke. Teksten er som før."; }
     finally { document.querySelectorAll("#mailShort, #mailWarm").forEach(b => b.disabled = false); }
   };
   $("mailShort") && ($("mailShort").onclick = () => rewrite("short"));
@@ -1888,7 +1903,8 @@ ${cur}
   $("mailUndo") && ($("mailUndo").onclick = () => { M.rewritten = null; M.status = ""; renderReply(); });
 }
 $("mailGo").onclick = makeReply;
-document.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => { $("mailText").value = EXAMPLE_MAILS[+b.dataset.ex]; makeReply(); });
+let EX_I = 0;
+$("mailExample").onclick = () => { $("mailText").value = EXAMPLE_MAILS[EX_I++ % EXAMPLE_MAILS.length]; makeReply(); };
 $("mailSender").value = storeGet("eta-tavlen.sender");
 $("mailSender").addEventListener("change", () => { storeSet("eta-tavlen.sender", $("mailSender").value.trim()); if (V2.mail) renderReply(); });
 
@@ -1947,7 +1963,7 @@ function renderTplEdit() {
   const draftBody = () => ({ intent, lang, subject: $("tplSubj").value.trim(), body: $("tplBody").value, updated_by: V2.me, updated_at: new Date().toISOString(), example: false });
   $("tplSave").onclick = async () => {
     const b = draftBody(); if (!b.subject || !b.body.trim()) return msg("Emne og tekst skal udfyldes.");
-    try { await V2.db.collection("drafts").doc(k).set(b); msg("Gemt som kladde."); } catch (e) { msg(e?.code === "invalid_argument" ? "Du har ikke adgang til at gemme kladder." : "Kunne ikke gemme. Prøv igen."); }
+    try { await V2.db.collection("drafts").doc(k).set(b); msg("Gemt som kladde."); } catch (e) { msg(e?.code === "invalid_argument" ? "Du har ikke adgang til at gemme kladder." : "Det blev ikke gemt. Prøv igen."); }
   };
   $("tplApprove") && ($("tplApprove").onclick = async () => {
     const b = draftBody(); if (!b.subject || !b.body.trim()) return msg("Emne og tekst skal udfyldes.");
@@ -1957,9 +1973,9 @@ function renderTplEdit() {
       await V2.db.collection("templates").doc(k).set({ intent, lang, subject: b.subject, body: b.body, approved_by: V2.me, approved_at: new Date().toISOString(), from_example: !!V2.drafts[k]?.example });
       await V2.db.collection("drafts").doc(k).delete();
       msg("Godkendt. Den bruges nu i svar til kunder."); logUse("tpl_approve", { skabelon: intent, sprog: lang });
-    } catch (e) { msg(e?.code === "invalid_argument" ? "Godkendelse kræver Editor- eller Owner-rollen." : "Kunne ikke godkende. Prøv igen."); }
+    } catch (e) { msg(e?.code === "invalid_argument" ? "Godkendelse kræver Editor- eller Owner-rollen." : "Den blev ikke godkendt. Prøv igen."); }
   });
-  $("tplDrop") && ($("tplDrop").onclick = async () => { try { await V2.db.collection("drafts").doc(k).delete(); msg("Kladden er kasseret."); } catch { msg("Kunne ikke kassere kladden."); } });
+  $("tplDrop") && ($("tplDrop").onclick = async () => { try { await V2.db.collection("drafts").doc(k).delete(); msg("Kladden er kasseret."); } catch { msg("Kladden blev ikke kasseret. Prøv igen."); } });
   $("tplTranslate") && ($("tplTranslate").onclick = async () => {
     const da = approvedTpl(intent, "da"); msg("Claude oversætter …");
     try {
@@ -2015,39 +2031,48 @@ function renderKpi() {
   const since = DATA.shipments.flatMap(s => (s.history || []).map(h => h.date)).sort()[0] || null;
   const K = buildKpis(DATA.shipments, since);
   const o = K.on_time, d = K.dwell, m = K.eta_moves, p = K.plan;
-  $("kpiSub").textContent = `Bygger kun på data, vi har: rederiernes hændelser og tavlens egen historik. Data hentet ${fmt(DATA.run_date)}.`;
+  $("kpiSub").textContent = `Bygger på rederiernes egne data og tavlens historik. Hentet ${fmt(DATA.run_date)}.`;
   const maxDays = Math.max(1, ...d.ports.map(r => r.max_days));
   const bar = r => `<div class="bar"><span>${esc(cap(r.name))} <span class="muted">n=${r.n}</span></span>
       <span class="track" aria-hidden="true"><span class="fillb" style="width:${(r.avg_days / maxDays * 100).toFixed(1)}%"></span><span class="fillb max" style="width:${(r.max_days / maxDays * 100).toFixed(1)}%"></span></span>
-      <span class="v">gns. ${String(r.avg_days).replace(".", ",")} · maks ${r.max_days} dage${r.ongoing ? ` · ${r.ongoing} der nu` : ""}</span></div>`;
+      <span class="v">gns. ${String(r.avg_days).replace(".", ",")} · længst ${r.max_days} dage${r.ongoing ? ` · ${r.ongoing} ligger der nu` : ""}</span></div>`;
   const grp = (rows, label, nice = cap) => `<table class="ktable"><thead><tr><th>${label}</th><th class="n">n</th><th class="n">Forsinket</th><th class="n">Gns. forsinkelse</th></tr></thead><tbody>
       ${rows.map(r => `<tr><td>${esc(nice(r.key))}</td><td class="n">${r.n}</td><td class="n">${r.late}</td><td class="n">${r.avg_late_days != null ? "+" + String(r.avg_late_days).replace(".", ",") + " d" : "–"}</td></tr>`).join("")}</tbody></table>`;
+  const n1 = v => String(v).replace(".", ",");
+  const topDest = K.by_destination.find(r => r.late && r.n >= 2) || K.by_destination.find(r => r.late);
+  const longest = d.long[0];
+  const story = [
+    `<b>${o.late} af ${o.n}</b> forsendelser kommer senere end jeres liste, i gennemsnit ${n1(o.avg_late_days ?? 0)} dage.`,
+    longest ? `Den største ventetid opstår ved omladning: ${d.long.length} forsendelser har ligget ${d.threshold_days} dage eller mere i en havn undervejs. Længst er ${longest.days} dage i ${esc(cap(longest.port))}.` : "",
+    topDest ? `Størst forsinkelse har ${esc(cap(topDest.key))}: +${n1(topDest.avg_late_days)} dage i gennemsnit (${topDest.n} forsendelser).` : "",
+    "Hvad der sker efter havnen (chauffør, lastbil og lager), kan tavlen ikke se endnu.",
+  ].filter(Boolean);
   $("kpiBody").innerHTML = `<div class="kgrid">
-    <div class="kcard"><h3>Forsinket i forhold til jeres liste</h3><p class="sub">n = ${o.n} forsendelser med både jeres dato og rederiets dato</p>
-      <div class="bignum">${o.late}<small>af ${o.n} · gns. +${String(o.avg_late_days ?? 0).replace(".", ",")} dage</small></div>
-      <p class="small muted">Til tiden eller tidligere: ${o.on_time}. Jeres liste er fra september; opdateres Google-arket, bliver tallet mere retvisende.</p></div>
-    <div class="kcard"><h3>ETA-uro</h3><p class="sub">Hvor ofte rederiet har flyttet ETA'en siden ${fmt(m.since)}</p>
-      <table class="ktable"><thead><tr><th>Rederi</th><th class="n">n</th><th class="n">Flyttet</th><th class="n">Gns. gange</th></tr></thead><tbody>
-      ${m.by_carrier.map(r => `<tr><td>${esc(r.carrier)}</td><td class="n">${r.n}</td><td class="n">${r.moved}</td><td class="n">${String(r.avg_moves).replace(".", ",")}</td></tr>`).join("")}</tbody></table>
-      ${m.top.length ? `<p class="small">Flyttet flest gange: ${m.top.map(t => `<button class="linkbtn" data-show="${esc(t.bl)}">${esc(t.bl)}</button> (${t.moves})`).join(", ")}</p>` : ""}</div>
-    <div class="kcard"><h3>Pr. rederi</h3><p class="sub">Forsinkelse i forhold til jeres liste</p>${grp(K.by_carrier, "Rederi", x => x || "–")}</div>
-    <div class="kcard wide"><h3>Liggetid ved omladning</h3><p class="sub">Dage fra lastet af ét skib til lastet på det næste. n = ${d.n_stops} omladninger på ${d.n_shipments} forsendelser. Søjle = gennemsnit, streg = længste.</p>
+    <div class="kcard wide"><h3>Kort fortalt</h3><ul class="story">${story.map(x => `<li>${x}</li>`).join("")}</ul></div>
+    <div class="kcard wide"><h3>Ventetid ved omladning</h3><p class="sub">Antal dage, containeren har ligget i en havn mellem to skibe. Søjlen er gennemsnittet, stregen er den længste. Bygger på ${d.n_stops} omladninger.</p>
       <div class="bars">${d.ports.map(bar).join("") || '<div class="empty-state">Ingen omladninger med faktiske datoer endnu.</div>'}</div>
-      ${d.long.length ? `<p class="small" style="margin-top:12px"><b>Lå ${d.threshold_days} dage eller mere:</b> ${d.long.map(l => `<button class="linkbtn" data-show="${esc(l.bl)}">${esc(l.bl)}</button> i ${esc(cap(l.port))} ${l.days} d${l.ongoing ? " (ligger der stadig)" : ""}`).join(" · ")}</p>` : ""}</div>
+      ${d.long.length ? `<p class="small" style="margin-top:12px"><b>Har ligget ${d.threshold_days} dage eller mere:</b> ${d.long.map(l => `<button class="linkbtn" data-show="${esc(l.bl)}">${esc(l.bl)}</button> i ${esc(cap(l.port))} (${l.days} dage${l.ongoing ? ", ligger der stadig" : ""})`).join(" · ")}</p>` : ""}</div>
     <div class="kcard"><h3>Pr. destination</h3><p class="sub">Forsinkelse i forhold til jeres liste</p>${grp(K.by_destination, "Destination")}</div>
-    <div class="kcard"><h3>Planer, der skrider</h3><p class="sub">Afgang og ankomst pr. etape, som rederiet melder dem dag for dag (CMA CGM)</p>
+    <div class="kcard todo"><h3>Chauffør, lastbil og lager</h3><p class="sub">Kræver data fra jeres eget system</p>
+      <p class="small">Rederierne ved intet om, hvad der sker efter havnen. Skal tavlen vise, om forsinkelser opstår ved afhentning, kørsel eller på lageret, skal den have data fra det system, I bruger til det.</p>
+      ${hasClaude() ? `<label class="tklabel">Hvilket system bruger I i dag? <input id="kpiSystem" placeholder="fx et TMS, Excel eller mail"></label><div class="row"><button class="btn small" id="kpiSystemSave">Send</button><span class="small" id="kpiSystemMsg" role="status"></span></div>` : ""}</div>
+  </div>
+  <details class="more"><summary>Flere tal</summary><div class="kgrid">
+    <div class="kcard"><h3>Pr. rederi</h3><p class="sub">Forsinkelse i forhold til jeres liste</p>${grp(K.by_carrier, "Rederi", x => x || "–")}</div>
+    <div class="kcard"><h3>Flyttede ankomstdatoer</h3><p class="sub">Hvor tit rederiet har flyttet datoen siden ${fmt(m.since)}</p>
+      <table class="ktable"><thead><tr><th>Rederi</th><th class="n">Forsendelser</th><th class="n">Flyttet</th><th class="n">Gns. antal gange</th></tr></thead><tbody>
+      ${m.by_carrier.map(r => `<tr><td>${esc(r.carrier)}</td><td class="n">${r.n}</td><td class="n">${r.moved}</td><td class="n">${n1(r.avg_moves)}</td></tr>`).join("")}</tbody></table>
+      ${m.top.length ? `<p class="small">Flyttet flest gange: ${m.top.map(t => `<button class="linkbtn" data-show="${esc(t.bl)}">${esc(t.bl)}</button> (${t.moves})`).join(", ")}</p>` : ""}</div>
+    <div class="kcard"><h3>Planer, der skrider</h3><p class="sub">Afgang og ankomst for hver etape, sådan som CMA CGM melder dem dag for dag</p>
       ${p.slipped.length ? `<table class="ktable"><thead><tr><th>BL</th><th>Etape</th><th>Først</th><th>Nu</th><th class="n">Dage</th></tr></thead><tbody>${p.slipped.slice(0, 8).map(r => `<tr><td>${esc(r.bl)}</td><td>${esc(legName(r.leg))}</td><td>${fmtShort(r.first)}</td><td>${fmtShort(r.now)}</td><td class="n">${r.days > 0 ? "+" : ""}${r.days}</td></tr>`).join("")}</tbody></table>`
-        : `<p class="small">Måles fra ${fmt(p.since)} på ${p.n_legs} etaper. Ingen planer har flyttet sig endnu. Tallene kommer, når morgenjobbet har kørt nogle dage.</p>`}
-      <p class="small muted">Rederierne overskriver deres plan, når et skib er sejlet. Derfor kan tavlen kun se, at en plan skrider, fra den dag den begyndte at gemme planerne.</p></div>
-    <div class="kcard todo"><h3>Chauffør, lastbil og lager</h3><p class="sub">Kræver data fra jeres transportsystem</p>
-      <p class="small">Rederierne ved intet om, hvad der sker efter havnen. Hvis I vil se, om forsinkelser opstår ved afhentning, kørsel eller på lager, skal tavlen have data fra det system, I bruger til det.</p>
-      ${hasClaude() ? `<label class="tklabel">Hvilket system bruger I? <input id="kpiSystem" placeholder="fx TMS, Excel, …"></label><div class="row"><button class="btn small" id="kpiSystemSave">Send</button><span class="small" id="kpiSystemMsg" role="status"></span></div>` : '<p class="small muted">Svar på det kræver Claude-versionen.</p>'}</div>
-  </div>`;
+        : `<p class="small">Tavlen har fulgt ${p.n_legs} etaper siden ${fmt(p.since)}, og ingen planer har flyttet sig endnu. Tallene kommer, når morgenopdateringen har kørt nogle dage.</p>`}
+      <p class="small muted">Rederierne overskriver deres plan, når et skib er sejlet. Derfor kan tavlen først se, at en plan skrider, fra den dag den begyndte at gemme planerne.</p></div>
+  </div></details>`;
   $("kpiBody").querySelectorAll("[data-show]").forEach(b => b.onclick = () => { showView("tavle"); selected = null; select(b.dataset.show, true); });
   $("kpiSystemSave") && ($("kpiSystemSave").onclick = async () => {
     const v = $("kpiSystem").value.trim(); if (!v) return;
     const ok = await saveFeedback({ feature: "forsinkelser_datakilde", vote: null, text: v, time: null });
-    $("kpiSystemMsg").textContent = ok ? "Tak, det er noteret." : "Kunne ikke gemme. Prøv igen.";
+    $("kpiSystemMsg").textContent = ok ? "Tak. Det er noteret." : "Det blev ikke gemt. Prøv igen.";
   });
 }
 const legName = k => { const [t, code] = k.split(":"); return `${t === "DEPA" ? "Afgang" : "Ankomst"} ${cap(PORTS[code]?.[0] || code)}`; };
@@ -2077,7 +2102,7 @@ function logUse(feature, info) {
 }
 function openFeedback(feature) {
   FB_FEATURE = feature;
-  $("fbWhat").textContent = `Om: ${FB_NAMES[feature] || feature}. Ærlig feedback hjælper mest, også når noget er dårligt.`;
+  $("fbWhat").textContent = `Om: ${FB_NAMES[feature] || feature}. Sig det gerne ligeud, også når noget ikke virker.`;
   $("fbForm").reset(); $("fbMsg").textContent = ""; $("fbSend").disabled = false;
   $("fbDlg").showModal();
 }
@@ -2094,7 +2119,7 @@ $("fbForm").onsubmit = async e => {
   if (!vote && !text) { $("fbMsg").textContent = "Vælg 👍 eller 👎, eller skriv en kommentar."; return; }
   $("fbSend").disabled = true;
   const ok = await saveFeedback({ feature: FB_FEATURE, vote, text, time });
-  $("fbMsg").textContent = ok ? "Tak! Feedbacken er gemt." : "Kunne ikke gemme. Prøv igen.";
+  $("fbMsg").textContent = ok ? "Tak. Din feedback er gemt." : "Det blev ikke gemt. Prøv igen.";
   if (ok) setTimeout(() => $("fbDlg").close(), 900); else $("fbSend").disabled = false;
 };
 
@@ -2118,13 +2143,13 @@ async function renderTest() {
     const saved = Object.entries(est).reduce((a, [f, xs]) => a + featUse(f) * (xs.slice().sort((x, y) => x - y)[Math.floor(xs.length / 2)]), 0);
     $("testBody").innerHTML = `<div class="kgrid">
       <div class="kcard"><h3>Sparet tid (skøn)</h3><div class="bignum">${Math.round(saved)}<small>minutter</small></div>
-        <p class="small muted">Antal brug × testerens eget svar på "hvor lang tid ville det ellers tage" (median). Kun funktioner, hvor der er svaret på det.</p></div>
+        <p class="small muted">Antal gange en funktion er brugt, ganget med testerens eget svar på, hvor lang tid det ellers ville tage. Kun hvor testeren har svaret.</p></div>
       <div class="kcard"><h3>Brug pr. dag</h3><table class="ktable"><tbody>${Object.entries(byDay).sort().reverse().slice(0, 14).map(([d, n]) => `<tr><td>${fmt(d)}</td><td class="n">${n}</td></tr>`).join("") || '<tr><td>Ingen brug endnu</td></tr>'}</tbody></table></div>
       <div class="kcard"><h3>Feedback pr. funktion</h3><table class="ktable"><thead><tr><th>Funktion</th><th class="n">👍</th><th class="n">👎</th><th class="n">Brug</th></tr></thead><tbody>
         ${feats.map(f => `<tr><td>${esc(FB_NAMES[f] || f)}</td><td class="n">${items.filter(i => i.feature === f && i.vote === "up").length}</td><td class="n">${items.filter(i => i.feature === f && i.vote === "down").length}</td><td class="n">${featUse(f)}</td></tr>`).join("")}</tbody></table></div>
       <div class="kcard wide"><h3>Kommentarer</h3>${items.filter(i => i.text).sort((a, b) => a.at < b.at ? 1 : -1).map(i => `<p class="small"><b>${esc(FB_NAMES[i.feature] || i.feature)}</b> · ${i.vote === "up" ? "👍" : i.vote === "down" ? "👎" : ""} ${esc(V2.names[i.who] || "Tester")} · ${fmt(String(i.at).slice(0, 10))}<br>${esc(i.text)}</p>`).join("") || '<p class="small muted">Ingen kommentarer endnu.</p>'}</div>
     </div>`;
-  } catch { $("testBody").innerHTML = '<div class="empty-state">Kunne ikke hente feedback. Prøv igen.</div>'; }
+  } catch { $("testBody").innerHTML = '<div class="empty-state">Feedbacken kunne ikke hentes. Prøv igen.</div>'; }
 }
 
 /* ---------- opstart ---------- */
@@ -2141,7 +2166,8 @@ if (window.claude?.use) {
     try { V2.canEdit = !!(await u.canEdit()); } catch { }
     try { V2.isOwner = !!(await u.isOwner()); } catch { }
     $("tabTest").hidden = !V2.isOwner;
-    if (location.hash === "#test") showView("test");
+    $("tabTpl").hidden = !V2.canEdit;
+    if (["#test", "#tpl"].includes(location.hash)) showView(location.hash.slice(1));
   }).catch(() => { });
   window.claude.use("db").then(db => {
     if (!db) return v2Absent();

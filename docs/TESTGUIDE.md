@@ -1,40 +1,41 @@
 # Testguide: ETA-tavlen i 2 uger
 
-Tak, fordi du vil teste. Målet er ærlig feedback: hvad sparer tid, hvad er ligegyldigt, og hvad mangler, før dine
-kolleger ville bruge det. Dårlig feedback er lige så værdifuld som god.
+Tak, fordi du vil teste. Vi vil gerne vide, hvad der sparer dig tid, hvad du ikke bruger, og hvad der mangler, før
+dine kolleger ville bruge den. Sig det gerne ligeud. Det, der ikke virker, er lige så vigtigt at høre om.
 
-**Sådan kommer du i gang**
-1. Åbn tavlen i claude.ai (linket du har fået). Første gang spørger claude.ai, om siden må bruge Claude, Apify og gemme
-   data. Sig ja.
-2. Skriv dit navn i feltet "Dit navn" under **Svar på mail**. Det bruges i hilsenen.
-3. Hver fane har en knap **Giv feedback**. Brug den, hver gang noget overrasker dig, i begge retninger. Det tager 20 sekunder.
+## Sådan kommer du i gang
 
-Kundemails gemmes ikke. Tavlen gemmer kun, hvilken type mail og hvilket sprog det var, og din feedback.
+1. Åbn tavlen i claude.ai via linket. Første gang spørger claude.ai, om siden må bruge Claude, Apify og gemme data.
+   Sig ja.
+2. Skriv dit navn under **Svar på mail** i feltet "Dit navn til hilsenen".
+3. Tryk **Giv feedback**, hver gang noget overrasker dig, både godt og skidt. Det tager et halvt minut.
 
-## 6 opgaver (2–3 minutter hver)
+Kundemails bliver ikke gemt. Tavlen gemmer kun din feedback, og hvilken slags mail du har svaret på.
 
-1. **Morgenoverblik.** Åbn fanen **Tavle**. Hvilke 3 forsendelser ville du ringe om først i dag? Er det de samme, som
+## Seks opgaver (2–3 minutter hver)
+
+1. **Morgenoverblik.** Åbn **Tavle**. Hvilke tre forsendelser ville du ringe om først i dag? Er det de samme, som
    tavlen viser under Opmærksomhedspunkter?
-2. **Svar på en mail.** Gå til **Svar på mail**, og indsæt en rigtig kundemail, du har fået (gerne på fransk eller
-   engelsk). Er forsendelsen fundet, og er svaret til at sende? Ret det til, kopier det, og noter hvor lang tid det tog.
-3. **En mail uden nummer.** Indsæt en mail, hvor kunden ikke skriver BL-nummeret. Hvad foreslår tavlen?
-4. **Skabeloner.** Åbn **Skabeloner**, og ret den danske "ETA: forsinket", så den lyder som jer. Gem den som kladde.
-   Hvem i jeres firma skulle godkende den?
-5. **Hvor opstår forsinkelsen.** Åbn **Forsinkelser**. Find ud af, hvor forsinkelsen opstår for en forsendelse til
-   Mombasa. Er liggetiden ved omladning ny viden for dig?
-6. **Nyt BL.** Tilføj et BL, I lige har fået, under **Tavle** → "Indtast nyt BL-nummer her". Kommer det rigtige op?
+2. **Svar på en mail.** Sæt en rigtig kundemail ind under **Svar på mail**, gerne en på fransk eller engelsk. Fandt
+   tavlen den rigtige forsendelse? Kunne du sende svaret? Skriv i feedbacken, hvor lang tid det tog.
+3. **En mail uden nummer.** Sæt en mail ind, hvor kunden ikke skriver BL-nummeret. Hvad foreslår tavlen?
+4. **Jeres egen tone.** Tryk **Redigér** på et svar, og ret det, så det lyder som jer. Skriv i feedbacken, hvad du
+   ændrede. Så retter vi skabelonerne til.
+5. **Hvor opstår forsinkelsen?** Åbn **Forsinkelser**. Hvor har en forsendelse til Mombasa ventet længst? Vidste du
+   det i forvejen?
+6. **Nyt BL.** Tryk **+ Tilføj BL** på tavlen, og tilføj et BL, I lige har fået. Kommer de rigtige oplysninger frem?
 
-## Samtale efter 2 uger (5 spørgsmål)
+## Samtalen efter to uger
 
 1. Hvad brugte du mest, og hvad brugte du slet ikke?
 2. Hvad ville du savne, hvis tavlen forsvandt i morgen?
-3. Hvad skal til, før dine kolleger ville bruge den hver dag?
-4. Hvem skal godkende skabeloner og svar hos jer, og hvordan foregår det i dag?
-5. Hvor meget tid sparer det jer om ugen, og hvad ville det være værd?
+3. Hvad skal der til, før dine kolleger bruger den hver dag?
+4. Hvem skal godkende skabeloner og svar hos jer, og hvordan gør I det i dag?
+5. Hvor meget tid sparer den jer om ugen, og hvad ville det være værd?
 
-## Det skal du vide
+## Godt at vide
 
-- Tavlen opdateres hver hverdag morgen. "Kør nu" henter friske data med det samme.
-- "Jeres ETA" kommer fra Google-arket "Active BL List". Ret datoerne der, så passer tallene.
-- Svar til kunder sendes aldrig fra tavlen. Du kopierer dem ind i dit mailprogram.
-- Gule **[UDFYLD]**-felter betyder, at tavlen mangler en oplysning. Den gætter aldrig.
+- Tavlen opdaterer sig selv hver hverdag morgen. **Kør nu** henter de nyeste data med det samme.
+- "Jeres ETA" kommer fra Google-arket "Active BL List". Retter du datoerne der, passer tallene bedre.
+- Tavlen sender aldrig noget til kunder. Du kopierer svaret ind i dit mailprogram.
+- Et gult **[UDFYLD]** betyder, at tavlen mangler en oplysning. Den gætter aldrig.
