@@ -1357,7 +1357,7 @@ async function runNow() {
 if (window.claude?.use) {
   window.claude.use("mcp").then(m => { MCP = m; if (m) { $("runBtn").hidden = false; $("runBtn").onclick = runNow; } }).catch(() => { });
   window.claude.use("sample").then(sm => { SAMPLE = sm; if (sm) { $("aiBtn").hidden = false; $("toneSeg").hidden = false; $("toneWrap").hidden = false; } }).catch(() => { });
-} else {
+} else if (!window.__EMBED?.share) {
   DIRECT = true; $("runBtn").hidden = false; $("runBtn").onclick = runNow;
 }
 </script>

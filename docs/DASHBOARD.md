@@ -47,6 +47,9 @@ Hver hverdag udskifter morgenjobbet kun `data.json`.
 
 ## Vis tavlen uden for Claude (præsentation, offline)
 
+`python tools/standalone.py --del` bygger `dist/ETA-tavlen-del.html` til at sende på mail: samme fil, men uden
+"Kør nu", så modtageren ikke bliver bedt om et Apify-token.
+
 `python tools/standalone.py` bygger `dist/ETA-tavlen.html`: én fil med data, kort, biblioteker, skrifttyper og
 Excel-værktøj indbygget. Den åbner i enhver browser uden internet. "Kør nu" og "Omskriv med Claude" kræver Claude og
 er skjult; Excel-eksporten bliver en almindelig download. Filen viser data fra den `dashboard/data.json`, den blev bygget af,

@@ -5,6 +5,8 @@ fetched when the file is opened. "Kør nu" and "Omskriv med Claude" need Claude 
 the Excel export becomes a normal browser download.
 
     python tools/standalone.py            # -> dist/ETA-tavlen.html
+    python tools/standalone.py --del      # -> dist/ETA-tavlen-del.html, til at sende videre: uden "Kør nu",
+                                          #    så modtageren ikke bliver bedt om et Apify-token
 """
 import base64
 import io
@@ -55,7 +57,7 @@ def safe_script(js: str) -> str:
     return js.replace("</script", "<\\/script")
 
 
-def build(out: Path) -> None:
+def build(out: Path, share: bool = False) -> None:
     html = (DASH / "index.html").read_text(encoding="utf-8")
     data = json.loads((DASH / "data.json").read_text(encoding="utf-8"))
     land = json.loads((DASH / "land-110m.json").read_text(encoding="utf-8"))
@@ -66,7 +68,7 @@ def build(out: Path) -> None:
             html = html.replace(tag, f"<script>{safe_script(npm_file(client, *lib))}</script>")
         xlsx = npm_file(client, *XLSX)
         html = inline_fonts(client, html)
-    embed = json.dumps({"data": data, "land": land}, ensure_ascii=False, separators=(",", ":"))
+    embed = json.dumps({"data": data, "land": land, "share": share}, ensure_ascii=False, separators=(",", ":"))
     head = (f"<script>window.__EMBED = {safe_script(embed)};</script>\n"
             f"<script>{safe_script(xlsx)}</script>\n")
     html = html.replace("</head>", head + "</head>", 1) if "</head>" in html else head + html
@@ -80,4 +82,7 @@ def build(out: Path) -> None:
 
 
 if __name__ == "__main__":
-    build(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "dist" / "ETA-tavlen.html")
+    args = [a for a in sys.argv[1:] if a != "--del"]
+    share = "--del" in sys.argv[1:]
+    default = ROOT / "dist" / ("ETA-tavlen-del.html" if share else "ETA-tavlen.html")
+    build(Path(args[0]) if args else default, share)

@@ -1,12 +1,12 @@
 {
- "generated_at": "2026-10-08T17:13:34",
- "run_date": "2026-10-08",
+ "generated_at": "2026-10-13T08:48:32",
+ "run_date": "2026-10-13",
  "threshold_days": 1,
- "summary": "Godmorgen. 18 af 25 forsendelser er forsinket i forhold til jeres liste. Ring først om COP0306236 til Mombasa (+25 dage), MEDUAFO34490 til Douala (+21) og COP0308369 til Tema (+21). Siden i går har 7 fået en ny ankomstdato, og 5 er kommet frem. COP0306231 til Kribi har stadig ingen dato.",
+ "summary": "Godmorgen. 19 af 25 forsendelser er forsinket i forhold til jeres liste. Ring først om COP0306236 til Mombasa (+27 dage), MEDUAFO34490 til Douala (+26) og MEDUYJ453487 til Dakar (+22). Siden sidst har 11 fået en ny ankomstdato, og 5 er kommet frem. COP0306231 til Kribi har stadig ingen dato.",
  "counts": {
-  "Forsinket": 18,
-  "Tidligere": 2,
-  "Uændret": 4,
+  "Forsinket": 19,
+  "Tidligere": 3,
+  "Uændret": 2,
   "Tjek manuelt": 1
  },
  "runs": [
@@ -43,6 +43,15 @@
     "Forsinket": 18,
     "Tidligere": 2,
     "Uændret": 4,
+    "Tjek manuelt": 1
+   }
+  },
+  {
+   "date": "2026-10-13",
+   "counts": {
+    "Forsinket": 19,
+    "Tidligere": 3,
+    "Uændret": 2,
     "Tjek manuelt": 1
    }
   }
@@ -121,11 +130,11 @@
    "carrier": "MSC",
    "bl": "MEDUYJ453487",
    "current_eta": "2026-09-29",
-   "new_eta": "2026-10-15",
-   "diff_days": 16,
+   "new_eta": "2026-10-21",
+   "diff_days": 22,
    "status": "Forsinket",
    "changed_since_last": true,
-   "vessel": "MSC ESHA III",
+   "vessel": "MSC ADITI",
    "pod": "DAKAR, SN",
    "arrived": false,
    "note": "ETA ved DAKAR, SN, via SINGAPORE, SG, ABIDJAN, CI",
@@ -160,12 +169,12 @@
     }
    ],
    "position": {
-    "code": "CMKBI",
-    "name": "KRIBI",
-    "lat": 2.95,
-    "lon": 9.92,
-    "event": "Full Transshipment Loaded",
-    "date": "2026-10-06"
+    "code": "CIABJ",
+    "name": "ABIDJAN",
+    "lat": 5.28,
+    "lon": -4.01,
+    "event": "Full Transshipment Discharged",
+    "date": "2026-10-10"
    },
    "history": [
     {
@@ -179,6 +188,10 @@
     {
      "date": "2026-10-08",
      "eta": "2026-10-15"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-21"
     }
    ],
    "dwell": [
@@ -198,6 +211,15 @@
      "departed": "2026-10-06",
      "days": 23,
      "ongoing": false,
+     "planned_departure": null
+    },
+    {
+     "code": "CIABJ",
+     "name": "ABIDJAN",
+     "arrived": "2026-10-10",
+     "departed": null,
+     "days": 3,
+     "ongoing": true,
      "planned_departure": null
     }
    ],
@@ -220,13 +242,6 @@
      "severity": "middel",
      "port": "DAKAR",
      "role": "destination"
-    },
-    {
-     "id": "singapore",
-     "title": "Singapore: bedre end i sommer",
-     "severity": "lav",
-     "port": "SINGAPORE",
-     "role": "omladning"
     }
    ]
   },
@@ -383,7 +398,7 @@
    "new_eta": "2026-10-25",
    "diff_days": 4,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "CMA CGM FORT ST GEORGES",
    "pod": "MOMBASA",
    "arrived": false,
@@ -409,8 +424,8 @@
     "name": "NHAVA SHEVA",
     "lat": 18.9453,
     "lon": 72.94,
-    "event": "Loaded on board",
-    "date": "2026-10-08"
+    "event": "Vessel Departure",
+    "date": "2026-10-09"
    },
    "history": [
     {
@@ -472,10 +487,10 @@
    "carrier": "MSC",
    "bl": "MEDUKC808954",
    "current_eta": "2026-10-26",
-   "new_eta": "2026-10-26",
-   "diff_days": 0,
-   "status": "Uændret",
-   "changed_since_last": false,
+   "new_eta": "2026-10-24",
+   "diff_days": -2,
+   "status": "Tidligere",
+   "changed_since_last": true,
    "vessel": "MSC UNITE VI",
    "pod": "COTONOU, BJ",
    "arrived": false,
@@ -519,6 +534,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-10-26"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-24"
     }
    ],
    "dwell": [
@@ -659,10 +678,10 @@
    "carrier": "MSC",
    "bl": "MEDUAFO34490",
    "current_eta": "2026-10-22",
-   "new_eta": "2026-11-12",
-   "diff_days": 21,
+   "new_eta": "2026-11-17",
+   "diff_days": 26,
    "status": "Forsinket",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "MSC BAHRAIN II",
    "pod": "DOUALA, CM",
    "arrived": false,
@@ -710,6 +729,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-11-12"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-11-17"
     }
    ],
    "dwell": [],
@@ -807,6 +830,10 @@
      {
       "date": "2026-10-08",
       "planned": "2026-10-29"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-28"
      }
     ],
     "ARRI:MAPTM": [
@@ -864,7 +891,7 @@
    "new_eta": "2026-10-31",
    "diff_days": 9,
    "status": "Forsinket",
-   "changed_since_last": true,
+   "changed_since_last": false,
    "vessel": "CMA CGM AMBER",
    "pod": "DAKAR",
    "arrived": false,
@@ -964,8 +991,8 @@
    "carrier": "CMA CGM",
    "bl": "COP0305645",
    "current_eta": "2026-10-19",
-   "new_eta": "2026-11-07",
-   "diff_days": 19,
+   "new_eta": "2026-11-09",
+   "diff_days": 21,
    "status": "Forsinket",
    "changed_since_last": true,
    "vessel": "AL BATEEN",
@@ -1018,6 +1045,10 @@
     {
      "date": "2026-10-08",
      "eta": "2026-11-07"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-11-09"
     }
    ],
    "dwell": [
@@ -1035,7 +1066,7 @@
      "name": "ALGECIRAS",
      "arrived": "2026-10-02",
      "departed": null,
-     "days": 6,
+     "days": 11,
      "ongoing": true,
      "planned_departure": "2026-10-19"
     }
@@ -1045,6 +1076,10 @@
      {
       "date": "2026-10-08",
       "planned": "2026-11-07"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-11-09"
      }
     ],
     "DEPA:ESALG": [
@@ -1087,10 +1122,10 @@
    "carrier": "MSC",
    "bl": "MEDUAAM80238",
    "current_eta": "2026-10-10",
-   "new_eta": "2026-10-10",
-   "diff_days": 0,
-   "status": "Uændret",
-   "changed_since_last": false,
+   "new_eta": "2026-10-12",
+   "diff_days": 2,
+   "status": "Forsinket",
+   "changed_since_last": true,
    "vessel": "MSC BEATRICE",
    "pod": "TEMA, GH",
    "arrived": false,
@@ -1123,6 +1158,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-10"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-12"
     }
    ],
    "dwell": [],
@@ -1371,8 +1410,8 @@
     "name": "ROTTERDAM",
     "lat": 51.981528,
     "lon": 4.042778,
-    "event": "Gate in at Port terminal",
-    "date": "2026-10-05"
+    "event": "Vessel Departure",
+    "date": "2026-10-10"
    },
    "history": [
     {
@@ -1431,11 +1470,11 @@
    "carrier": "CMA CGM",
    "bl": "COP0307065",
    "current_eta": "2026-11-12",
-   "new_eta": "2026-11-16",
-   "diff_days": 4,
-   "status": "Forsinket",
+   "new_eta": "2026-11-09",
+   "diff_days": -3,
+   "status": "Tidligere",
    "changed_since_last": true,
-   "vessel": "CMA CGM FORT ST PIERRE",
+   "vessel": "AL BATEEN",
    "pod": "MONROVIA",
    "arrived": false,
    "note": "ETA ved MONROVIA, via MUNDRA, TANGER MED",
@@ -1489,6 +1528,10 @@
     {
      "date": "2026-10-08",
      "eta": "2026-11-16"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-11-09"
     }
    ],
    "dwell": [
@@ -1507,12 +1550,20 @@
      {
       "date": "2026-10-08",
       "planned": "2026-11-16"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-11-09"
      }
     ],
     "DEPA:MAPTM": [
      {
       "date": "2026-10-08",
       "planned": "2026-10-29"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-25"
      }
     ],
     "ARRI:MAPTM": [
@@ -1653,10 +1704,10 @@
    "carrier": "CMA CGM",
    "bl": "COP0306236",
    "current_eta": "2026-10-14",
-   "new_eta": "2026-11-08",
-   "diff_days": 25,
+   "new_eta": "2026-11-10",
+   "diff_days": 27,
    "status": "Forsinket",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "ADAMASTOS",
    "pod": "MOMBASA",
    "arrived": false,
@@ -1700,6 +1751,10 @@
     {
      "date": "2026-10-07",
      "eta": "2026-11-08"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-11-10"
     }
    ],
    "dwell": [],
@@ -1708,12 +1763,20 @@
      {
       "date": "2026-10-08",
       "planned": "2026-11-08"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-11-10"
      }
     ],
     "DEPA:LKCMB": [
      {
       "date": "2026-10-08",
       "planned": "2026-10-30"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-11-01"
      }
     ],
     "ARRI:LKCMB": [
@@ -1785,12 +1848,12 @@
     }
    ],
    "position": {
-    "code": "THLCH",
-    "name": "LAEM CHABANG",
-    "lat": 13.056231,
-    "lon": 100.891261,
-    "event": "Vessel Departure",
-    "date": "2026-10-02"
+    "code": "CNNSA",
+    "name": "NANSHA",
+    "lat": 22.6362221,
+    "lon": 113.6910782,
+    "event": "Discharged in transhipment",
+    "date": "2026-10-09"
    },
    "history": [
     {
@@ -1802,7 +1865,17 @@
      "eta": "2026-11-18"
     }
    ],
-   "dwell": [],
+   "dwell": [
+    {
+     "code": "CNNSA",
+     "name": "NANSHA",
+     "arrived": "2026-10-09",
+     "departed": null,
+     "days": 4,
+     "ongoing": true,
+     "planned_departure": "2026-10-21"
+    }
+   ],
    "plan": {
     "ARRI:GHTEM": [
      {
@@ -1820,6 +1893,10 @@
      {
       "date": "2026-10-08",
       "planned": "2026-10-10"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-09"
      }
     ],
     "DEPA:THLCH": [
@@ -1846,10 +1923,10 @@
    "carrier": "MSC",
    "bl": "MEDUABK49475",
    "current_eta": "2026-10-09",
-   "new_eta": "2026-10-12",
-   "diff_days": 3,
+   "new_eta": "2026-10-13",
+   "diff_days": 4,
    "status": "Forsinket",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "MSC GENERAL IV",
    "pod": "MOMBASA, KE",
    "arrived": false,
@@ -1889,6 +1966,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-12"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-13"
     }
    ],
    "dwell": [
@@ -1932,8 +2013,8 @@
    "carrier": "CMA CGM",
    "bl": "COP0307708",
    "current_eta": "2026-10-21",
-   "new_eta": "2026-10-25",
-   "diff_days": 4,
+   "new_eta": "2026-10-22",
+   "diff_days": 1,
    "status": "Forsinket",
    "changed_since_last": true,
    "vessel": "CMA CGM LONGONI",
@@ -1983,6 +2064,10 @@
     {
      "date": "2026-10-08",
      "eta": "2026-10-25"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-22"
     }
    ],
    "dwell": [
@@ -2001,6 +2086,10 @@
      {
       "date": "2026-10-08",
       "planned": "2026-10-25"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-22"
      }
     ],
     "DEPA:LKCMB": [
@@ -2080,10 +2169,10 @@
    "carrier": "CMA CGM",
    "bl": "COP0308525",
    "current_eta": "2026-10-26",
-   "new_eta": "2026-10-27",
-   "diff_days": 1,
+   "new_eta": "2026-10-28",
+   "diff_days": 2,
    "status": "Forsinket",
-   "changed_since_last": false,
+   "changed_since_last": true,
    "vessel": "XIN HUA YUAN",
    "pod": "YANGON",
    "arrived": false,
@@ -2113,8 +2202,8 @@
     {
      "code": "MMRGN",
      "name": "YANGON",
-     "lat": 16.80528,
-     "lon": 96.15611,
+     "lat": 16.661,
+     "lon": 96.257,
      "kind": "POD"
     }
    ],
@@ -2130,6 +2219,10 @@
     {
      "date": "2026-09-30",
      "eta": "2026-10-27"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-28"
     }
    ],
    "dwell": [],
@@ -2138,30 +2231,50 @@
      {
       "date": "2026-10-08",
       "planned": "2026-10-27"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-28"
      }
     ],
     "DEPA:SGSIN": [
      {
       "date": "2026-10-08",
       "planned": "2026-10-23"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-24"
      }
     ],
     "ARRI:SGSIN": [
      {
       "date": "2026-10-08",
       "planned": "2026-10-17"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-23"
      }
     ],
     "DEPA:MYPKG": [
      {
       "date": "2026-10-08",
       "planned": "2026-10-16"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-21"
      }
     ],
     "ARRI:MYPKG": [
      {
       "date": "2026-10-08",
       "planned": "2026-10-14"
+     },
+     {
+      "date": "2026-10-13",
+      "planned": "2026-10-17"
      }
     ],
     "DEPA:CNXAM": [
@@ -2189,11 +2302,11 @@
    "carrier": "MSC",
    "bl": "MEDUAAO53495",
    "current_eta": "2026-10-12",
-   "new_eta": "2026-10-11",
-   "diff_days": -1,
-   "status": "Tidligere",
+   "new_eta": "2026-10-22",
+   "diff_days": 10,
+   "status": "Forsinket",
    "changed_since_last": true,
-   "vessel": "MSC APOLLO",
+   "vessel": "MSC SAMANTHA VI",
    "pod": "COTONOU, BJ",
    "arrived": false,
    "note": "ETA ved COTONOU, BJ, via SINGAPORE, SG",
@@ -2244,6 +2357,10 @@
     {
      "date": "2026-10-08",
      "eta": "2026-10-11"
+    },
+    {
+     "date": "2026-10-13",
+     "eta": "2026-10-22"
     }
    ],
    "dwell": [
@@ -2261,7 +2378,7 @@
      "name": "TEMA",
      "arrived": "2026-10-07",
      "departed": null,
-     "days": 1,
+     "days": 6,
      "ongoing": true,
      "planned_departure": null
     }
@@ -2325,8 +2442,8 @@
     "name": "NHAVA SHEVA",
     "lat": 18.945278,
     "lon": 72.94,
-    "event": "Received for export transfer",
-    "date": "2026-09-16"
+    "event": "Vessel Departure",
+    "date": "2026-10-10"
    },
    "history": [],
    "dwell": [],
@@ -2354,13 +2471,6 @@
      "severity": "middel",
      "port": "KRIBI",
      "role": "destination"
-    },
-    {
-     "id": "nhava-sheva",
-     "title": "Nhava Sheva: monsunvejr bremser terminalerne",
-     "severity": "middel",
-     "port": "NHAVA SHEVA",
-     "role": "afgangshavn"
     }
    ]
   }
@@ -2551,27 +2661,6 @@
     ]
    },
    {
-    "id": "nhava-sheva",
-    "severity": "middel",
-    "ports": [
-     "INNSA"
-    ],
-    "title": "Nhava Sheva: monsunvejr bremser terminalerne",
-    "summary": "Kraftig vind og regn har i perioder sænket tempoet eller stoppet arbejdet på flere terminaler. Det rammer forsendelser, der endnu ikke har forladt havnen.",
-    "as_of": "september 2026",
-    "source": {
-     "name": "Mohawk Global, India export update",
-     "url": "https://mohawkglobal.com/india-center-of-excellence/india-export-market-update-bmct-congestion-regional-transshipment-delays-continue/"
-    },
-    "affected": [
-     {
-      "bl": "COP0306231",
-      "port": "NHAVA SHEVA",
-      "role": "afgangshavn"
-     }
-    ]
-   },
-   {
     "id": "coega",
     "severity": "middel",
     "ports": [
@@ -2584,6 +2673,21 @@
     "source": {
      "name": "Kuehne+Nagel, havneopdatering",
      "url": "https://mykn.kuehne-nagel.com/news/article/port-operational-updates-from-22-09-2026"
+    },
+    "affected": []
+   },
+   {
+    "id": "nhava-sheva",
+    "severity": "middel",
+    "ports": [
+     "INNSA"
+    ],
+    "title": "Nhava Sheva: monsunvejr bremser terminalerne",
+    "summary": "Kraftig vind og regn har i perioder sænket tempoet eller stoppet arbejdet på flere terminaler. Det rammer forsendelser, der endnu ikke har forladt havnen.",
+    "as_of": "september 2026",
+    "source": {
+     "name": "Mohawk Global, India export update",
+     "url": "https://mohawkglobal.com/india-center-of-excellence/india-export-market-update-bmct-congestion-regional-transshipment-delays-continue/"
     },
     "affected": []
    },
@@ -2643,11 +2747,6 @@
     },
     "affected": [
      {
-      "bl": "MEDUYJ453487",
-      "port": "SINGAPORE",
-      "role": "omladning"
-     },
-     {
       "bl": "MEDUABK49475",
       "port": "SINGAPORE",
       "role": "omladning"
@@ -2682,35 +2781,35 @@
  "kpis": {
   "on_time": {
    "n": 24,
-   "late": 18,
-   "early": 2,
-   "on_time": 6,
-   "avg_late_days": 9.7
+   "late": 19,
+   "early": 3,
+   "on_time": 5,
+   "avg_late_days": 10.4
   },
   "by_carrier": [
    {
     "key": "MSC",
     "n": 8,
-    "late": 4,
-    "avg_late_days": 10.8
+    "late": 6,
+    "avg_late_days": 11.2
    },
    {
     "key": "CMA CGM",
     "n": 16,
-    "late": 14,
-    "avg_late_days": 9.4
+    "late": 13,
+    "avg_late_days": 10.0
    }
   ],
   "by_destination": [
    {
-    "key": "TEMA",
-    "n": 2,
-    "late": 1,
-    "avg_late_days": 21.0
-   },
-   {
     "key": "DOUALA",
     "n": 1,
+    "late": 1,
+    "avg_late_days": 26.0
+   },
+   {
+    "key": "MONROVIA",
+    "n": 2,
     "late": 1,
     "avg_late_days": 21.0
    },
@@ -2721,16 +2820,22 @@
     "avg_late_days": 16.0
    },
    {
-    "key": "MONROVIA",
+    "key": "DAKAR",
+    "n": 3,
+    "late": 3,
+    "avg_late_days": 13.0
+   },
+   {
+    "key": "TEMA",
     "n": 2,
     "late": 2,
     "avg_late_days": 11.5
    },
    {
-    "key": "DAKAR",
-    "n": 3,
-    "late": 3,
-    "avg_late_days": 11.0
+    "key": "COTONOU",
+    "n": 2,
+    "late": 1,
+    "avg_late_days": 10.0
    },
    {
     "key": "ABIDJAN",
@@ -2742,13 +2847,7 @@
     "key": "MOMBASA",
     "n": 5,
     "late": 5,
-    "avg_late_days": 8.2
-   },
-   {
-    "key": "BEIRA",
-    "n": 1,
-    "late": 1,
-    "avg_late_days": 4.0
+    "avg_late_days": 8.8
    },
    {
     "key": "MAPUTO",
@@ -2766,13 +2865,13 @@
     "key": "YANGON",
     "n": 1,
     "late": 1,
-    "avg_late_days": 1.0
+    "avg_late_days": 2.0
    },
    {
-    "key": "COTONOU",
-    "n": 2,
-    "late": 0,
-    "avg_late_days": null
+    "key": "BEIRA",
+    "n": 1,
+    "late": 1,
+    "avg_late_days": 1.0
    },
    {
     "key": "LOME",
@@ -2782,8 +2881,8 @@
    }
   ],
   "dwell": {
-   "n_shipments": 13,
-   "n_stops": 16,
+   "n_shipments": 14,
+   "n_stops": 18,
    "ports": [
     {
      "code": "CMKBI",
@@ -2800,6 +2899,14 @@
      "avg_days": 12.0,
      "max_days": 12,
      "ongoing": 0
+    },
+    {
+     "code": "ESALG",
+     "name": "ALGECIRAS",
+     "n": 1,
+     "avg_days": 11.0,
+     "max_days": 11,
+     "ongoing": 1
     },
     {
      "code": "LKCMB",
@@ -2850,8 +2957,8 @@
      "ongoing": 0
     },
     {
-     "code": "ESALG",
-     "name": "ALGECIRAS",
+     "code": "GHTEM",
+     "name": "TEMA",
      "n": 1,
      "avg_days": 6.0,
      "max_days": 6,
@@ -2866,11 +2973,19 @@
      "ongoing": 0
     },
     {
-     "code": "GHTEM",
-     "name": "TEMA",
+     "code": "CNNSA",
+     "name": "NANSHA",
      "n": 1,
-     "avg_days": 1.0,
-     "max_days": 1,
+     "avg_days": 4.0,
+     "max_days": 4,
+     "ongoing": 1
+    },
+    {
+     "code": "CIABJ",
+     "name": "ABIDJAN",
+     "n": 1,
+     "avg_days": 3.0,
+     "max_days": 3,
      "ongoing": 1
     }
    ],
@@ -2904,6 +3019,12 @@
      "port": "MUNDRA",
      "days": 12,
      "ongoing": false
+    },
+    {
+     "bl": "COP0305645",
+     "port": "ALGECIRAS",
+     "days": 11,
+     "ongoing": true
     },
     {
      "bl": "MEDUKC776011",
@@ -2950,43 +3071,135 @@
     {
      "carrier": "CMA CGM",
      "n": 17,
-     "avg_moves": 0.9,
-     "moved": 11
+     "avg_moves": 1.2,
+     "moved": 12
     },
     {
      "carrier": "MSC",
      "n": 8,
-     "avg_moves": 1.3,
-     "moved": 6
+     "avg_moves": 2.0,
+     "moved": 8
     }
    ],
    "top": [
     {
      "bl": "MEDUAAO53495",
-     "moves": 3
-    },
-    {
-     "bl": "COP0305863",
-     "moves": 2
+     "moves": 4
     },
     {
      "bl": "COP0307065",
-     "moves": 2
+     "moves": 3
     },
     {
      "bl": "COP0307708",
-     "moves": 2
+     "moves": 3
     },
     {
-     "bl": "COP0308433",
-     "moves": 2
+     "bl": "MEDUAFO34490",
+     "moves": 3
+    },
+    {
+     "bl": "MEDUYJ453487",
+     "moves": 3
     }
    ]
   },
   "plan": {
    "since": "2026-10-08",
    "n_legs": 68,
-   "slipped": []
+   "slipped": [
+    {
+     "bl": "COP0307065",
+     "leg": "ARRI:LRMLW",
+     "first": "2026-11-16",
+     "now": "2026-11-09",
+     "days": -7
+    },
+    {
+     "bl": "COP0308525",
+     "leg": "ARRI:SGSIN",
+     "first": "2026-10-17",
+     "now": "2026-10-23",
+     "days": 6
+    },
+    {
+     "bl": "COP0308525",
+     "leg": "DEPA:MYPKG",
+     "first": "2026-10-16",
+     "now": "2026-10-21",
+     "days": 5
+    },
+    {
+     "bl": "COP0307065",
+     "leg": "DEPA:MAPTM",
+     "first": "2026-10-29",
+     "now": "2026-10-25",
+     "days": -4
+    },
+    {
+     "bl": "COP0307708",
+     "leg": "ARRI:MZBEW",
+     "first": "2026-10-25",
+     "now": "2026-10-22",
+     "days": -3
+    },
+    {
+     "bl": "COP0308525",
+     "leg": "ARRI:MYPKG",
+     "first": "2026-10-14",
+     "now": "2026-10-17",
+     "days": 3
+    },
+    {
+     "bl": "COP0305645",
+     "leg": "ARRI:LRMLW",
+     "first": "2026-11-07",
+     "now": "2026-11-09",
+     "days": 2
+    },
+    {
+     "bl": "COP0306236",
+     "leg": "ARRI:KEMBA",
+     "first": "2026-11-08",
+     "now": "2026-11-10",
+     "days": 2
+    },
+    {
+     "bl": "COP0306236",
+     "leg": "DEPA:LKCMB",
+     "first": "2026-10-30",
+     "now": "2026-11-01",
+     "days": 2
+    },
+    {
+     "bl": "COP0307369",
+     "leg": "DEPA:MAPTM",
+     "first": "2026-10-29",
+     "now": "2026-10-28",
+     "days": -1
+    },
+    {
+     "bl": "COP0308369",
+     "leg": "ARRI:CNNSA",
+     "first": "2026-10-10",
+     "now": "2026-10-09",
+     "days": -1
+    },
+    {
+     "bl": "COP0308525",
+     "leg": "ARRI:MMRGN",
+     "first": "2026-10-27",
+     "now": "2026-10-28",
+     "days": 1
+    },
+    {
+     "bl": "COP0308525",
+     "leg": "DEPA:SGSIN",
+     "first": "2026-10-23",
+     "now": "2026-10-24",
+     "days": 1
+    }
+   ]
   }
  }
 }
